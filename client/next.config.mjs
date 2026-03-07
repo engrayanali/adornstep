@@ -16,11 +16,6 @@ const nextConfig = {
     ],
     unoptimized: true,
   },
-  // Cloudflare Pages configuration
-  // Using @cloudflare/next-on-pages for full Next.js features on Cloudflare
-  experimental: {
-    runtime: 'experimental-edge',
-  },
 };
 
 export default nextConfig;
