@@ -1,0 +1,32 @@
+# Bluehost / Apache configuration for FastAPI backend
+# Place this file in your application root directory
+
+# Enable Passenger
+PassengerEnabled on
+PassengerPython /home/<username>/virtualenv/api.adorestep.com/3.11/bin/python3
+
+# Tell Apache to pass all requests to Passenger (FastAPI)
+Options -MultiViews
+
+# Serve uploaded files directly via Apache (faster than going through Python)
+# Apache will handle /uploads/* directly from the filesystem
+RewriteEngine On
+
+# If the request is for an actual file in /uploads, serve it directly
+RewriteCond %{REQUEST_URI} ^/uploads/
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
+# Security: Prevent access to sensitive files
+<FilesMatch "\.(env|db|sqlite|sqlite3|py|pyc|cfg|ini|log)$">
+    Require all denied
+</FilesMatch>
+
+# Allow CORS for uploaded static files (images)
+<IfModule mod_headers.c>
+    <FilesMatch "\.(jpg|jpeg|png|gif|webp|svg|ico)$">
+        Header set Access-Control-Allow-Origin "*"
+        Header set Access-Control-Allow-Methods "GET, HEAD, OPTIONS"
+        Header set Cache-Control "public, max-age=31536000"
+    </FilesMatch>
+</IfModule>

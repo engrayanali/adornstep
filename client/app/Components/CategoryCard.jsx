@@ -1,5 +1,4 @@
 'use client';
-import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
@@ -21,11 +20,10 @@ export default function CategoryCard({ category, index = 0 }) {
         <div className="relative overflow-hidden rounded-sm shadow-card hover:shadow-product-hover transition-all duration-500 hover-lift">
           {/* Category Image */}
           <div className="relative w-full h-72 md:h-96 overflow-hidden image-zoom-container">
-            <Image
+            <img
               src={categoryImage}
               alt={name}
-              fill
-              className="object-cover image-zoom"
+              className="absolute inset-0 w-full h-full object-cover image-zoom"
             />
             
             {/* Sophisticated Gradient Overlay */}

@@ -1,20 +1,8 @@
-import { Outfit as OutfitFont, Playfair_Display } from "next/font/google";
 import "./globals.css";
-
-const outfit = OutfitFont({
-  subsets: ["latin"], 
-  weight: ["400", "500", "600", "700"],
-  variable: '--font-outfit',
-});
-
-const playfair = Playfair_Display({
-  subsets: ["latin"], 
-  weight: ["400", "600", "700"],
-  variable: '--font-playfair',
-});
 
 export const metadata = {
   title: "Adorn Steps - Premium Ladies Slippers & Footwear",
+  // Google Fonts loaded via <link> tags in RootLayout below
   description: "Discover elegant and comfortable ladies slippers, heels, flats, and sandals at Adorn Steps. Shop our latest collection of premium footwear.",
   keywords: "ladies slippers, women footwear, heels, flats, sandals, premium slippers",
   authors: [{ name: "Adorn Steps" }],
@@ -60,11 +48,18 @@ export const viewport = {
 };
 
 export default function RootLayout({ children }) {
+  const googleFontsUrl =
+    'https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap';
+
   return (
     <html lang="en" className="scroll-smooth">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href={googleFontsUrl} rel="stylesheet" />
+      </head>
       <body
-        className={`${outfit.variable} ${playfair.variable} font-outfit antialiased 
-        leading-relaxed overflow-x-hidden bg-white text-gray-900`}
+        className="font-sans antialiased leading-relaxed overflow-x-hidden bg-white text-gray-900"
       >
         {children}
       </body>

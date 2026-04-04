@@ -15,8 +15,8 @@
   --color-darkHover: #3D3D3D;
   --color-darkTheme: #1A1A1A;
   
-  --font-family-outfit: var(--font-outfit), Outfit, sans-serif;
-  --font-family-ovo: var(--font-ovo), Ovo, serif;
+  --font-family-outfit: 'Outfit', sans-serif;
+  --font-family-ovo: 'Playfair Display', serif;
   
   --shadow-soft: 0 2px 15px rgba(0, 0, 0, 0.04);
   --shadow-card: 0 2px 10px rgba(0, 0, 0, 0.05);
@@ -51,12 +51,12 @@
   
   /* Smooth, elegant typography */
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-ovo), Ovo, serif;
+    font-family: 'Playfair Display', serif;
     letter-spacing: 0.02em;
   }
   
   p, span, a, li {
-    font-family: var(--font-outfit), Outfit, sans-serif;
+    font-family: 'Outfit', sans-serif;
   }
 
   /* Ensure all elements use border-box so padding doesn't add to width */

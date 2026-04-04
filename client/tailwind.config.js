@@ -71,8 +71,8 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ['var(--font-outfit)', 'Inter', 'system-ui', 'sans-serif'],
-        display: ['var(--font-ovo)', 'Playfair Display', 'serif'],
+        sans: ['Outfit', 'Inter', 'system-ui', 'sans-serif'],
+        display: ['Playfair Display', 'serif'],
         heading: ['Montserrat', 'Raleway', 'sans-serif'],
         body: ['Open Sans', 'Inter', 'sans-serif'],
       },
