@@ -59,69 +59,106 @@ export default function CategoriesManager() {
 
   const generateSlug = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
-  if (loading) return <div style={{ textAlign: 'center', padding: '32px' }}>Loading...</div>;
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-16">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-taupe-200 border-t-charcoal-700 rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-taupe-600">Loading categories...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-        <h2 style={{ fontSize: 24, fontWeight: 700, color: '#111827', margin: 0 }}>Categories ({categories.length})</h2>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <div>
+          <h2 className="text-xl sm:text-2xl font-heading font-bold text-charcoal-800">Categories</h2>
+          <p className="text-sm text-taupe-600 mt-1">{categories.length} total categories</p>
+        </div>
         <button
           onClick={() => { resetForm(); setShowModal(true); }}
-          style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 16px', background: 'linear-gradient(to right, #ec4899, #a855f7)', color: 'white', border: 'none', borderRadius: 8, fontWeight: 500, cursor: 'pointer' }}
+          className="flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-blush-500 to-blush-600 hover:from-blush-600 hover:to-blush-700 text-white rounded-xl font-medium shadow-md hover:shadow-lg transition-all duration-200 active:scale-95"
         >
-          <Plus size={20} /> Add Category
+          <Plus size={20} />
+          <span>Add Category</span>
         </button>
       </div>
 
-      {/* Table — FIX: overflowX scroll directly on wrapper, no parent overflow:hidden */}
-      <div style={{ background: 'white', borderRadius: 12, boxShadow: '0 1px 3px rgba(0,0,0,0.1)', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
-        <table style={{ minWidth: 520, width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr style={{ backgroundColor: '#f9fafb', borderBottom: '1px solid #e5e7eb' }}>
-              {['Order', 'Name', 'Slug', 'Status', 'Actions'].map((h, i) => (
-                <th key={h} style={{ padding: '12px 24px', textAlign: i === 4 ? 'right' : 'left', fontSize: 12, fontWeight: 500, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>{h}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {categories.map((category) => (
-              <tr key={category.id} style={{ borderBottom: '1px solid #f3f4f6' }}>
-                <td style={{ padding: '16px 24px', fontSize: 14, color: '#111827' }}>{category.order}</td>
-                <td style={{ padding: '16px 24px' }}>
-                  <div style={{ fontWeight: 500, color: '#111827', fontSize: 14 }}>{category.name}</div>
-                  {category.description && <div style={{ fontSize: 13, color: '#6b7280' }}>{category.description}</div>}
-                </td>
-                <td style={{ padding: '16px 24px', fontSize: 14, color: '#111827' }}>{category.slug}</td>
-                <td style={{ padding: '16px 24px' }}>
-                  <span style={{ padding: '2px 10px', borderRadius: 999, fontSize: 12, backgroundColor: category.is_active ? '#dcfce7' : '#fee2e2', color: category.is_active ? '#166534' : '#991b1b' }}>
-                    {category.is_active ? 'Active' : 'Inactive'}
-                  </span>
-                </td>
-                <td style={{ padding: '16px 24px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
-                    <button onClick={() => handleEdit(category)} style={{ padding: 8, borderRadius: 8, border: 'none', background: 'transparent', color: '#2563eb', cursor: 'pointer' }}><Edit size={16} /></button>
-                    <button onClick={() => handleDelete(category.id)} style={{ padding: 8, borderRadius: 8, border: 'none', background: 'transparent', color: '#dc2626', cursor: 'pointer' }}><Trash2 size={16} /></button>
-                  </div>
-                </td>
+      {/* Table Wrapper */}
+      <div className="bg-white rounded-xl sm:rounded-2xl border border-taupe-200 shadow-card overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse" style={{ minWidth: '520px' }}>
+            <thead>
+              <tr className="bg-gradient-to-r from-cream-50 to-blush-50 border-b border-taupe-200">
+                {['Order', 'Name', 'Slug', 'Status', 'Actions'].map((h, i) => (
+                  <th key={h} className={`px-4 sm:px-6 py-3 text-left text-xs font-semibold text-charcoal-700 uppercase tracking-wider ${i === 4 ? 'text-right' : ''}`}>
+                    {h}
+                  </th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-taupe-100">
+              {categories.map((category) => (
+                <tr key={category.id} className="hover:bg-cream-50 transition-colors">
+                  <td className="px-4 sm:px-6 py-4 text-sm font-medium text-charcoal-800">{category.order}</td>
+                  <td className="px-4 sm:px-6 py-4">
+                    <div className="font-semibold text-charcoal-800 text-sm">{category.name}</div>
+                    {category.description && <div className="text-xs text-taupe-600 mt-1 line-clamp-1">{category.description}</div>}
+                  </td>
+                  <td className="px-4 sm:px-6 py-4 text-sm text-taupe-700 font-mono">{category.slug}</td>
+                  <td className="px-4 sm:px-6 py-4">
+                    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${category.is_active ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}`}>
+                      {category.is_active ? 'Active' : 'Inactive'}
+                    </span>
+                  </td>
+                  <td className="px-4 sm:px-6 py-4">
+                    <div className="flex items-center justify-end gap-2">
+                      <button 
+                        onClick={() => handleEdit(category)} 
+                        className="p-2 rounded-lg hover:bg-blue-50 text-blue-600 transition-colors"
+                        aria-label="Edit category"
+                      >
+                        <Edit size={16} />
+                      </button>
+                      <button 
+                        onClick={() => handleDelete(category.id)} 
+                        className="p-2 rounded-lg hover:bg-red-50 text-red-600 transition-colors"
+                        aria-label="Delete category"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* Modal */}
       {showModal && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50, padding: 16, overflowY: 'auto' }}>
-          <div style={{ background: 'white', borderRadius: 16, width: '100%', maxWidth: 560 }}>
-            <div style={{ borderBottom: '1px solid #e5e7eb', padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <h3 style={{ fontSize: 20, fontWeight: 700, color: '#111827', margin: 0 }}>{editingCategory ? 'Edit Category' : 'Add New Category'}</h3>
-              <button onClick={() => { setShowModal(false); resetForm(); }} style={{ padding: 8, borderRadius: 8, border: 'none', cursor: 'pointer', background: 'transparent' }}><X size={20} /></button>
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl my-8 mx-auto">
+            <div className="border-b border-taupe-200 px-5 sm:px-6 py-4 flex items-center justify-between bg-gradient-to-r from-blush-50 to-cream-50 rounded-t-2xl">
+              <h3 className="text-lg sm:text-xl font-heading font-bold text-charcoal-800">
+                {editingCategory ? 'Edit Category' : 'Add New Category'}
+              </h3>
+              <button 
+                onClick={() => { setShowModal(false); resetForm(); }} 
+                className="p-2 rounded-lg hover:bg-cream-200 transition-colors"
+                aria-label="Close modal"
+              >
+                <X size={20} />
+              </button>
             </div>
-            <form onSubmit={handleSubmit} style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <form onSubmit={handleSubmit} className="p-5 sm:p-6 space-y-4">
               {[['Category Name *', 'name', 'text', true], ['Slug *', 'slug', 'text', true], ['Display Order', 'order', 'number', false]].map(([label, field, type, required]) => (
                 <div key={field}>
-                  <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: '#374151', marginBottom: 4 }}>{label}</label>
+                  <label className="block text-sm font-semibold text-charcoal-700 mb-2">{label}</label>
                   <input
                     type={type}
                     value={formData[field]}
@@ -134,23 +171,40 @@ export default function CategoriesManager() {
                       }
                     }}
                     required={required}
-                    style={{ width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: 8, fontSize: 14, boxSizing: 'border-box' }}
+                    className="w-full px-3 sm:px-4 py-2.5 border border-taupe-300 rounded-xl focus:ring-2 focus:ring-blush-400 focus:border-blush-400 transition-all text-sm bg-white"
                   />
                 </div>
               ))}
               <div>
-                <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: '#374151', marginBottom: 4 }}>Description</label>
-                <textarea value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} rows="3" style={{ width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: 8, fontSize: 14, boxSizing: 'border-box', resize: 'vertical' }} />
+                <label className="block text-sm font-semibold text-charcoal-700 mb-2">Description</label>
+                <textarea 
+                  value={formData.description} 
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })} 
+                  rows="3" 
+                  className="w-full px-3 sm:px-4 py-2.5 border border-taupe-300 rounded-xl focus:ring-2 focus:ring-blush-400 focus:border-blush-400 transition-all text-sm resize-vertical bg-white"
+                />
               </div>
-              <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
-                <input type="checkbox" checked={formData.is_active} onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })} />
-                <span style={{ fontSize: 14, color: '#374151' }}>Active</span>
+              <label className="flex items-center gap-3 cursor-pointer p-3 rounded-lg hover:bg-cream-50 transition-colors">
+                <input 
+                  type="checkbox" 
+                  checked={formData.is_active} 
+                  onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })} 
+                  className="w-4 h-4 text-blush-500 rounded focus:ring-2 focus:ring-blush-400"
+                />
+                <span className="text-sm font-medium text-charcoal-700">Active</span>
               </label>
-              <div style={{ display: 'flex', gap: 12, paddingTop: 8 }}>
-                <button type="submit" style={{ flex: 1, padding: '10px 16px', background: 'linear-gradient(to right, #ec4899, #a855f7)', color: 'white', border: 'none', borderRadius: 8, fontWeight: 500, cursor: 'pointer' }}>
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                <button 
+                  type="submit" 
+                  className="flex-1 px-4 py-2.5 bg-gradient-to-r from-blush-500 to-blush-600 hover:from-blush-600 hover:to-blush-700 text-white rounded-xl font-semibold shadow-md hover:shadow-lg transition-all duration-200 active:scale-95"
+                >
                   {editingCategory ? 'Update Category' : 'Create Category'}
                 </button>
-                <button type="button" onClick={() => { setShowModal(false); resetForm(); }} style={{ padding: '10px 16px', background: '#f3f4f6', color: '#374151', border: 'none', borderRadius: 8, fontWeight: 500, cursor: 'pointer' }}>
+                <button 
+                  type="button" 
+                  onClick={() => { setShowModal(false); resetForm(); }} 
+                  className="px-4 py-2.5 bg-taupe-100 hover:bg-taupe-200 text-charcoal-700 rounded-xl font-semibold transition-all duration-200 active:scale-95"
+                >
                   Cancel
                 </button>
               </div>

@@ -44,102 +44,114 @@ export default function OrdersManager() {
 
   if (loading) {
     return (
-      <div style={{ textAlign: 'center', padding: '48px' }}>
-        <div style={{ width: 48, height: 48, border: '4px solid #e5e7eb', borderTopColor: '#374151', borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto' }}></div>
-        <p style={{ marginTop: 16, color: '#6b7280' }}>Loading orders...</p>
+      <div className="flex items-center justify-center py-16">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-taupe-200 border-t-charcoal-700 rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-taupe-600">Loading orders...</p>
+        </div>
       </div>
     );
   }
 
   return (
     <div>
-      <div style={{ marginBottom: 24 }}>
-        <h2 style={{ fontSize: 24, fontWeight: 700, color: '#111827', margin: 0 }}>Orders</h2>
-        <p style={{ fontSize: 14, color: '#6b7280', marginTop: 4 }}>{orders.length} total orders</p>
+      <div className="mb-6">
+        <h2 className="text-xl sm:text-2xl font-heading font-bold text-charcoal-800">Orders</h2>
+        <p className="text-sm text-taupe-600 mt-1">{orders.length} total orders</p>
       </div>
 
-      {/* Table — FIX: overflowX scroll directly on wrapper */}
-      <div style={{ background: 'white', borderRadius: 12, border: '1px solid #e5e7eb', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
-        <table style={{ minWidth: 680, width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr style={{ backgroundColor: '#f9fafb', borderBottom: '1px solid #e5e7eb' }}>
-              {['Order #', 'Customer', 'Total', 'Status', 'Date', 'Actions'].map((h, i) => (
-                <th key={h} style={{ padding: '16px 24px', textAlign: i === 5 ? 'right' : 'left', fontSize: 12, fontWeight: 600, color: '#374151', textTransform: 'uppercase', letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>{h}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {orders.map((order) => {
-              const sc = statusColors[order.status] || statusColors.cancelled;
-              return (
-                <tr key={order.id} style={{ borderBottom: '1px solid #f3f4f6' }}>
-                  <td style={{ padding: '16px 24px', fontSize: 14, fontWeight: 600, color: '#111827', whiteSpace: 'nowrap' }}>{order.order_number}</td>
-                  <td style={{ padding: '16px 24px' }}>
-                    <div style={{ fontSize: 14, fontWeight: 500, color: '#111827' }}>{order.customer_name}</div>
-                    <div style={{ fontSize: 12, color: '#6b7280' }}>{order.customer_email}</div>
-                  </td>
-                  <td style={{ padding: '16px 24px', fontSize: 14, fontWeight: 600, color: '#111827', whiteSpace: 'nowrap' }}>Rs {order.total_amount.toFixed(2)}</td>
-                  <td style={{ padding: '16px 24px' }}>
-                    <select
-                      value={order.status}
-                      onChange={(e) => handleUpdateStatus(order.id, e.target.value)}
-                      style={{ padding: '4px 12px', fontSize: 12, fontWeight: 500, borderRadius: 999, border: 'none', cursor: 'pointer', backgroundColor: sc.bg, color: sc.color }}
-                    >
-                      <option value="pending">Pending</option>
-                      <option value="confirmed">Confirmed</option>
-                      <option value="shipped">Shipped</option>
-                      <option value="delivered">Delivered</option>
-                      <option value="cancelled">Cancelled</option>
-                    </select>
-                  </td>
-                  <td style={{ padding: '16px 24px', fontSize: 14, color: '#6b7280', whiteSpace: 'nowrap' }}>{new Date(order.created_at).toLocaleDateString()}</td>
-                  <td style={{ padding: '16px 24px', textAlign: 'right' }}>
-                    <button
-                      onClick={() => { setSelectedOrder(order); setShowModal(true); }}
-                      style={{ padding: 8, borderRadius: 8, border: 'none', background: 'transparent', color: '#2563eb', cursor: 'pointer' }}
-                    >
-                      <Eye size={18} />
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+      {/* Table Wrapper */}
+      <div className="bg-white rounded-xl sm:rounded-2xl border border-taupe-200 shadow-card overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse" style={{ minWidth: '680px' }}>
+            <thead>
+              <tr className="bg-gradient-to-r from-cream-50 to-blush-50 border-b border-taupe-200">
+                {['Order #', 'Customer', 'Total', 'Status', 'Date', 'Actions'].map((h, i) => (
+                  <th key={h} className={`px-4 sm:px-6 py-3 text-left text-xs font-semibold text-charcoal-700 uppercase tracking-wider ${i === 5 ? 'text-right' : ''}`}>
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-taupe-100">
+              {orders.map((order) => {
+                const sc = statusColors[order.status] || statusColors.cancelled;
+                return (
+                  <tr key={order.id} className="hover:bg-cream-50 transition-colors">
+                    <td className="px-4 sm:px-6 py-4 text-sm font-bold text-charcoal-800 whitespace-nowrap font-mono">{order.order_number}</td>
+                    <td className="px-4 sm:px-6 py-4">
+                      <div className="font-semibold text-charcoal-800 text-sm">{order.customer_name}</div>
+                      <div className="text-xs text-taupe-600 mt-1 truncate max-w-[200px]">{order.customer_email}</div>
+                    </td>
+                    <td className="px-4 sm:px-6 py-4 text-sm font-bold text-emerald-700 whitespace-nowrap">Rs {order.total_amount.toFixed(2)}</td>
+                    <td className="px-4 sm:px-6 py-4">
+                      <select
+                        value={order.status}
+                        onChange={(e) => handleUpdateStatus(order.id, e.target.value)}
+                        className="px-3 py-1.5 text-xs font-semibold rounded-full border-none cursor-pointer focus:ring-2 focus:ring-blush-400 transition-all"
+                        style={{ backgroundColor: sc.bg, color: sc.color }}
+                      >
+                        <option value="pending">Pending</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="shipped">Shipped</option>
+                        <option value="delivered">Delivered</option>
+                        <option value="cancelled">Cancelled</option>
+                      </select>
+                    </td>
+                    <td className="px-4 sm:px-6 py-4 text-sm text-taupe-700 whitespace-nowrap">{new Date(order.created_at).toLocaleDateString()}</td>
+                    <td className="px-4 sm:px-6 py-4 text-right">
+                      <button
+                        onClick={() => { setSelectedOrder(order); setShowModal(true); }}
+                        className="p-2 rounded-lg hover:bg-blue-50 text-blue-600 transition-colors inline-flex items-center justify-center"
+                        aria-label="View order details"
+                      >
+                        <Eye size={18} />
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
 
-        {orders.length === 0 && (
-          <div style={{ textAlign: 'center', padding: '64px 16px' }}>
-            <Eye size={48} style={{ margin: '0 auto 16px', color: '#d1d5db' }} />
-            <p style={{ color: '#6b7280' }}>No orders yet</p>
-          </div>
-        )}
+          {orders.length === 0 && (
+            <div className="text-center py-16 px-4">
+              <Eye size={48} className="mx-auto mb-4 text-taupe-300" />
+              <p className="text-taupe-600">No orders yet</p>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Order Details Modal */}
       {showModal && selectedOrder && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50, padding: 16, overflowY: 'auto' }}>
-          <div style={{ background: 'white', borderRadius: 16, width: '100%', maxWidth: 640, maxHeight: '90vh', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl my-8">
             {/* Modal Header */}
-            <div style={{ padding: '20px 24px', borderBottom: '1px solid #e5e7eb', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
+            <div className="px-5 sm:px-6 py-4 border-b border-taupe-200 flex items-center justify-between flex-shrink-0 bg-gradient-to-r from-blush-50 to-cream-50 rounded-t-2xl">
               <div>
-                <h3 style={{ fontSize: 20, fontWeight: 700, color: '#111827', margin: 0 }}>Order Details</h3>
-                <p style={{ fontSize: 14, color: '#6b7280', marginTop: 2 }}>{selectedOrder.order_number}</p>
+                <h3 className="text-lg sm:text-xl font-heading font-bold text-charcoal-800">Order Details</h3>
+                <p className="text-sm text-taupe-600 mt-1 font-mono">{selectedOrder.order_number}</p>
               </div>
-              <button onClick={() => setShowModal(false)} style={{ padding: 8, borderRadius: 8, border: 'none', background: 'transparent', cursor: 'pointer' }}>
+              <button 
+                onClick={() => setShowModal(false)} 
+                className="p-2 rounded-lg hover:bg-cream-200 transition-colors"
+                aria-label="Close modal"
+              >
                 <X size={20} />
               </button>
             </div>
 
             {/* Modal Body */}
-            <div style={{ padding: '24px', overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: 20 }}>
+            <div className="p-5 sm:p-6 overflow-y-auto flex-1 space-y-5">
               {/* Customer Info */}
               <div>
-                <h4 style={{ fontWeight: 600, color: '#111827', marginBottom: 12 }}>Customer Information</h4>
-                <div style={{ background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 8, padding: 16, display: 'flex', flexDirection: 'column', gap: 6 }}>
+                <h4 className="font-semibold text-charcoal-800 mb-3 text-sm uppercase tracking-wide">Customer Information</h4>
+                <div className="bg-gradient-to-br from-cream-50 to-blush-50 border border-taupe-200 rounded-xl p-4 space-y-2">
                   {[['Name', selectedOrder.customer_name], ['Email', selectedOrder.customer_email], ['Phone', selectedOrder.customer_phone]].map(([label, value]) => (
-                    <p key={label} style={{ fontSize: 14, margin: 0 }}>
-                      <span style={{ fontWeight: 500, color: '#374151' }}>{label}: </span>
-                      <span style={{ color: '#4b5563' }}>{value}</span>
+                    <p key={label} className="text-sm m-0">
+                      <span className="font-semibold text-charcoal-700">{label}: </span>
+                      <span className="text-charcoal-600">{value}</span>
                     </p>
                   ))}
                 </div>
@@ -147,38 +159,38 @@ export default function OrdersManager() {
 
               {/* Shipping */}
               <div>
-                <h4 style={{ fontWeight: 600, color: '#111827', marginBottom: 12 }}>Shipping Address</h4>
-                <div style={{ background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 8, padding: 16, fontSize: 14, color: '#4b5563', display: 'flex', flexDirection: 'column', gap: 4 }}>
-                  <p style={{ margin: 0 }}>{selectedOrder.shipping_address}</p>
-                  <p style={{ margin: 0 }}>{selectedOrder.shipping_city}, {selectedOrder.shipping_state} {selectedOrder.shipping_zip}</p>
-                  <p style={{ margin: 0 }}>{selectedOrder.shipping_country}</p>
+                <h4 className="font-semibold text-charcoal-800 mb-3 text-sm uppercase tracking-wide">Shipping Address</h4>
+                <div className="bg-gradient-to-br from-cream-50 to-blush-50 border border-taupe-200 rounded-xl p-4 text-sm text-charcoal-600 space-y-1">
+                  <p className="m-0">{selectedOrder.shipping_address}</p>
+                  <p className="m-0">{selectedOrder.shipping_city}, {selectedOrder.shipping_state} {selectedOrder.shipping_zip}</p>
+                  <p className="m-0">{selectedOrder.shipping_country}</p>
                 </div>
               </div>
 
               {/* Order Items */}
               <div>
-                <h4 style={{ fontWeight: 600, color: '#111827', marginBottom: 12 }}>Order Items</h4>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                <h4 className="font-semibold text-charcoal-800 mb-3 text-sm uppercase tracking-wide">Order Items</h4>
+                <div className="space-y-3">
                   {selectedOrder.order_items.map((item) => (
-                    <div key={item.id} style={{ background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 8, padding: 16 }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
-                        <p style={{ fontWeight: 600, color: '#111827', margin: 0, fontSize: 15 }}>{item.product_name}</p>
-                        <div style={{ textAlign: 'right', marginLeft: 16 }}>
-                          <p style={{ fontWeight: 700, color: '#111827', margin: 0, fontSize: 16 }}>Rs {item.product_price.toFixed(2)}</p>
-                          <p style={{ fontSize: 12, color: '#6b7280', margin: 0 }}>per item</p>
+                    <div key={item.id} className="bg-white border border-taupe-200 rounded-xl p-4 shadow-sm">
+                      <div className="flex justify-between items-start mb-3 gap-4">
+                        <p className="font-semibold text-charcoal-800 m-0 text-sm flex-1">{item.product_name}</p>
+                        <div className="text-right flex-shrink-0">
+                          <p className="font-bold text-charcoal-800 m-0 text-base">Rs {item.product_price.toFixed(2)}</p>
+                          <p className="text-xs text-taupe-600 m-0">per item</p>
                         </div>
                       </div>
-                      <div style={{ background: 'white', border: '1px solid #bfdbfe', borderRadius: 8, padding: 12, marginBottom: 12 }}>
-                        <p style={{ fontSize: 11, fontWeight: 600, color: '#1d4ed8', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8, margin: '0 0 8px 0' }}>Customer Preferences:</p>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
-                          <div><p style={{ fontSize: 12, color: '#6b7280', margin: '0 0 2px 0' }}>Quantity</p><p style={{ fontWeight: 700, color: '#111827', fontSize: 18, margin: 0 }}>{item.quantity}</p></div>
-                          {item.size && <div><p style={{ fontSize: 12, color: '#6b7280', margin: '0 0 2px 0' }}>Size</p><p style={{ fontWeight: 700, color: '#111827', fontSize: 18, margin: 0 }}>{item.size}</p></div>}
-                          {item.color && <div><p style={{ fontSize: 12, color: '#6b7280', margin: '0 0 2px 0' }}>Color</p><p style={{ fontWeight: 700, color: '#111827', fontSize: 18, margin: 0 }}>{item.color}</p></div>}
+                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-3">
+                        <p className="text-xs font-semibold text-blue-700 uppercase tracking-wide mb-2 m-0">Customer Preferences:</p>
+                        <div className="grid grid-cols-3 gap-3">
+                          <div><p className="text-xs text-taupe-600 m-0 mb-1">Quantity</p><p className="font-bold text-charcoal-800 text-lg m-0">{item.quantity}</p></div>
+                          {item.size && <div><p className="text-xs text-taupe-600 m-0 mb-1">Size</p><p className="font-bold text-charcoal-800 text-lg m-0">{item.size}</p></div>}
+                          {item.color && <div><p className="text-xs text-taupe-600 m-0 mb-1">Color</p><p className="font-bold text-charcoal-800 text-lg m-0">{item.color}</p></div>}
                         </div>
                       </div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 12, borderTop: '1px solid #e5e7eb' }}>
-                        <p style={{ fontSize: 14, fontWeight: 500, color: '#374151', margin: 0 }}>Item Total:</p>
-                        <p style={{ fontSize: 18, fontWeight: 700, color: '#059669', margin: 0 }}>Rs {(item.product_price * item.quantity).toFixed(2)}</p>
+                      <div className="flex justify-between items-center pt-3 border-t border-taupe-200">
+                        <p className="text-sm font-medium text-charcoal-700 m-0">Item Total:</p>
+                        <p className="text-lg font-bold text-emerald-600 m-0">Rs {(item.product_price * item.quantity).toFixed(2)}</p>
                       </div>
                     </div>
                   ))}
@@ -186,14 +198,14 @@ export default function OrdersManager() {
               </div>
 
               {/* Total */}
-              <div style={{ background: 'linear-gradient(to right, #ecfdf5, #eff6ff)', borderRadius: 8, padding: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div className="bg-gradient-to-r from-emerald-50 via-blue-50 to-blush-50 rounded-xl p-4 sm:p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-2 border-emerald-200">
                 <div>
-                  <p style={{ fontSize: 14, color: '#374151', margin: '0 0 4px 0' }}>Order Total</p>
-                  <p style={{ fontSize: 24, fontWeight: 700, color: '#111827', margin: 0 }}>Rs {selectedOrder.total_amount.toFixed(2)}</p>
+                  <p className="text-sm text-charcoal-700 m-0 mb-1">Order Total</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-charcoal-800 m-0">Rs {selectedOrder.total_amount.toFixed(2)}</p>
                 </div>
-                <div style={{ textAlign: 'right' }}>
-                  <p style={{ fontSize: 12, color: '#374151', margin: '0 0 4px 0' }}>Status</p>
-                  <span style={{ padding: '6px 16px', borderRadius: 999, fontSize: 14, fontWeight: 700, backgroundColor: statusColors[selectedOrder.status]?.bg || '#fee2e2', color: statusColors[selectedOrder.status]?.color || '#991b1b' }}>
+                <div className="text-left sm:text-right">
+                  <p className="text-xs text-charcoal-700 m-0 mb-2">Status</p>
+                  <span className="inline-flex px-4 py-2 rounded-full text-sm font-bold shadow-sm" style={{ backgroundColor: statusColors[selectedOrder.status]?.bg || '#fee2e2', color: statusColors[selectedOrder.status]?.color || '#991b1b' }}>
                     {selectedOrder.status.charAt(0).toUpperCase() + selectedOrder.status.slice(1)}
                   </span>
                 </div>

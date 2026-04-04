@@ -125,7 +125,14 @@ export default function LifestyleManager() {
   };
 
   if (loading) {
-    return <div className="text-center py-8">Loading...</div>;
+    return (
+      <div className="flex items-center justify-center py-16">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-taupe-200 border-t-charcoal-700 rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-taupe-600">Loading lifestyle images...</p>
+        </div>
+      </div>
+    );
   }
 
   const shopByStyleImages = images.filter(img => img.section === 'shop_by_style');
@@ -133,45 +140,45 @@ export default function LifestyleManager() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-6">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Lifestyle Sections</h2>
-          <p className="text-sm text-gray-500 mt-1">Manage "Shop by Style" and "Live Beautifully" section images</p>
+          <h2 className="text-xl sm:text-2xl font-heading font-bold text-charcoal-800">Lifestyle Sections</h2>
+          <p className="text-sm text-taupe-600 mt-1">Manage "Shop by Style" and "Live Beautifully" section images</p>
         </div>
         <button
           onClick={() => {
             resetForm();
             setShowModal(true);
           }}
-          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-lg hover:from-pink-600 hover:to-purple-600 transition-all"
+          className="flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-blush-500 to-blush-600 hover:from-blush-600 hover:to-blush-700 text-white rounded-xl font-medium shadow-md hover:shadow-lg transition-all duration-200 active:scale-95"
         >
           <Plus size={20} />
-          Add Image
+          <span>Add Image</span>
         </button>
       </div>
 
       {/* Filter Tabs */}
-      <div className="mb-6 flex gap-2">
+      <div className="mb-6 flex flex-wrap gap-2">
         <button
           onClick={() => setSelectedSection('all')}
-          className={`px-4 py-2 rounded-lg transition-colors focus:outline-none ${
-            selectedSection === 'all' ? 'bg-purple-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 active:bg-gray-300'
+          className={`px-3 sm:px-4 py-2 rounded-xl transition-all focus:outline-none text-sm font-medium ${
+            selectedSection === 'all' ? 'bg-gradient-to-r from-blush-500 to-blush-600 text-white shadow-md' : 'bg-cream-100 text-charcoal-700 hover:bg-taupe-200 active:bg-taupe-300'
           }`}
         >
           All ({images.length})
         </button>
         <button
           onClick={() => setSelectedSection('shop_by_style')}
-          className={`px-4 py-2 rounded-lg transition-colors focus:outline-none ${
-            selectedSection === 'shop_by_style' ? 'bg-purple-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 active:bg-gray-300'
+          className={`px-3 sm:px-4 py-2 rounded-xl transition-all focus:outline-none text-sm font-medium ${
+            selectedSection === 'shop_by_style' ? 'bg-gradient-to-r from-blush-500 to-blush-600 text-white shadow-md' : 'bg-cream-100 text-charcoal-700 hover:bg-taupe-200 active:bg-taupe-300'
           }`}
         >
           Shop by Style ({shopByStyleImages.length})
         </button>
         <button
           onClick={() => setSelectedSection('live_beautifully')}
-          className={`px-4 py-2 rounded-lg transition-colors focus:outline-none ${
-            selectedSection === 'live_beautifully' ? 'bg-purple-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 active:bg-gray-300'
+          className={`px-3 sm:px-4 py-2 rounded-xl transition-all focus:outline-none text-sm font-medium ${
+            selectedSection === 'live_beautifully' ? 'bg-gradient-to-r from-blush-500 to-blush-600 text-white shadow-md' : 'bg-cream-100 text-charcoal-700 hover:bg-taupe-200 active:bg-taupe-300'
           }`}
         >
           Live Beautifully ({liveBeautifullyImages.length})
@@ -179,63 +186,66 @@ export default function LifestyleManager() {
       </div>
 
       {/* Images Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {images.map((image) => (
-          <div key={image.id} className="bg-white rounded-xl shadow-md overflow-hidden">
-            <div className="relative h-64">
+          <div key={image.id} className="bg-white rounded-xl sm:rounded-2xl shadow-card border border-taupe-200 overflow-hidden hover:shadow-lg transition-all group">
+            <div className="relative h-48 sm:h-56 lg:h-64 overflow-hidden">
               <img 
                 src={image.image_url}
                 alt={image.title}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />
-              <div className="absolute top-2 right-2 flex gap-2">
-                <span className={`px-2 py-1 text-xs rounded-full ${
-                  image.section === 'shop_by_style' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
+              <div className="absolute top-2 right-2 flex flex-col gap-2">
+                <span className={`px-2.5 py-1 text-xs font-medium rounded-full shadow-sm ${
+                  image.section === 'shop_by_style' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'
                 }`}>
                   {image.section === 'shop_by_style' ? 'Shop by Style' : 'Live Beautifully'}
                 </span>
-                <span className={`px-2 py-1 text-xs rounded-full ${
-                  image.layout === 'large' ? 'bg-purple-100 text-purple-800' : 'bg-gray-100 text-gray-800'
+                <span className={`px-2.5 py-1 text-xs font-medium rounded-full shadow-sm ${
+                  image.layout === 'large' ? 'bg-blush-100 text-blush-700' : 'bg-taupe-100 text-taupe-700'
                 }`}>
                   {image.layout}
                 </span>
               </div>
             </div>
             
-            <div className="p-4">
-              <div className="flex items-start justify-between mb-2">
-                <div className="flex-1">
-                  <h3 className="font-bold text-gray-900">{image.title}</h3>
+            <div className="p-4 sm:p-5">
+              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-3">
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-bold text-charcoal-800 text-base truncate">{image.title}</h3>
                   {image.description && (
-                    <p className="text-sm text-gray-600 mt-1">{image.description}</p>
+                    <p className="text-sm text-taupe-600 mt-1 line-clamp-2">{image.description}</p>
                   )}
                   {image.link && (
-                    <p className="text-xs text-gray-500 mt-1">Link: {image.link}</p>
+                    <p className="text-xs text-taupe-500 mt-1 truncate">Link: {image.link}</p>
                   )}
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-500">Order: {image.order}</span>
-                  <span className={`px-2 py-1 text-xs rounded-full ${
-                    image.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <span className="text-xs text-taupe-600 bg-taupe-100 px-2 py-1 rounded-lg">Order: {image.order}</span>
+                  <span className={`px-2.5 py-1 text-xs font-medium rounded-full ${
+                    image.is_active ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'
                   }`}>
                     {image.is_active ? 'Active' : 'Inactive'}
                   </span>
                 </div>
               </div>
               
-              <div className="flex gap-2 mt-3">
+              <div className="flex gap-2 mt-4">
                 <button
                   onClick={() => handleEdit(image)}
-                  className="flex-1 flex items-center justify-center gap-1 px-3 py-1.5 text-sm bg-indigo-50 text-indigo-600 hover:bg-indigo-100 active:bg-indigo-200 rounded-lg transition-colors focus:outline-none"
+                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-blue-50 text-blue-600 hover:bg-blue-100 active:bg-blue-200 rounded-lg transition-all text-sm font-medium"
+                  aria-label="Edit image"
                 >
                   <Edit size={16} />
-                  Edit
+                  <span>Edit</span>
                 </button>
                 <button
                   onClick={() => handleDelete(image.id)}
-                  className="flex-1 px-3 py-1.5 text-sm bg-red-50 text-red-600 hover:bg-red-100 active:bg-red-200 rounded-lg transition-colors focus:outline-none"
+                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-red-50 text-red-600 hover:bg-red-100 active:bg-red-200 rounded-lg transition-all text-sm font-medium"
+                  aria-label="Delete image"
                 >
-                  Delete
+                  <Trash2 size={16} />
+                  <span>Delete</span>
                 </button>
               </div>
             </div>

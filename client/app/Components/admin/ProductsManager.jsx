@@ -270,9 +270,11 @@ export default function ProductsManager() {
 
   if (loading) {
     return (
-      <div className="text-center py-12">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-taupe-200 border-t-charcoal-800 mx-auto"></div>
-        <p className="mt-4 text-taupe-600">Loading products...</p>
+      <div className="flex items-center justify-center py-16">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-taupe-200 border-t-charcoal-700 rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-taupe-600">Loading products...</p>
+        </div>
       </div>
     );
   }
@@ -280,9 +282,9 @@ export default function ProductsManager() {
   return (
     <div>
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h2 className="text-2xl font-heading text-charcoal-800">Products</h2>
+          <h2 className="text-xl sm:text-2xl font-heading font-bold text-charcoal-800">Products</h2>
           <p className="text-sm text-taupe-600 mt-1">{products.length} total products</p>
         </div>
         <button
@@ -290,10 +292,10 @@ export default function ProductsManager() {
             resetForm();
             setShowModal(true);
           }}
-          className="flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-lg hover:from-pink-600 hover:to-purple-600 transition-all shadow-lg hover:shadow-xl font-medium"
+          className="flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-blush-500 to-blush-600 hover:from-blush-600 hover:to-blush-700 text-white rounded-xl font-medium shadow-md hover:shadow-lg transition-all duration-200 active:scale-95"
         >
-          <Plus size={22} />
-          Add New Product
+          <Plus size={20} />
+          <span>Add New Product</span>
         </button>
       </div>
 
@@ -388,15 +390,18 @@ export default function ProductsManager() {
         </div>
 
         {products.length === 0 && (
-          <div className="text-center py-16">
-            <ImageIcon size={48} className="mx-auto text-taupe-300 mb-4" />
-            <p className="text-taupe-600 font-body mb-4">No products yet</p>
+          <div className="text-center py-16 px-4">
+            <div className="w-16 h-16 bg-gradient-to-br from-taupe-100 to-blush-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <ImageIcon size={32} className="text-taupe-400" />
+            </div>
+            <p className="text-taupe-700 font-semibold mb-2">No products yet</p>
+            <p className="text-sm text-taupe-500 mb-6">Get started by adding your first product</p>
             <button
               onClick={() => {
                 resetForm();
                 setShowModal(true);
               }}
-              className="text-sm text-blush-600 hover:text-blush-700 font-medium"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blush-500 to-blush-600 text-white rounded-lg hover:from-blush-600 hover:to-blush-700 transition-all shadow-md font-medium"
             >
               Create your first product
             </button>
@@ -409,13 +414,12 @@ export default function ProductsManager() {
         <div className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 z-50 overflow-y-auto">
           <div className="bg-white rounded-xl sm:rounded-2xl w-full max-w-3xl my-4 shadow-2xl flex flex-col max-h-[95vh] sm:max-h-[90vh]">
 
-            {/* FIX: Modal header — pr-16 prevents title from going under X button on mobile */}
-            <div className="sticky top-0 bg-gradient-to-r from-cream-50 to-white border-b border-taupe-200 px-4 sm:px-6 py-4 sm:py-5 flex items-start justify-between flex-shrink-0 rounded-t-xl sm:rounded-t-2xl z-10">
-              <div className="pr-10">
-                <h3 className="text-lg sm:text-xl font-heading text-charcoal-800">
+            <div className="sticky top-0 bg-gradient-to-r from-blush-50 to-cream-50 border-b border-taupe-200 px-4 sm:px-6 py-4 flex items-center justify-between flex-shrink-0 rounded-t-xl sm:rounded-t-2xl z-10">
+              <div className="flex-1 min-w-0 pr-4">
+                <h3 className="text-lg sm:text-xl font-heading font-bold text-charcoal-800 truncate">
                   {editingProduct ? 'Edit Product' : 'Add New Product'}
                 </h3>
-                <p className="text-xs text-taupe-600 mt-1">
+                <p className="text-xs sm:text-sm text-taupe-600 mt-1">
                   {editingProduct ? 'Update product information' : 'Fill in the product details below'}
                 </p>
               </div>
@@ -424,18 +428,19 @@ export default function ProductsManager() {
                   setShowModal(false);
                   resetForm();
                 }}
-                className="p-2 hover:bg-taupe-100 rounded-lg transition-colors flex-shrink-0 ml-2"
+                className="p-2 hover:bg-cream-200 rounded-lg transition-colors flex-shrink-0"
+                aria-label="Close modal"
               >
-                <X size={20} className="text-charcoal-600" />
+                <X size={20} className="text-charcoal-700" />
               </button>
             </div>
 
             {/* Scrollable Form Content */}
             <div className="overflow-y-auto flex-1">
-              <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Product Name *</label>
+              <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="sm:col-span-2">
+                    <label className="block text-sm font-semibold text-charcoal-700 mb-2">Product Name *</label>
                     <input
                       type="text"
                       value={formData.name}
@@ -445,51 +450,55 @@ export default function ProductsManager() {
                           setFormData(prev => ({ ...prev, slug: generateSlug(e.target.value) }));
                         }
                       }}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent text-sm sm:text-base"
+                      className="w-full px-3 sm:px-4 py-2.5 border border-taupe-300 rounded-xl focus:ring-2 focus:ring-blush-400 focus:border-blush-400 transition-all text-sm bg-white"
+                      placeholder="Enter product name"
                       required
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Slug *</label>
+                  <div className="sm:col-span-2">
+                    <label className="block text-sm font-semibold text-charcoal-700 mb-2">Slug *</label>
                     <input
                       type="text"
                       value={formData.slug}
                       onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent text-sm sm:text-base"
+                      className="w-full px-3 sm:px-4 py-2.5 border border-taupe-300 rounded-xl focus:ring-2 focus:ring-blush-400 focus:border-blush-400 transition-all text-sm bg-white font-mono"
+                      placeholder="product-slug"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Price *</label>
+                    <label className="block text-sm font-semibold text-charcoal-700 mb-2">Price (Rs) *</label>
                     <input
                       type="number"
                       step="0.01"
                       value={formData.price}
                       onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent text-sm sm:text-base"
+                      className="w-full px-3 sm:px-4 py-2.5 border border-taupe-300 rounded-xl focus:ring-2 focus:ring-blush-400 focus:border-blush-400 transition-all text-sm bg-white"
+                      placeholder="0.00"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Discount Price</label>
+                    <label className="block text-sm font-semibold text-charcoal-700 mb-2">Discount Price (Rs)</label>
                     <input
                       type="number"
                       step="0.01"
                       value={formData.discount_price}
                       onChange={(e) => setFormData({ ...formData, discount_price: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent text-sm sm:text-base"
+                      className="w-full px-3 sm:px-4 py-2.5 border border-taupe-300 rounded-xl focus:ring-2 focus:ring-blush-400 focus:border-blush-400 transition-all text-sm bg-white"
+                      placeholder="0.00"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Category *</label>
+                    <label className="block text-sm font-semibold text-charcoal-700 mb-2">Category *</label>
                     <select
                       value={formData.category_id}
                       onChange={(e) => setFormData({ ...formData, category_id: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent text-sm sm:text-base"
+                      className="w-full px-3 sm:px-4 py-2.5 border border-taupe-300 rounded-xl focus:ring-2 focus:ring-blush-400 focus:border-blush-400 transition-all text-sm bg-white"
                       required
                     >
                       <option value="">Select Category</option>
@@ -500,81 +509,92 @@ export default function ProductsManager() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Stock *</label>
+                    <label className="block text-sm font-semibold text-charcoal-700 mb-2">Stock *</label>
                     <input
                       type="number"
                       value={formData.stock}
                       onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent text-sm sm:text-base"
+                      className="w-full px-3 sm:px-4 py-2.5 border border-taupe-300 rounded-xl focus:ring-2 focus:ring-blush-400 focus:border-blush-400 transition-all text-sm bg-white"
+                      placeholder="0"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Sizes
-                      <span className="text-xs text-gray-500 ml-2">(comma-separated)</span>
+                    <label className="block text-sm font-semibold text-charcoal-700 mb-2">
+                      Material
                     </label>
                     <input
                       type="text"
-                      placeholder='5, 6, 7, 8, 9'
-                      value={formData.sizes}
-                      onChange={(e) => setFormData({ ...formData, sizes: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent text-sm"
+                      value={formData.material}
+                      onChange={(e) => setFormData({ ...formData, material: e.target.value })}
+                      className="w-full px-3 sm:px-4 py-2.5 border border-taupe-300 rounded-xl focus:ring-2 focus:ring-blush-400 focus:border-blush-400 transition-all text-sm bg-white"
+                      placeholder="Leather, Canvas, etc."
                     />
-                    <p className="text-xs text-gray-500 mt-1">Example: 5, 6, 7, 8</p>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Colors
-                      <span className="text-xs text-gray-500 ml-2">(comma-separated)</span>
+                    <label className="block text-sm font-semibold text-charcoal-700 mb-2">
+                      Sizes <span className="text-xs text-taupe-500 font-normal">(comma-separated)</span>
                     </label>
                     <input
                       type="text"
-                      placeholder='Red, Blue, Pink, Black'
+                      placeholder="5, 6, 7, 8, 9"
+                      value={formData.sizes}
+                      onChange={(e) => setFormData({ ...formData, sizes: e.target.value })}
+                      className="w-full px-3 sm:px-4 py-2.5 border border-taupe-300 rounded-xl focus:ring-2 focus:ring-blush-400 focus:border-blush-400 transition-all text-sm bg-white"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-charcoal-700 mb-2">
+                      Colors <span className="text-xs text-taupe-500 font-normal">(comma-separated)</span>
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Red, Blue, Pink, Black"
                       value={formData.colors}
                       onChange={(e) => setFormData({ ...formData, colors: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent text-sm"
+                      className="w-full px-3 sm:px-4 py-2.5 border border-taupe-300 rounded-xl focus:ring-2 focus:ring-blush-400 focus:border-blush-400 transition-all text-sm bg-white"
                     />
-                    <p className="text-xs text-gray-500 mt-1">Example: Red, Blue, Pink</p>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                  <label className="block text-sm font-semibold text-charcoal-700 mb-2">Description</label>
                   <textarea
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    rows="3"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent text-sm sm:text-base"
+                    rows="4"
+                    className="w-full px-3 sm:px-4 py-2.5 border border-taupe-300 rounded-xl focus:ring-2 focus:ring-blush-400 focus:border-blush-400 transition-all text-sm bg-white resize-vertical"
+                    placeholder="Describe your product..."
                   ></textarea>
                 </div>
 
                 {/* Product Images Upload Section */}
-                <div className="border-t pt-4 mt-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Product Images {!editingProduct && '(Upload after creating product or select now)'}
+                <div className="border-t border-taupe-200 pt-5">
+                  <label className="block text-sm font-semibold text-charcoal-700 mb-3">
+                    Product Images {!editingProduct && <span className="text-xs text-taupe-500 font-normal">(Upload after creating or select now)</span>}
                   </label>
                   
                   {editingProduct && productImages.length > 0 && (
-                    <div className="mb-3">
-                      <p className="text-xs text-gray-600 mb-2">Current Images ({productImages.length}):</p>
+                    <div className="mb-4 p-3 bg-blue-50 rounded-xl border border-blue-200">
+                      <p className="text-xs font-semibold text-blue-700 mb-2">Current Images ({productImages.length}):</p>
                       <div className="flex gap-2 overflow-x-auto pb-2">
                         {productImages.slice(0, 4).map((img, idx) => (
                           <div key={img.id} className="relative flex-shrink-0">
                             <img 
                               src={img.image_url} 
                               alt={`Product ${idx + 1}`}
-                              className="w-16 h-16 object-cover rounded border"
+                              className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg border-2 border-white shadow-sm"
                             />
                             {img.is_primary && (
-                              <span className="absolute -top-1 -right-1 bg-green-500 text-white text-[10px] px-1 rounded">1st</span>
+                              <span className="absolute -top-1 -right-1 bg-emerald-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-md shadow-sm">1st</span>
                             )}
                           </div>
                         ))}
                         {productImages.length > 4 && (
-                          <div className="w-16 h-16 bg-gray-100 rounded border flex items-center justify-center text-xs text-gray-500">
+                          <div className="w-16 h-16 sm:w-20 sm:h-20 bg-taupe-100 rounded-lg border-2 border-taupe-200 flex items-center justify-center text-xs font-semibold text-taupe-600">
                             +{productImages.length - 4}
                           </div>
                         )}
@@ -585,38 +605,41 @@ export default function ProductsManager() {
                           setShowModal(false);
                           handleManageImages(editingProduct);
                         }}
-                        className="text-xs text-purple-600 hover:text-purple-700 font-medium mt-1"
+                        className="text-xs text-blush-600 hover:text-blush-700 font-semibold mt-2 inline-flex items-center gap-1"
                       >
-                        Click here to manage all images
+                        <ImageIcon size={14} />
+                        Manage all images
                       </button>
                     </div>
                   )}
 
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
-                    <div className="flex items-center justify-center mb-2">
-                      <ImageIcon className="h-8 w-8 sm:h-10 sm:w-10 text-gray-400" />
+                  <div className="border-2 border-dashed border-taupe-300 rounded-xl p-4 sm:p-6 bg-gradient-to-br from-cream-50 to-white hover:border-blush-400 transition-colors">
+                    <div className="flex items-center justify-center mb-3">
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-taupe-100 to-blush-100 rounded-xl flex items-center justify-center">
+                        <ImageIcon className="w-6 h-6 sm:w-7 sm:h-7 text-taupe-500" />
+                      </div>
                     </div>
                     <input
                       type="file"
                       accept="image/*"
                       multiple
                       onChange={handleNewImagesSelect}
-                      className="block w-full text-xs sm:text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs sm:file:text-sm file:font-semibold file:bg-gradient-to-r file:from-pink-500 file:to-purple-500 file:text-white hover:file:from-pink-600 hover:file:to-purple-600 file:cursor-pointer"
+                      className="block w-full text-xs sm:text-sm text-charcoal-700 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs sm:file:text-sm file:font-semibold file:bg-gradient-to-r file:from-blush-500 file:to-blush-600 file:text-white hover:file:from-blush-600 hover:file:to-blush-700 file:cursor-pointer file:transition-all"
                     />
-                    <p className="text-xs text-gray-500 mt-2 text-center">
-                      Upload multiple images (Max 5MB each). First image will be the primary image.
+                    <p className="text-xs text-taupe-600 mt-3 text-center">
+                      Upload multiple images (Max 5MB each). <span className="font-semibold">First image = Primary</span>
                     </p>
                   </div>
 
                   {newProductImages.length > 0 && (
-                    <div className="mt-3">
-                      <p className="text-xs font-medium text-gray-700 mb-2">
+                    <div className="mt-4 p-3 bg-emerald-50 rounded-xl border border-emerald-200">
+                      <p className="text-xs font-semibold text-emerald-700 mb-3">
                         Selected Images ({newProductImages.length}):
                       </p>
-                      <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                      <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 sm:gap-3">
                         {newProductImages.map((file, index) => (
                           <div key={index} className="relative group">
-                            <div className="aspect-square bg-gray-100 rounded border overflow-hidden">
+                            <div className="aspect-square bg-taupe-100 rounded-xl border-2 border-white overflow-hidden shadow-sm">
                               <img
                                 src={URL.createObjectURL(file)}
                                 alt={`New ${index + 1}`}
@@ -624,18 +647,18 @@ export default function ProductsManager() {
                               />
                             </div>
                             {index === 0 && (
-                              <span className="absolute top-1 left-1 bg-green-500 text-white text-[10px] px-1.5 py-0.5 rounded">
+                              <span className="absolute top-1 left-1 bg-emerald-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-sm">
                                 Primary
                               </span>
                             )}
                             <button
                               type="button"
                               onClick={() => removeNewImage(index)}
-                              className="absolute -top-1 -right-1 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                              className="absolute -top-1.5 -right-1.5 p-1.5 bg-red-500 hover:bg-red-600 text-white rounded-full opacity-0 group-hover:opacity-100 transition-all shadow-md"
                             >
-                              <X size={12} />
+                              <X size={14} />
                             </button>
-                            <p className="text-[10px] text-gray-600 mt-1 truncate">{file.name}</p>
+                            <p className="text-[10px] text-taupe-600 mt-1 truncate font-medium">{file.name}</p>
                           </div>
                         ))}
                       </div>
@@ -643,66 +666,71 @@ export default function ProductsManager() {
                   )}
                 </div>
 
-                <div className="flex flex-wrap gap-3 sm:gap-4">
-                  <label className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      checked={formData.is_active}
-                      onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
-                      className="rounded text-pink-500 focus:ring-pink-500"
-                    />
-                    <span className="text-xs sm:text-sm text-gray-700">Active</span>
-                  </label>
+                <div className="border-t border-taupe-200 pt-5">
+                  <p className="text-sm font-semibold text-charcoal-700 mb-3">Product Settings</p>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <label className="flex items-center gap-2 p-3 rounded-xl border border-taupe-200 hover:bg-cream-50 cursor-pointer transition-colors">
+                      <input
+                        type="checkbox"
+                        checked={formData.is_active}
+                        onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
+                        className="w-4 h-4 rounded text-blush-500 focus:ring-2 focus:ring-blush-400"
+                      />
+                      <span className="text-sm text-charcoal-700 font-medium">Active</span>
+                    </label>
 
-                  <label className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      checked={formData.is_featured}
-                      onChange={(e) => setFormData({ ...formData, is_featured: e.target.checked })}
-                      className="rounded text-pink-500 focus:ring-pink-500"
-                    />
-                    <span className="text-xs sm:text-sm text-gray-700">Featured</span>
-                  </label>
+                    <label className="flex items-center gap-2 p-3 rounded-xl border border-taupe-200 hover:bg-cream-50 cursor-pointer transition-colors">
+                      <input
+                        type="checkbox"
+                        checked={formData.is_featured}
+                        onChange={(e) => setFormData({ ...formData, is_featured: e.target.checked })}
+                        className="w-4 h-4 rounded text-blush-500 focus:ring-2 focus:ring-blush-400"
+                      />
+                      <span className="text-sm text-charcoal-700 font-medium">Featured</span>
+                    </label>
 
-                  <label className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      checked={formData.is_new_arrival}
-                      onChange={(e) => setFormData({ ...formData, is_new_arrival: e.target.checked })}
-                      className="rounded text-pink-500 focus:ring-pink-500"
-                    />
-                    <span className="text-xs sm:text-sm text-gray-700">New Arrival</span>
-                  </label>
+                    <label className="flex items-center gap-2 p-3 rounded-xl border border-taupe-200 hover:bg-cream-50 cursor-pointer transition-colors">
+                      <input
+                        type="checkbox"
+                        checked={formData.is_new_arrival}
+                        onChange={(e) => setFormData({ ...formData, is_new_arrival: e.target.checked })}
+                        className="w-4 h-4 rounded text-blush-500 focus:ring-2 focus:ring-blush-400"
+                      />
+                      <span className="text-sm text-charcoal-700 font-medium">New Arrival</span>
+                    </label>
 
-                  <label className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      checked={formData.is_limited_edition}
-                      onChange={(e) => setFormData({ ...formData, is_limited_edition: e.target.checked })}
-                      className="rounded text-pink-500 focus:ring-pink-500"
-                    />
-                    <span className="text-xs sm:text-sm text-gray-700">Limited Edition</span>
-                  </label>
+                    <label className="flex items-center gap-2 p-3 rounded-xl border border-taupe-200 hover:bg-cream-50 cursor-pointer transition-colors">
+                      <input
+                        type="checkbox"
+                        checked={formData.is_limited_edition}
+                        onChange={(e) => setFormData({ ...formData, is_limited_edition: e.target.checked })}
+                        className="w-4 h-4 rounded text-blush-500 focus:ring-2 focus:ring-blush-400"
+                      />
+                      <span className="text-sm text-charcoal-700 font-medium">Limited</span>
+                    </label>
+                  </div>
                 </div>
 
                 {/* Form Actions */}
-                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4 sticky bottom-0 bg-white pb-2">
-                  <button
-                    type="submit"
-                    className="flex-1 px-4 py-2.5 sm:py-2 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-lg hover:from-pink-600 hover:to-purple-600 transition-all font-medium text-sm sm:text-base"
-                  >
-                    {editingProduct ? 'Update Product' : 'Create Product'}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setShowModal(false);
-                      resetForm();
-                    }}
-                    className="px-4 py-2.5 sm:py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium text-sm sm:text-base"
-                  >
-                    Cancel
-                  </button>
+                <div className="border-t border-taupe-200 pt-5">
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <button
+                      type="submit"
+                      className="flex-1 px-4 py-3 bg-gradient-to-r from-blush-500 to-blush-600 hover:from-blush-600 hover:to-blush-700 text-white rounded-xl font-semibold shadow-md hover:shadow-lg transition-all duration-200 active:scale-95 text-sm sm:text-base"
+                    >
+                      {editingProduct ? 'Update Product' : 'Create Product'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowModal(false);
+                        resetForm();
+                      }}
+                      className="px-4 py-3 bg-taupe-100 hover:bg-taupe-200 text-charcoal-700 rounded-xl font-semibold transition-all duration-200 active:scale-95 text-sm sm:text-base"
+                    >
+                      Cancel
+                    </button>
+                  </div>
                 </div>
               </form>
             </div>

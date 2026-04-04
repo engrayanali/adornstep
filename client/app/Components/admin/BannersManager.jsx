@@ -141,87 +141,108 @@ export default function BannersManager() {
   };
 
   if (loading) {
-    return <div className="text-center py-8">Loading...</div>;
+    return (
+      <div className="flex items-center justify-center py-16">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-taupe-200 border-t-charcoal-700 rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-taupe-600">Loading banners...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Hero Banners ({banners.length})</h2>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <div>
+          <h2 className="text-xl sm:text-2xl font-heading font-bold text-charcoal-800">Hero Banners</h2>
+          <p className="text-sm text-taupe-600 mt-1">{banners.length} total banners</p>
+        </div>
         <button
           onClick={() => {
             resetForm();
             setShowModal(true);
           }}
-          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-lg hover:from-pink-600 hover:to-purple-600 transition-all"
+          className="flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-blush-500 to-blush-600 hover:from-blush-600 hover:to-blush-700 text-white rounded-xl font-medium shadow-md hover:shadow-lg transition-all duration-200 active:scale-95"
         >
           <Plus size={20} />
-          Add Banner
+          <span>Add Banner</span>
         </button>
       </div>
 
-      <div className="grid grid-cols-1 gap-6">
+      <div className="grid grid-cols-1 gap-4 sm:gap-6">
         {banners.map((banner) => (
-          <div key={banner.id} className="bg-white rounded-xl shadow-md overflow-hidden">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+          <div key={banner.id} className="bg-white rounded-xl sm:rounded-2xl shadow-card border border-taupe-200 overflow-hidden hover:shadow-lg transition-shadow">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 p-4 sm:p-5">
               <div>
-                <p className="text-xs text-gray-500 mb-2">Mobile View</p>
-                <img 
-                  src={banner.mobile_image_url}
-                  alt="Mobile banner"
-                  className="w-full h-48 object-cover rounded-lg"
-                />
+                <p className="text-xs font-semibold text-taupe-600 mb-2 uppercase tracking-wide">Mobile View</p>
+                <div className="relative rounded-lg overflow-hidden shadow-sm">
+                  <img 
+                    src={banner.mobile_image_url}
+                    alt="Mobile banner"
+                    className="w-full h-40 sm:h-48 object-cover"
+                  />
+                </div>
               </div>
               <div>
-                <p className="text-xs text-gray-500 mb-2">Desktop View</p>
-                <img 
-                  src={banner.desktop_image_url}
-                  alt="Desktop banner"
-                  className="w-full h-48 object-cover rounded-lg"
-                />
+                <p className="text-xs font-semibold text-taupe-600 mb-2 uppercase tracking-wide">Desktop View</p>
+                <div className="relative rounded-lg overflow-hidden shadow-sm">
+                  <img 
+                    src={banner.desktop_image_url}
+                    alt="Desktop banner"
+                    className="w-full h-40 sm:h-48 object-cover"
+                  />
+                </div>
               </div>
             </div>
             
-            <div className="px-4 pb-4">
-              <div className="flex items-center justify-between mb-2">
-                <div>
-                  <h3 className="font-bold text-gray-900">{banner.title || 'Untitled Banner'}</h3>
-                  <p className="text-sm text-gray-600">{banner.subtitle}</p>
+            <div className="px-4 sm:px-5 pb-4 sm:pb-5 border-t border-taupe-100">
+              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4 mt-4">
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-bold text-charcoal-800 text-base sm:text-lg truncate">{banner.title || 'Untitled Banner'}</h3>
+                  <p className="text-sm text-taupe-600 mt-1 line-clamp-2">{banner.subtitle}</p>
                   {banner.button_text && (
-                    <p className="text-xs text-gray-500 mt-1">
-                      Button: {banner.button_text} → {banner.button_link}
+                    <p className="text-xs text-taupe-500 mt-2 truncate">
+                      <span className="font-medium">Button:</span> {banner.button_text} → {banner.button_link}
                     </p>
                   )}
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-500">Order: {banner.order}</span>
-                  <span className={`px-2 py-1 text-xs rounded-full ${
-                    banner.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <span className="text-xs text-taupe-600 bg-taupe-100 px-2 py-1 rounded-lg">Order: {banner.order}</span>
+                  <span className={`px-2.5 py-1 text-xs font-medium rounded-full ${
+                    banner.is_active ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'
                   }`}>
                     {banner.is_active ? 'Active' : 'Inactive'}
                   </span>
                 </div>
               </div>
               
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2 mt-4">
                 <button
                   onClick={() => handleEdit(banner)}
-                  className="flex items-center gap-1 px-3 py-1.5 text-sm bg-indigo-50 text-indigo-600 hover:bg-indigo-100 active:bg-indigo-200 rounded-lg transition-colors focus:outline-none"
+                  className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 active:bg-blue-200 transition-all text-sm font-medium"
+                  aria-label="Edit banner"
                 >
                   <Edit size={16} />
-                  Edit
+                  <span>Edit</span>
                 </button>
                 <button
                   onClick={() => toggleActive(banner)}
-                  className="px-3 py-1.5 text-sm bg-blue-50 text-blue-600 hover:bg-blue-100 active:bg-blue-200 rounded-lg transition-colors focus:outline-none"
+                  className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg transition-all text-sm font-medium ${
+                    banner.is_active 
+                      ? 'bg-amber-50 text-amber-600 hover:bg-amber-100 active:bg-amber-200' 
+                      : 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100 active:bg-emerald-200'
+                  }`}
                 >
-                  {banner.is_active ? 'Deactivate' : 'Activate'}
+                  <span>{banner.is_active ? 'Deactivate' : 'Activate'}</span>
                 </button>
                 <button
                   onClick={() => handleDelete(banner.id)}
-                  className="px-3 py-1.5 text-sm bg-red-50 text-red-600 hover:bg-red-100 active:bg-red-200 rounded-lg transition-colors focus:outline-none"
+                  className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 active:bg-red-200 transition-all text-sm font-medium sm:ml-auto"
+                  aria-label="Delete banner"
                 >
-                  Delete
+                  <Trash2 size={16} />
+                  <span>Delete</span>
                 </button>
               </div>
             </div>
