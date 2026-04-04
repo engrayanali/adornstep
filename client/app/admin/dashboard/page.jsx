@@ -22,34 +22,19 @@ export default function AdminDashboard() {
   useEffect(() => {
     const checkAuth = async () => {
       const token = localStorage.getItem('admin_token');
-      console.log('[Dashboard] Checking auth, token exists:', !!token);
-      
-      if (!token) {
-        console.log('[Dashboard] No token found, redirecting to login');
-        router.push('/admin');
-        return;
-      }
-
+      if (!token) { router.push('/admin'); return; }
       try {
-        console.log('[Dashboard] Verifying token...');
         const adminData = await api.verifyToken();
-        console.log('[Dashboard] Token verified, admin:', adminData);
         setAdmin(adminData);
       } catch (error) {
-        console.error('[Dashboard] Token verification failed:', error);
         localStorage.removeItem('admin_token');
         router.push('/admin');
       } finally {
         setLoading(false);
       }
     };
-
     checkAuth();
-
-    // Listen for tab switch events from quick actions
-    const handleTabSwitch = (e) => {
-      setActiveTab(e.detail);
-    };
+    const handleTabSwitch = (e) => setActiveTab(e.detail);
     window.addEventListener('switchAdminTab', handleTabSwitch);
     return () => window.removeEventListener('switchAdminTab', handleTabSwitch);
   }, [router]);
@@ -64,11 +49,7 @@ export default function AdminDashboard() {
       <div className="min-h-screen bg-cream-50 flex items-center justify-center">
         <div className="text-center">
           <div className="mb-8 animate-pulse">
-            <img 
-              src="/logo.png" 
-              alt="Adorn Steps" 
-              className="h-24 md:h-32 w-auto mx-auto object-contain"
-            />
+            <img src="/logo.png" alt="Adorn Steps" className="h-24 md:h-32 w-auto mx-auto object-contain" />
           </div>
           <div className="flex items-center justify-center gap-2">
             <div className="w-3 h-3 bg-terracotta-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
@@ -82,31 +63,31 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-cream-50 flex">
-      <AdminSidebar 
-        activeTab={activeTab} 
+    <div className="min-h-screen bg-cream-50 flex" style={{ overflowX: 'hidden' }}>
+      <AdminSidebar
+        activeTab={activeTab}
         setActiveTab={setActiveTab}
         admin={admin}
         onLogout={handleLogout}
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
       />
-      
-      <div className="flex-1 lg:ml-64">
+
+      {/* KEY FIX: min-w-0 stops flex child from growing past viewport on mobile */}
+      <div className="flex-1 lg:ml-64" style={{ minWidth: 0, overflowX: 'hidden' }}>
         {/* Header */}
         <div className="bg-white shadow-soft border-b border-taupe-200 sticky top-0 z-10">
           <div className="px-4 sm:px-8 py-5 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              {/* Mobile hamburger */}
+            <div className="flex items-center gap-3" style={{ minWidth: 0 }}>
               <button
                 onClick={() => setIsSidebarOpen(true)}
-                className="lg:hidden p-2 rounded-lg hover:bg-cream-100 active:bg-cream-200 text-charcoal-700 focus:outline-none transition-colors"
+                className="lg:hidden p-2 rounded-lg hover:bg-cream-100 active:bg-cream-200 text-charcoal-700 focus:outline-none transition-colors flex-shrink-0"
                 aria-label="Open menu"
               >
                 <Menu size={22} />
               </button>
-              <div>
-                <h1 className="text-xl sm:text-2xl font-heading text-charcoal-800">
+              <div style={{ minWidth: 0 }}>
+                <h1 className="text-xl sm:text-2xl font-heading text-charcoal-800" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   {activeTab === 'dashboard' && 'Dashboard Overview'}
                   {activeTab === 'products' && 'Products Management'}
                   {activeTab === 'categories' && 'Categories Management'}
@@ -124,7 +105,7 @@ export default function AdminDashboard() {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2 sm:gap-4">
+            <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
               <div className="text-right hidden sm:block">
                 <p className="text-xs text-taupe-500">Signed in as</p>
                 <p className="text-sm font-medium text-charcoal-800">{admin?.username}</p>

@@ -9,17 +9,9 @@ export default function CategoriesManager() {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
-  const [formData, setFormData] = useState({
-    name: '',
-    slug: '',
-    description: '',
-    is_active: true,
-    order: 0,
-  });
+  const [formData, setFormData] = useState({ name: '', slug: '', description: '', is_active: true, order: 0 });
 
-  useEffect(() => {
-    loadCategories();
-  }, []);
+  useEffect(() => { loadCategories(); }, []);
 
   const loadCategories = async () => {
     try {
@@ -35,240 +27,130 @@ export default function CategoriesManager() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
     try {
-      const data = {
-        ...formData,
-        order: parseInt(formData.order),
-      };
-
-      if (editingCategory) {
-        await api.updateCategory(editingCategory.id, data);
-      } else {
-        await api.createCategory(data);
-      }
-
+      const data = { ...formData, order: parseInt(formData.order) };
+      if (editingCategory) { await api.updateCategory(editingCategory.id, data); }
+      else { await api.createCategory(data); }
       setShowModal(false);
       resetForm();
       loadCategories();
       alert(editingCategory ? 'Category updated!' : 'Category created!');
     } catch (error) {
-      console.error('Error saving category:', error);
       alert(error.message || 'Error saving category');
     }
   };
 
   const handleEdit = (category) => {
     setEditingCategory(category);
-    setFormData({
-      name: category.name,
-      slug: category.slug,
-      description: category.description || '',
-      is_active: category.is_active,
-      order: category.order,
-    });
+    setFormData({ name: category.name, slug: category.slug, description: category.description || '', is_active: category.is_active, order: category.order });
     setShowModal(true);
   };
 
   const handleDelete = async (id) => {
-    if (!confirm('Are you sure you want to delete this category?')) return;
-
-    try {
-      await api.deleteCategory(id);
-      loadCategories();
-      alert('Category deleted!');
-    } catch (error) {
-      console.error('Error deleting category:', error);
-      alert('Error deleting category');
-    }
+    if (!confirm('Are you sure?')) return;
+    try { await api.deleteCategory(id); loadCategories(); alert('Deleted!'); }
+    catch (error) { alert('Error deleting category'); }
   };
 
   const resetForm = () => {
     setEditingCategory(null);
-    setFormData({
-      name: '',
-      slug: '',
-      description: '',
-      is_active: true,
-      order: 0,
-    });
+    setFormData({ name: '', slug: '', description: '', is_active: true, order: 0 });
   };
 
-  const generateSlug = (name) => {
-    return name
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)/g, '');
-  };
+  const generateSlug = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
-  if (loading) {
-    return <div className="text-center py-8">Loading...</div>;
-  }
+  if (loading) return <div style={{ textAlign: 'center', padding: '32px' }}>Loading...</div>;
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Categories ({categories.length})</h2>
+      {/* Header */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+        <h2 style={{ fontSize: 24, fontWeight: 700, color: '#111827', margin: 0 }}>Categories ({categories.length})</h2>
         <button
-          onClick={() => {
-            resetForm();
-            setShowModal(true);
-          }}
-          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-lg hover:from-pink-600 hover:to-purple-600 transition-all"
+          onClick={() => { resetForm(); setShowModal(true); }}
+          style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 16px', background: 'linear-gradient(to right, #ec4899, #a855f7)', color: 'white', border: 'none', borderRadius: 8, fontWeight: 500, cursor: 'pointer' }}
         >
-          <Plus size={20} />
-          Add Category
+          <Plus size={20} /> Add Category
         </button>
       </div>
 
-      <div className="bg-white rounded-xl shadow-md overflow-hidden">
-        {/* FIX: overflow-x-auto with min-width wrapper for mobile scroll */}
-        <div className="overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
-          <div style={{ minWidth: '500px' }}>
-            <table className="w-full">
-              <thead className="bg-gray-50 border-b">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Order</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Slug</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {categories.map((category) => (
-                  <tr key={category.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 text-sm text-gray-900">{category.order}</td>
-                    <td className="px-6 py-4">
-                      <div className="font-medium text-gray-900">{category.name}</div>
-                      <div className="text-sm text-gray-500">{category.description}</div>
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-900">{category.slug}</td>
-                    <td className="px-6 py-4">
-                      <span className={`px-2 py-1 text-xs rounded-full ${
-                        category.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                      }`}>
-                        {category.is_active ? 'Active' : 'Inactive'}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <div className="flex items-center justify-end gap-2">
-                        <button
-                          onClick={() => handleEdit(category)}
-                          className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                        >
-                          <Edit size={16} />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(category.id)}
-                          className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                        >
-                          <Trash2 size={16} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+      {/* Table — FIX: overflowX scroll directly on wrapper, no parent overflow:hidden */}
+      <div style={{ background: 'white', borderRadius: 12, boxShadow: '0 1px 3px rgba(0,0,0,0.1)', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+        <table style={{ minWidth: 520, width: '100%', borderCollapse: 'collapse' }}>
+          <thead>
+            <tr style={{ backgroundColor: '#f9fafb', borderBottom: '1px solid #e5e7eb' }}>
+              {['Order', 'Name', 'Slug', 'Status', 'Actions'].map((h, i) => (
+                <th key={h} style={{ padding: '12px 24px', textAlign: i === 4 ? 'right' : 'left', fontSize: 12, fontWeight: 500, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {categories.map((category) => (
+              <tr key={category.id} style={{ borderBottom: '1px solid #f3f4f6' }}>
+                <td style={{ padding: '16px 24px', fontSize: 14, color: '#111827' }}>{category.order}</td>
+                <td style={{ padding: '16px 24px' }}>
+                  <div style={{ fontWeight: 500, color: '#111827', fontSize: 14 }}>{category.name}</div>
+                  {category.description && <div style={{ fontSize: 13, color: '#6b7280' }}>{category.description}</div>}
+                </td>
+                <td style={{ padding: '16px 24px', fontSize: 14, color: '#111827' }}>{category.slug}</td>
+                <td style={{ padding: '16px 24px' }}>
+                  <span style={{ padding: '2px 10px', borderRadius: 999, fontSize: 12, backgroundColor: category.is_active ? '#dcfce7' : '#fee2e2', color: category.is_active ? '#166534' : '#991b1b' }}>
+                    {category.is_active ? 'Active' : 'Inactive'}
+                  </span>
+                </td>
+                <td style={{ padding: '16px 24px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                    <button onClick={() => handleEdit(category)} style={{ padding: 8, borderRadius: 8, border: 'none', background: 'transparent', color: '#2563eb', cursor: 'pointer' }}><Edit size={16} /></button>
+                    <button onClick={() => handleDelete(category.id)} style={{ padding: 8, borderRadius: 8, border: 'none', background: 'transparent', color: '#dc2626', cursor: 'pointer' }}><Trash2 size={16} /></button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl max-w-xl w-full">
-            <div className="border-b px-6 py-4 flex items-center justify-between">
-              <h3 className="text-xl font-bold text-gray-900">
-                {editingCategory ? 'Edit Category' : 'Add New Category'}
-              </h3>
-              <button
-                onClick={() => {
-                  setShowModal(false);
-                  resetForm();
-                }}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                <X size={20} />
-              </button>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50, padding: 16, overflowY: 'auto' }}>
+          <div style={{ background: 'white', borderRadius: 16, width: '100%', maxWidth: 560 }}>
+            <div style={{ borderBottom: '1px solid #e5e7eb', padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <h3 style={{ fontSize: 20, fontWeight: 700, color: '#111827', margin: 0 }}>{editingCategory ? 'Edit Category' : 'Add New Category'}</h3>
+              <button onClick={() => { setShowModal(false); resetForm(); }} style={{ padding: 8, borderRadius: 8, border: 'none', cursor: 'pointer', background: 'transparent' }}><X size={20} /></button>
             </div>
-
-            <form onSubmit={handleSubmit} className="p-6 space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Category Name *</label>
-                <input
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => {
-                    setFormData({ ...formData, name: e.target.value });
-                    if (!editingCategory) {
-                      setFormData(prev => ({ ...prev, slug: generateSlug(e.target.value) }));
-                    }
-                  }}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Slug *</label>
-                <input
-                  type="text"
-                  value={formData.slug}
-                  onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                <textarea
-                  value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  rows="3"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-                ></textarea>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Display Order</label>
-                <input
-                  type="number"
-                  value={formData.order}
-                  onChange={(e) => setFormData({ ...formData, order: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-                />
-              </div>
-
-              <div>
-                <label className="flex items-center gap-2">
+            <form onSubmit={handleSubmit} style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 16 }}>
+              {[['Category Name *', 'name', 'text', true], ['Slug *', 'slug', 'text', true], ['Display Order', 'order', 'number', false]].map(([label, field, type, required]) => (
+                <div key={field}>
+                  <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: '#374151', marginBottom: 4 }}>{label}</label>
                   <input
-                    type="checkbox"
-                    checked={formData.is_active}
-                    onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
-                    className="rounded text-pink-500 focus:ring-pink-500"
+                    type={type}
+                    value={formData[field]}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      if (field === 'name') {
+                        setFormData(prev => ({ ...prev, name: val, ...(!editingCategory && { slug: generateSlug(val) }) }));
+                      } else {
+                        setFormData(prev => ({ ...prev, [field]: val }));
+                      }
+                    }}
+                    required={required}
+                    style={{ width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: 8, fontSize: 14, boxSizing: 'border-box' }}
                   />
-                  <span className="text-sm text-gray-700">Active</span>
-                </label>
+                </div>
+              ))}
+              <div>
+                <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: '#374151', marginBottom: 4 }}>Description</label>
+                <textarea value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} rows="3" style={{ width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: 8, fontSize: 14, boxSizing: 'border-box', resize: 'vertical' }} />
               </div>
-
-              <div className="flex gap-4 pt-4">
-                <button
-                  type="submit"
-                  className="flex-1 px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-lg hover:from-pink-600 hover:to-purple-600 transition-all"
-                >
+              <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+                <input type="checkbox" checked={formData.is_active} onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })} />
+                <span style={{ fontSize: 14, color: '#374151' }}>Active</span>
+              </label>
+              <div style={{ display: 'flex', gap: 12, paddingTop: 8 }}>
+                <button type="submit" style={{ flex: 1, padding: '10px 16px', background: 'linear-gradient(to right, #ec4899, #a855f7)', color: 'white', border: 'none', borderRadius: 8, fontWeight: 500, cursor: 'pointer' }}>
                   {editingCategory ? 'Update Category' : 'Create Category'}
                 </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowModal(false);
-                    resetForm();
-                  }}
-                  className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-                >
+                <button type="button" onClick={() => { setShowModal(false); resetForm(); }} style={{ padding: '10px 16px', background: '#f3f4f6', color: '#374151', border: 'none', borderRadius: 8, fontWeight: 500, cursor: 'pointer' }}>
                   Cancel
                 </button>
               </div>

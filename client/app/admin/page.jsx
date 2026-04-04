@@ -12,14 +12,13 @@ export default function AdminLogin() {
   const router = useRouter();
 
   useEffect(() => {
-    // Check if already logged in
     const checkAuth = async () => {
       const token = localStorage.getItem('admin_token');
       if (token) {
         try {
           await api.verifyToken();
           router.push('/admin/dashboard');
-        } catch (error) {
+        } catch {
           localStorage.removeItem('admin_token');
         }
       }
@@ -31,13 +30,10 @@ export default function AdminLogin() {
     e.preventDefault();
     setError('');
     setLoading(true);
-
     try {
       console.log('[Login] Attempting login for user:', username);
       const response = await api.login(username, password);
-      console.log('[Login] Login successful, token received:', response.access_token.substring(0, 20) + '...');
       localStorage.setItem('admin_token', response.access_token);
-      console.log('[Login] Token saved to localStorage, redirecting to dashboard');
       router.push('/admin/dashboard');
     } catch (error) {
       console.error('[Login] Login failed:', error);
@@ -50,13 +46,11 @@ export default function AdminLogin() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-cream-50 to-taupe-100 flex items-center justify-center px-4">
       <div className="max-w-md w-full">
-        {/* Logo Section */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-heading text-charcoal-800 mb-2">Adorn Steps</h1>
           <p className="text-taupe-600 font-body">Administrative Portal</p>
         </div>
 
-        {/* Login Card */}
         <div className="bg-white rounded-2xl shadow-soft p-8 md:p-10">
           <div className="mb-8">
             <h2 className="text-2xl font-heading text-charcoal-800 mb-2">Welcome Back</h2>
@@ -100,10 +94,11 @@ export default function AdminLogin() {
               />
             </div>
 
+            {/* FIX: inline style forces dark bg + white text, bypassing Tailwind conflicts */}
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-charcoal-800 text-white py-3 rounded-lg font-medium hover:bg-charcoal-700 active:bg-charcoal-900 focus:outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg"
+              style={{ backgroundColor: '#2c2c2c', color: '#ffffff', width: '100%', padding: '12px 16px', borderRadius: 8, fontWeight: 500, border: 'none', cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.6 : 1, fontSize: 15 }}
             >
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
