@@ -65,15 +65,15 @@ export default function AdminSidebar({ activeTab, setActiveTab, admin, onLogout,
                     onClick={() => { setActiveTab(item.id); onClose(); }}
                     className={`w-full flex items-center gap-3 px-3 sm:px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blush-400 focus:ring-offset-2 ${
                       isActive
-                        ? 'bg-gradient-to-r from-charcoal-800 to-charcoal-700 text-white shadow-lg transform scale-[1.02]'
+                        ? 'bg-gradient-to-r from-charcoal-800 to-charcoal-700 !text-white shadow-lg transform scale-[1.02]'
                         : 'text-charcoal-600 hover:bg-gradient-to-r hover:from-cream-100 hover:to-blush-50 hover:text-charcoal-800 active:bg-cream-200'
                     }`}
                   >
                     <Icon 
                       size={20} 
-                      className={isActive ? 'text-white' : 'text-charcoal-600'}
+                      className={isActive ? '!text-white' : 'text-charcoal-600'}
                     />
-                    <span className={`font-medium text-sm ${isActive ? 'text-white' : 'text-charcoal-700'}`}>
+                    <span className={`font-medium text-sm ${isActive ? '!text-white' : 'text-charcoal-700'}`}>
                       {item.label}
                     </span>
                     {isActive && (
