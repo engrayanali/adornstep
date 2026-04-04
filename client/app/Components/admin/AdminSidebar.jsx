@@ -60,14 +60,24 @@ export default function AdminSidebar({ activeTab, setActiveTab, admin, onLogout,
                 <li key={item.id}>
                   <button
                     onClick={() => { setActiveTab(item.id); onClose(); }}
+                    style={isActive ? { backgroundColor: '#1a1a2e', color: '#ffffff' } : {}}
                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-300 focus:outline-none ${
                       isActive
-                        ? 'bg-charcoal-800 text-white shadow-md'
+                        ? 'shadow-md'
                         : 'text-charcoal-600 hover:bg-cream-100 hover:text-charcoal-800 active:bg-cream-200'
                     }`}
                   >
-                    <Icon size={20} />
-                    <span className="font-medium text-sm">{item.label}</span>
+                    <Icon 
+                      size={20} 
+                      style={isActive ? { color: '#ffffff' } : {}}
+                      className={!isActive ? 'text-charcoal-600' : ''}
+                    />
+                    <span 
+                      style={isActive ? { color: '#ffffff' } : {}}
+                      className={`font-medium text-sm ${!isActive ? 'text-charcoal-600' : ''}`}
+                    >
+                      {item.label}
+                    </span>
                   </button>
                 </li>
               );

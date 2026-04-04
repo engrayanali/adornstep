@@ -59,62 +59,65 @@ export default function OrdersManager() {
       </div>
 
       <div className="bg-white rounded-xl border border-taupe-200 shadow-card overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gradient-to-r from-cream-50 to-taupe-50 border-b border-taupe-200">
-              <tr>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-charcoal-700 uppercase tracking-wider">Order #</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-charcoal-700 uppercase tracking-wider">Customer</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-charcoal-700 uppercase tracking-wider">Total</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-charcoal-700 uppercase tracking-wider">Status</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-charcoal-700 uppercase tracking-wider">Date</th>
-                <th className="px-6 py-4 text-right text-xs font-semibold text-charcoal-700 uppercase tracking-wider">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-taupe-100">
-              {orders.map((order) => (
-                <tr key={order.id} className="hover:bg-cream-50 transition-colors">
-                  <td className="px-6 py-4 text-sm font-semibold text-charcoal-800">{order.order_number}</td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm font-medium text-charcoal-800">{order.customer_name}</div>
-                    <div className="text-xs text-taupe-500">{order.customer_email}</div>
-                  </td>
-                  <td className="px-6 py-4 text-sm font-semibold text-charcoal-800">Rs {order.total_amount.toFixed(2)}</td>
-                  <td className="px-6 py-4">
-                    <select
-                      value={order.status}
-                      onChange={(e) => handleUpdateStatus(order.id, e.target.value)}
-                      className={`px-3 py-1.5 text-xs font-medium rounded-full border-0 cursor-pointer ${
-                        order.status === 'pending' ? 'bg-amber-100 text-amber-700' :
-                        order.status === 'confirmed' ? 'bg-blue-100 text-blue-700' :
-                        order.status === 'shipped' ? 'bg-purple-100 text-purple-700' :
-                        order.status === 'delivered' ? 'bg-emerald-100 text-emerald-700' :
-                        'bg-red-100 text-red-700'
-                      }`}
-                    >
-                      <option value="pending">Pending</option>
-                      <option value="confirmed">Confirmed</option>
-                      <option value="shipped">Shipped</option>
-                      <option value="delivered">Delivered</option>
-                      <option value="cancelled">Cancelled</option>
-                    </select>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-taupe-600">
-                    {new Date(order.created_at).toLocaleDateString()}
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <button
-                      onClick={() => viewOrderDetails(order)}
-                      className="p-2 text-blue-600 hover:bg-blue-50 active:bg-blue-100 rounded-lg transition-all focus:outline-none"
-                      title="View Details"
-                    >
-                      <Eye size={18} />
-                    </button>
-                  </td>
+        {/* FIX: overflow-x-auto with min-width wrapper for mobile scroll */}
+        <div className="overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
+          <div style={{ minWidth: '650px' }}>
+            <table className="w-full">
+              <thead className="bg-gradient-to-r from-cream-50 to-taupe-50 border-b border-taupe-200">
+                <tr>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-charcoal-700 uppercase tracking-wider">Order #</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-charcoal-700 uppercase tracking-wider">Customer</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-charcoal-700 uppercase tracking-wider">Total</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-charcoal-700 uppercase tracking-wider">Status</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-charcoal-700 uppercase tracking-wider">Date</th>
+                  <th className="px-6 py-4 text-right text-xs font-semibold text-charcoal-700 uppercase tracking-wider">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-taupe-100">
+                {orders.map((order) => (
+                  <tr key={order.id} className="hover:bg-cream-50 transition-colors">
+                    <td className="px-6 py-4 text-sm font-semibold text-charcoal-800">{order.order_number}</td>
+                    <td className="px-6 py-4">
+                      <div className="text-sm font-medium text-charcoal-800">{order.customer_name}</div>
+                      <div className="text-xs text-taupe-500">{order.customer_email}</div>
+                    </td>
+                    <td className="px-6 py-4 text-sm font-semibold text-charcoal-800">Rs {order.total_amount.toFixed(2)}</td>
+                    <td className="px-6 py-4">
+                      <select
+                        value={order.status}
+                        onChange={(e) => handleUpdateStatus(order.id, e.target.value)}
+                        className={`px-3 py-1.5 text-xs font-medium rounded-full border-0 cursor-pointer ${
+                          order.status === 'pending' ? 'bg-amber-100 text-amber-700' :
+                          order.status === 'confirmed' ? 'bg-blue-100 text-blue-700' :
+                          order.status === 'shipped' ? 'bg-purple-100 text-purple-700' :
+                          order.status === 'delivered' ? 'bg-emerald-100 text-emerald-700' :
+                          'bg-red-100 text-red-700'
+                        }`}
+                      >
+                        <option value="pending">Pending</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="shipped">Shipped</option>
+                        <option value="delivered">Delivered</option>
+                        <option value="cancelled">Cancelled</option>
+                      </select>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-taupe-600">
+                      {new Date(order.created_at).toLocaleDateString()}
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <button
+                        onClick={() => viewOrderDetails(order)}
+                        className="p-2 text-blue-600 hover:bg-blue-50 active:bg-blue-100 rounded-lg transition-all focus:outline-none"
+                        title="View Details"
+                      >
+                        <Eye size={18} />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         {orders.length === 0 && (
@@ -173,7 +176,6 @@ export default function OrdersManager() {
                         </div>
                       </div>
                       
-                      {/* Customer Preferences - Highlighted */}
                       <div className="bg-white border border-blue-200 rounded-lg p-3 mb-3">
                         <p className="text-xs font-semibold text-blue-700 uppercase tracking-wide mb-2">Customer Preferences:</p>
                         <div className="grid grid-cols-3 gap-3">
@@ -196,7 +198,6 @@ export default function OrdersManager() {
                         </div>
                       </div>
                       
-                      {/* Item Total */}
                       <div className="flex justify-between items-center pt-2 border-t border-taupe-200">
                         <p className="text-sm font-medium text-charcoal-700">Item Total:</p>
                         <p className="text-lg font-bold text-emerald-600">

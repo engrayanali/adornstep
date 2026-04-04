@@ -57,7 +57,6 @@ export default function ProductsManager() {
     e.preventDefault();
     
     try {
-      // Convert comma-separated strings to JSON arrays
       const sizesArray = formData.sizes
         ? formData.sizes.split(',').map(s => s.trim()).filter(s => s)
         : [];
@@ -84,7 +83,6 @@ export default function ProductsManager() {
         productId = newProduct.id;
       }
 
-      // Upload new images if any
       if (newProductImages.length > 0) {
         for (let i = 0; i < newProductImages.length; i++) {
           const file = newProductImages[i];
@@ -106,7 +104,6 @@ export default function ProductsManager() {
   const handleEdit = (product) => {
     setEditingProduct(product);
     
-    // Convert JSON arrays back to comma-separated strings for editing
     const sizesStr = product.sizes ? (() => {
       try {
         const parsed = JSON.parse(product.sizes);
@@ -163,13 +160,11 @@ export default function ProductsManager() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validate file type
     if (!file.type.startsWith('image/')) {
       alert('Please select an image file');
       return;
     }
 
-    // Validate file size (5MB max)
     if (file.size > 5 * 1024 * 1024) {
       alert('Image size must be less than 5MB');
       return;
@@ -181,7 +176,6 @@ export default function ProductsManager() {
       const order = productImages.length;
       await api.uploadProductImage(productId, file, isPrimary, order);
       
-      // Reload images
       const images = await api.getProductImages(productId);
       setProductImages(images);
       alert('Image uploaded successfully!');
@@ -190,7 +184,7 @@ export default function ProductsManager() {
       alert(error.message || 'Error uploading image');
     } finally {
       setUploadingImage(false);
-      e.target.value = ''; // Reset input
+      e.target.value = '';
     }
   };
 
@@ -248,7 +242,6 @@ export default function ProductsManager() {
   const handleNewImagesSelect = (e) => {
     const files = Array.from(e.target.files || []);
     
-    // Validate files
     const validFiles = files.filter(file => {
       if (!file.type.startsWith('image/')) {
         alert(`${file.name} is not an image file`);
@@ -306,89 +299,92 @@ export default function ProductsManager() {
 
       {/* Products Table */}
       <div className="bg-white rounded-xl border border-taupe-200 shadow-card overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gradient-to-r from-cream-50 to-taupe-50 border-b border-taupe-200">
-              <tr>
-                <th className="px-4 sm:px-6 py-4 text-left text-xs font-semibold text-charcoal-700 uppercase tracking-wider">Product</th>
-                <th className="hidden md:table-cell px-6 py-4 text-left text-xs font-semibold text-charcoal-700 uppercase tracking-wider">Category</th>
-                <th className="px-4 sm:px-6 py-4 text-left text-xs font-semibold text-charcoal-700 uppercase tracking-wider">Price</th>
-                <th className="hidden sm:table-cell px-6 py-4 text-left text-xs font-semibold text-charcoal-700 uppercase tracking-wider">Stock</th>
-                <th className="hidden lg:table-cell px-6 py-4 text-left text-xs font-semibold text-charcoal-700 uppercase tracking-wider">Status</th>
-                <th className="px-4 sm:px-6 py-4 text-right text-xs font-semibold text-charcoal-700 uppercase tracking-wider">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-taupe-100">
-              {products.map((product) => {
-                const category = categories.find(c => c && c.id === product.category_id);
-                return (
-                  <tr key={product.id} className="hover:bg-cream-50 transition-colors">
-                    <td className="px-4 sm:px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-cream-100 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0">
-                          {product.images && product.images.length > 0 && product.images[0].image_url ? (
-                            <img src={product.images[0].image_url} alt={product.name} className="w-full h-full object-cover" />
-                          ) : (
-                            <ImageIcon size={20} className="text-taupe-400" />
-                          )}
+        {/* FIX: overflow-x-auto with min-width wrapper for mobile scroll */}
+        <div className="overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
+          <div style={{ minWidth: '600px' }}>
+            <table className="w-full">
+              <thead className="bg-gradient-to-r from-cream-50 to-taupe-50 border-b border-taupe-200">
+                <tr>
+                  <th className="px-4 sm:px-6 py-4 text-left text-xs font-semibold text-charcoal-700 uppercase tracking-wider">Product</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-charcoal-700 uppercase tracking-wider">Category</th>
+                  <th className="px-4 sm:px-6 py-4 text-left text-xs font-semibold text-charcoal-700 uppercase tracking-wider">Price</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-charcoal-700 uppercase tracking-wider">Stock</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-charcoal-700 uppercase tracking-wider">Status</th>
+                  <th className="px-4 sm:px-6 py-4 text-right text-xs font-semibold text-charcoal-700 uppercase tracking-wider">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-taupe-100">
+                {products.map((product) => {
+                  const category = categories.find(c => c && c.id === product.category_id);
+                  return (
+                    <tr key={product.id} className="hover:bg-cream-50 transition-colors">
+                      <td className="px-4 sm:px-6 py-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 sm:w-12 sm:h-12 bg-cream-100 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0">
+                            {product.images && product.images.length > 0 && product.images[0].image_url ? (
+                              <img src={product.images[0].image_url} alt={product.name} className="w-full h-full object-cover" />
+                            ) : (
+                              <ImageIcon size={20} className="text-taupe-400" />
+                            )}
+                          </div>
+                          <div className="min-w-0">
+                            <div className="font-medium text-charcoal-800 text-sm sm:text-base truncate">{product.name}</div>
+                            <div className="text-xs text-taupe-500 truncate">{category?.name || 'N/A'}</div>
+                          </div>
                         </div>
-                        <div className="min-w-0">
-                          <div className="font-medium text-charcoal-800 text-sm sm:text-base truncate">{product.name}</div>
-                          <div className="text-xs text-taupe-500 truncate md:hidden">{category?.name || 'N/A'}</div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className="text-sm text-charcoal-700">{category?.name || 'N/A'}</span>
+                      </td>
+                      <td className="px-4 sm:px-6 py-4">
+                        <div className="text-sm font-semibold text-charcoal-800">Rs {product.price}</div>
+                        {product.discount_price && (
+                          <div className="text-xs text-emerald-600 font-medium">Rs {product.discount_price}</div>
+                        )}
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className={`text-sm font-medium ${product.stock > 10 ? 'text-emerald-600' : product.stock > 0 ? 'text-amber-600' : 'text-red-600'}`}>
+                          {product.stock}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className={`inline-flex px-2.5 py-1 text-xs font-medium rounded-full ${
+                          product.is_active ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'
+                        }`}>
+                          {product.is_active ? 'Active' : 'Inactive'}
+                        </span>
+                      </td>
+                      <td className="px-4 sm:px-6 py-4 text-right">
+                        <div className="flex items-center justify-end gap-1 sm:gap-2">
+                          <button
+                            onClick={() => handleManageImages(product)}
+                            className="p-1.5 sm:p-2 text-purple-600 hover:bg-purple-50 active:bg-purple-100 rounded-lg transition-all focus:outline-none"
+                            title="Manage Images"
+                          >
+                            <ImageIcon size={16} className="sm:w-[18px] sm:h-[18px]" />
+                          </button>
+                          <button
+                            onClick={() => handleEdit(product)}
+                            className="p-1.5 sm:p-2 text-blue-600 hover:bg-blue-50 active:bg-blue-100 rounded-lg transition-all focus:outline-none"
+                            title="Edit"
+                          >
+                            <Edit size={16} className="sm:w-[18px] sm:h-[18px]" />
+                          </button>
+                          <button
+                            onClick={() => handleDelete(product.id)}
+                            className="p-1.5 sm:p-2 text-red-600 hover:bg-red-50 active:bg-red-100 rounded-lg transition-all focus:outline-none"
+                            title="Delete"
+                          >
+                            <Trash2 size={16} className="sm:w-[18px] sm:h-[18px]" />
+                          </button>
                         </div>
-                      </div>
-                    </td>
-                    <td className="hidden md:table-cell px-6 py-4">
-                      <span className="text-sm text-charcoal-700">{category?.name || 'N/A'}</span>
-                    </td>
-                    <td className="px-4 sm:px-6 py-4">
-                      <div className="text-sm font-semibold text-charcoal-800">Rs {product.price}</div>
-                      {product.discount_price && (
-                        <div className="text-xs text-emerald-600 font-medium">Rs {product.discount_price}</div>
-                      )}
-                    </td>
-                    <td className="hidden sm:table-cell px-6 py-4">
-                      <span className={`text-sm font-medium ${product.stock > 10 ? 'text-emerald-600' : product.stock > 0 ? 'text-amber-600' : 'text-red-600'}`}>
-                        {product.stock}
-                      </span>
-                    </td>
-                    <td className="hidden lg:table-cell px-6 py-4">
-                      <span className={`inline-flex px-2.5 py-1 text-xs font-medium rounded-full ${
-                        product.is_active ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'
-                      }`}>
-                        {product.is_active ? 'Active' : 'Inactive'}
-                      </span>
-                    </td>
-                    <td className="px-4 sm:px-6 py-4 text-right">
-                      <div className="flex items-center justify-end gap-1 sm:gap-2">
-                        <button
-                          onClick={() => handleManageImages(product)}
-                          className="p-1.5 sm:p-2 text-purple-600 hover:bg-purple-50 active:bg-purple-100 rounded-lg transition-all focus:outline-none"
-                          title="Manage Images"
-                        >
-                          <ImageIcon size={16} className="sm:w-[18px] sm:h-[18px]" />
-                        </button>
-                        <button
-                          onClick={() => handleEdit(product)}
-                          className="p-1.5 sm:p-2 text-blue-600 hover:bg-blue-50 active:bg-blue-100 rounded-lg transition-all focus:outline-none"
-                          title="Edit"
-                        >
-                          <Edit size={16} className="sm:w-[18px] sm:h-[18px]" />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(product.id)}
-                          className="p-1.5 sm:p-2 text-red-600 hover:bg-red-50 active:bg-red-100 rounded-lg transition-all focus:outline-none"
-                          title="Delete"
-                        >
-                          <Trash2 size={16} className="sm:w-[18px] sm:h-[18px]" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         {products.length === 0 && (
@@ -408,13 +404,14 @@ export default function ProductsManager() {
         )}
       </div>
 
-      {/* Modal - FIXED VERSION */}
+      {/* Add/Edit Product Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 z-50 overflow-y-auto">
           <div className="bg-white rounded-xl sm:rounded-2xl w-full max-w-3xl my-4 shadow-2xl flex flex-col max-h-[95vh] sm:max-h-[90vh]">
-            {/* Header - Fixed */}
-            <div className="sticky top-0 bg-gradient-to-r from-cream-50 to-white border-b border-taupe-200 px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between flex-shrink-0 rounded-t-xl sm:rounded-t-2xl z-10">
-              <div>
+
+            {/* FIX: Modal header — pr-16 prevents title from going under X button on mobile */}
+            <div className="sticky top-0 bg-gradient-to-r from-cream-50 to-white border-b border-taupe-200 px-4 sm:px-6 py-4 sm:py-5 flex items-start justify-between flex-shrink-0 rounded-t-xl sm:rounded-t-2xl z-10">
+              <div className="pr-10">
                 <h3 className="text-lg sm:text-xl font-heading text-charcoal-800">
                   {editingProduct ? 'Edit Product' : 'Add New Product'}
                 </h3>
@@ -427,7 +424,7 @@ export default function ProductsManager() {
                   setShowModal(false);
                   resetForm();
                 }}
-                className="p-2 hover:bg-taupe-100 rounded-lg transition-colors flex-shrink-0"
+                className="p-2 hover:bg-taupe-100 rounded-lg transition-colors flex-shrink-0 ml-2"
               >
                 <X size={20} className="text-charcoal-600" />
               </button>
@@ -688,7 +685,7 @@ export default function ProductsManager() {
                   </label>
                 </div>
 
-                {/* Form Actions - Sticky at bottom */}
+                {/* Form Actions */}
                 <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4 sticky bottom-0 bg-white pb-2">
                   <button
                     type="submit"
@@ -735,7 +732,6 @@ export default function ProductsManager() {
             </div>
 
             <div className="p-4 sm:p-6 overflow-y-auto flex-1">
-              {/* Upload Section */}
               <div className="mb-6">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Upload New Image
@@ -757,7 +753,6 @@ export default function ProductsManager() {
                 </p>
               </div>
 
-              {/* Images Grid */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
                 {productImages.length === 0 ? (
                   <div className="col-span-full text-center py-12 bg-gray-50 rounded-lg">
