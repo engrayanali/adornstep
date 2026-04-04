@@ -163,6 +163,15 @@ button, a, input, select, textarea {
   transition: all 0.3s ease;
 }
 
+/* Fix button active/pressed state - prevent white text on white background */
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:active {
+  color: inherit;
+}
+
 /* Elegant hover states */
 .hover-lift {
   transition: transform 0.3s ease, box-shadow 0.3s ease;

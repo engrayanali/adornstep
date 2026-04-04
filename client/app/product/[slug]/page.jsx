@@ -187,12 +187,12 @@ export default function ProductPage() {
 
               <div className="flex items-baseline gap-3 mb-6">
                 <span className="text-4xl font-bold text-pink-500">
-                  ${currentPrice.toFixed(2)}
+                  Rs {currentPrice.toFixed(2)}
                 </span>
                 {hasDiscount && (
                   <>
                     <span className="text-2xl text-gray-400 line-through">
-                      ${product.price.toFixed(2)}
+                      Rs {product.price.toFixed(2)}
                     </span>
                     <span className="px-2 py-1 bg-red-100 text-red-600 text-sm font-bold rounded">
                       {Math.round((1 - product.discount_price / product.price) * 100)}% OFF
@@ -299,7 +299,7 @@ export default function ProductPage() {
                   <Truck className="text-pink-500" size={24} />
                   <div>
                     <p className="font-semibold text-sm">Free Shipping</p>
-                    <p className="text-xs text-gray-500">On orders over $50</p>
+                    <p className="text-xs text-gray-500">On orders over Rs 5,000</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">

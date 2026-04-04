@@ -199,7 +199,7 @@ export default function ReturnsPage() {
             <div>
               <h3 className="text-xl font-semibold text-charcoal-800 mb-2">Return Shipping</h3>
               <p>
-                We provide prepaid return labels for domestic returns. A $6.99 return shipping fee will be deducted 
+                We provide prepaid return labels for domestic returns. A Rs 699 return shipping fee will be deducted 
                 from your refund. International return shipping costs are the responsibility of the customer.
               </p>
             </div>

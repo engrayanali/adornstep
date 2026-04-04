@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Menu, X, ShoppingCart, Search } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { getCartCount } from '../lib/cart';
 import api from '../lib/api';
 
@@ -10,8 +11,21 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [mobileSearchQuery, setMobileSearchQuery] = useState('');
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [navigation, setNavigation] = useState([{ name: 'Home', href: '/' }]);
+  const router = useRouter();
+
+  const handleMobileSearch = (e) => {
+    e.preventDefault();
+    if (mobileSearchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(mobileSearchQuery.trim())}`);
+      setIsMenuOpen(false);
+      setIsMobileSearchOpen(false);
+      setMobileSearchQuery('');
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -154,11 +168,33 @@ export default function Navbar() {
                 </Link>
               ))}
               
-              {/* Mobile-only additional links */}
-              <div className="pt-4 mt-4 border-t border-cream-300 space-y-1">
-                <button className="w-full text-left text-charcoal-700 hover:text-terracotta-500 hover:bg-cream-200 px-4 py-3 rounded-lg font-medium transition-all duration-300 text-sm tracking-wide flex items-center gap-2">
-                  <Search size={18} /> Search
-                </button>
+              {/* Mobile Search */}
+              <div className="pt-4 mt-4 border-t border-cream-300 space-y-2">
+                {isMobileSearchOpen ? (
+                  <form onSubmit={handleMobileSearch} className="flex items-center gap-2 px-4 py-2">
+                    <input
+                      type="text"
+                      value={mobileSearchQuery}
+                      onChange={(e) => setMobileSearchQuery(e.target.value)}
+                      placeholder="Search products..."
+                      autoFocus
+                      className="flex-1 px-4 py-2 border border-taupe-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-terracotta-200 focus:border-terracotta-500 transition-all"
+                    />
+                    <button
+                      type="submit"
+                      className="p-2 bg-terracotta-500 text-white rounded-full hover:bg-terracotta-600 active:bg-terracotta-700 focus:outline-none transition-all"
+                    >
+                      <Search size={16} />
+                    </button>
+                  </form>
+                ) : (
+                  <button
+                    onClick={() => setIsMobileSearchOpen(true)}
+                    className="w-full text-left text-charcoal-700 hover:text-terracotta-500 hover:bg-cream-200 active:bg-cream-300 px-4 py-3 rounded-lg font-medium transition-all duration-300 text-sm tracking-wide flex items-center gap-2 focus:outline-none"
+                  >
+                    <Search size={18} /> Search
+                  </button>
+                )}
               </div>
             </div>
           </div>

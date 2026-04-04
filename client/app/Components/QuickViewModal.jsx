@@ -88,7 +88,7 @@ export default function QuickViewModal({ product, isOpen, onClose }) {
                 </div>
                 <span className="text-sm text-charcoal-600">(124 reviews)</span>
               </div>
-              <p className="text-3xl font-bold text-charcoal-800">${product.price}</p>
+              <p className="text-3xl font-bold text-charcoal-800">Rs {product.price}</p>
             </div>
 
             {product.description && (
@@ -158,7 +158,7 @@ export default function QuickViewModal({ product, isOpen, onClose }) {
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
-                <span>Free shipping on orders over $100</span>
+                <span>Free shipping on orders over Rs 10,000</span>
               </div>
               <div className="flex items-center gap-2">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

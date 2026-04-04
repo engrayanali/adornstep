@@ -22,7 +22,7 @@ export default function AboutPage() {
       </section>
 
       {/* Our Story */}
-      <section className="py-20">
+      <section className="py-20 pb-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -48,13 +48,25 @@ export default function AboutPage() {
               </div>
             </div>
             <div className="relative">
-              <div className="aspect-square bg-gradient-to-br from-taupe-200 to-blush-100 rounded-2xl overflow-hidden shadow-product">
+              {/* Main image */}
+              <div className="aspect-[4/5] rounded-2xl overflow-hidden shadow-product">
                 <img 
-                  src="/placeholder-product.jpg" 
+                  src="/about1.png" 
                   alt="Our Story" 
-                  className="w-full h-full object-cover opacity-80"
+                  className="w-full h-full object-cover"
                 />
               </div>
+              {/* Floating accent image */}
+              <div className="absolute -bottom-6 -left-6 w-2/5 aspect-square rounded-xl overflow-hidden shadow-xl border-4 border-white">
+                <img 
+                  src="/about2.png" 
+                  alt="Adorn Steps Craftsmanship" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              {/* Decorative dot pattern */}
+              <div className="absolute -top-4 -right-4 w-24 h-24 bg-terracotta-100 rounded-full opacity-60 -z-10"></div>
+              <div className="absolute -bottom-10 right-8 w-16 h-16 bg-blush-200 rounded-full opacity-50 -z-10"></div>
             </div>
           </div>
         </div>
@@ -143,13 +155,26 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="order-2 lg:order-1 relative">
-              <div className="aspect-square bg-gradient-to-br from-blush-100 to-taupe-200 rounded-2xl overflow-hidden shadow-product">
-                <img 
-                  src="/placeholder-product.jpg" 
-                  alt="Craftsmanship" 
-                  className="w-full h-full object-cover opacity-80"
-                />
+              {/* Two stacked images layout */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="aspect-[3/4] rounded-2xl overflow-hidden shadow-product mt-8">
+                  <img 
+                    src="/about2.png" 
+                    alt="Craftsmanship" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="aspect-[3/4] rounded-2xl overflow-hidden shadow-product">
+                  <img 
+                    src="/about1.png" 
+                    alt="Our Collection" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
               </div>
+              {/* Decorative elements */}
+              <div className="absolute -bottom-4 -left-4 w-20 h-20 bg-taupe-200 rounded-full opacity-50 -z-10"></div>
+              <div className="absolute -top-4 right-4 w-14 h-14 bg-terracotta-100 rounded-full opacity-60 -z-10"></div>
             </div>
             <div className="order-1 lg:order-2">
               <h2 className="text-3xl md:text-4xl font-display font-semibold text-charcoal-800 mb-6">

@@ -342,9 +342,9 @@ export default function ProductsManager() {
                       <span className="text-sm text-charcoal-700">{category?.name || 'N/A'}</span>
                     </td>
                     <td className="px-4 sm:px-6 py-4">
-                      <div className="text-sm font-semibold text-charcoal-800">${product.price}</div>
+                      <div className="text-sm font-semibold text-charcoal-800">Rs {product.price}</div>
                       {product.discount_price && (
-                        <div className="text-xs text-emerald-600 font-medium">${product.discount_price}</div>
+                        <div className="text-xs text-emerald-600 font-medium">Rs {product.discount_price}</div>
                       )}
                     </td>
                     <td className="hidden sm:table-cell px-6 py-4">
@@ -363,21 +363,21 @@ export default function ProductsManager() {
                       <div className="flex items-center justify-end gap-1 sm:gap-2">
                         <button
                           onClick={() => handleManageImages(product)}
-                          className="p-1.5 sm:p-2 text-purple-600 hover:bg-purple-50 rounded-lg transition-all"
+                          className="p-1.5 sm:p-2 text-purple-600 hover:bg-purple-50 active:bg-purple-100 rounded-lg transition-all focus:outline-none"
                           title="Manage Images"
                         >
                           <ImageIcon size={16} className="sm:w-[18px] sm:h-[18px]" />
                         </button>
                         <button
                           onClick={() => handleEdit(product)}
-                          className="p-1.5 sm:p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
+                          className="p-1.5 sm:p-2 text-blue-600 hover:bg-blue-50 active:bg-blue-100 rounded-lg transition-all focus:outline-none"
                           title="Edit"
                         >
                           <Edit size={16} className="sm:w-[18px] sm:h-[18px]" />
                         </button>
                         <button
                           onClick={() => handleDelete(product.id)}
-                          className="p-1.5 sm:p-2 text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                          className="p-1.5 sm:p-2 text-red-600 hover:bg-red-50 active:bg-red-100 rounded-lg transition-all focus:outline-none"
                           title="Delete"
                         >
                           <Trash2 size={16} className="sm:w-[18px] sm:h-[18px]" />

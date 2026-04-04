@@ -72,7 +72,7 @@ export default function CheckoutPage() {
     }
   };
 
-  const shippingCost = total >= 50 ? 0 : 5;
+  const shippingCost = total >= 5000 ? 0 : 500;
   const grandTotal = total + shippingCost;
 
   return (
@@ -274,7 +274,7 @@ export default function CheckoutPage() {
                         <span className="text-gray-600">
                           {item.name} x {item.quantity}
                         </span>
-                        <span className="font-semibold">${(item.price * item.quantity).toFixed(2)}</span>
+                        <span className="font-semibold">Rs {(item.price * item.quantity).toFixed(2)}</span>
                       </div>
                     ))}
                   </div>
@@ -282,12 +282,12 @@ export default function CheckoutPage() {
                   <div className="border-t pt-4 space-y-3">
                     <div className="flex justify-between text-gray-600">
                       <span>Subtotal</span>
-                      <span>${total.toFixed(2)}</span>
+                      <span>Rs {total.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between text-gray-600">
                       <span>Shipping</span>
                       <span className={shippingCost === 0 ? 'text-green-600 font-semibold' : ''}>
-                        {shippingCost === 0 ? 'FREE' : `$${shippingCost.toFixed(2)}`}
+                        {shippingCost === 0 ? 'FREE' : `Rs ${shippingCost.toFixed(2)}`}
                       </span>
                     </div>
                   </div>
@@ -296,7 +296,7 @@ export default function CheckoutPage() {
                     <div className="flex justify-between items-center mb-6">
                       <span className="text-lg font-bold text-gray-900">Total</span>
                       <span className="text-2xl font-bold text-pink-500">
-                        ${grandTotal.toFixed(2)}
+                        Rs {grandTotal.toFixed(2)}
                       </span>
                     </div>
 

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { Menu } from 'lucide-react';
 import api from '../../lib/api';
 import AdminSidebar from '../../Components/admin/AdminSidebar';
 import DashboardStats from '../../Components/admin/DashboardStats';
@@ -15,6 +16,7 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [admin, setAdmin] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -86,38 +88,50 @@ export default function AdminDashboard() {
         setActiveTab={setActiveTab}
         admin={admin}
         onLogout={handleLogout}
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
       />
       
-      <div className="flex-1 ml-64">
+      <div className="flex-1 lg:ml-64">
         {/* Header */}
         <div className="bg-white shadow-soft border-b border-taupe-200 sticky top-0 z-10">
-          <div className="px-8 py-5 flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-heading text-charcoal-800">
-                {activeTab === 'dashboard' && 'Dashboard Overview'}
-                {activeTab === 'products' && 'Products Management'}
-                {activeTab === 'categories' && 'Categories Management'}
-                {activeTab === 'banners' && 'Hero Banners'}
-                {activeTab === 'orders' && 'Orders Management'}
-                {activeTab === 'lifestyle' && 'Lifestyle Sections'}
-              </h1>
-              <p className="text-sm text-taupe-600 mt-1">
-                {activeTab === 'dashboard' && 'Monitor your store performance'}
-                {activeTab === 'products' && 'Manage your product catalog'}
-                {activeTab === 'categories' && 'Organize your collections'}
-                {activeTab === 'banners' && 'Customize homepage banners'}
-                {activeTab === 'orders' && 'Track and fulfill orders'}
-                {activeTab === 'lifestyle' && 'Manage Shop by Style & Live Beautifully sections'}
-              </p>
+          <div className="px-4 sm:px-8 py-5 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              {/* Mobile hamburger */}
+              <button
+                onClick={() => setIsSidebarOpen(true)}
+                className="lg:hidden p-2 rounded-lg hover:bg-cream-100 active:bg-cream-200 text-charcoal-700 focus:outline-none transition-colors"
+                aria-label="Open menu"
+              >
+                <Menu size={22} />
+              </button>
+              <div>
+                <h1 className="text-xl sm:text-2xl font-heading text-charcoal-800">
+                  {activeTab === 'dashboard' && 'Dashboard Overview'}
+                  {activeTab === 'products' && 'Products Management'}
+                  {activeTab === 'categories' && 'Categories Management'}
+                  {activeTab === 'banners' && 'Hero Banners'}
+                  {activeTab === 'orders' && 'Orders Management'}
+                  {activeTab === 'lifestyle' && 'Lifestyle Sections'}
+                </h1>
+                <p className="text-sm text-taupe-600 mt-1 hidden sm:block">
+                  {activeTab === 'dashboard' && 'Monitor your store performance'}
+                  {activeTab === 'products' && 'Manage your product catalog'}
+                  {activeTab === 'categories' && 'Organize your collections'}
+                  {activeTab === 'banners' && 'Customize homepage banners'}
+                  {activeTab === 'orders' && 'Track and fulfill orders'}
+                  {activeTab === 'lifestyle' && 'Manage Shop by Style & Live Beautifully sections'}
+                </p>
+              </div>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="text-right">
+            <div className="flex items-center gap-2 sm:gap-4">
+              <div className="text-right hidden sm:block">
                 <p className="text-xs text-taupe-500">Signed in as</p>
                 <p className="text-sm font-medium text-charcoal-800">{admin?.username}</p>
               </div>
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 text-sm bg-cream-100 hover:bg-taupe-200 text-charcoal-700 rounded-lg transition-all font-medium"
+                className="px-3 sm:px-4 py-2 text-sm bg-cream-100 hover:bg-taupe-200 active:bg-taupe-300 text-charcoal-700 rounded-lg transition-all font-medium focus:outline-none"
               >
                 Logout
               </button>
@@ -126,7 +140,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Content */}
-        <div className="p-8">
+        <div className="p-4 sm:p-8">
           {activeTab === 'dashboard' && <DashboardStats />}
           {activeTab === 'products' && <ProductsManager />}
           {activeTab === 'categories' && <CategoriesManager />}

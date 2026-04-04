@@ -36,7 +36,7 @@ export default function ShippingPage() {
                 <Package className="text-white" size={28} />
               </div>
               <h3 className="text-2xl font-semibold text-charcoal-800 mb-3">Standard Shipping</h3>
-              <p className="text-3xl font-bold text-terracotta-500 mb-4">$5.99</p>
+              <p className="text-3xl font-bold text-terracotta-500 mb-4">Rs 599</p>
               <ul className="space-y-3 text-charcoal-600">
                 <li className="flex items-start gap-2">
                   <CheckCircle size={20} className="text-green-500 flex-shrink-0 mt-0.5" />
@@ -48,7 +48,7 @@ export default function ShippingPage() {
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle size={20} className="text-green-500 flex-shrink-0 mt-0.5" />
-                  <span>Free on orders over $75</span>
+                  <span>Free on orders over Rs 7,500</span>
                 </li>
               </ul>
             </div>
@@ -62,7 +62,7 @@ export default function ShippingPage() {
                 <Truck className="text-white" size={28} />
               </div>
               <h3 className="text-2xl font-semibold text-charcoal-800 mb-3">Express Shipping</h3>
-              <p className="text-3xl font-bold text-terracotta-500 mb-4">$12.99</p>
+              <p className="text-3xl font-bold text-terracotta-500 mb-4">Rs 1,299</p>
               <ul className="space-y-3 text-charcoal-600">
                 <li className="flex items-start gap-2">
                   <CheckCircle size={20} className="text-green-500 flex-shrink-0 mt-0.5" />
@@ -85,7 +85,7 @@ export default function ShippingPage() {
                 <Clock className="text-white" size={28} />
               </div>
               <h3 className="text-2xl font-semibold text-charcoal-800 mb-3">Overnight</h3>
-              <p className="text-3xl font-bold text-terracotta-500 mb-4">$24.99</p>
+              <p className="text-3xl font-bold text-terracotta-500 mb-4">Rs 2,499</p>
               <ul className="space-y-3 text-charcoal-600">
                 <li className="flex items-start gap-2">
                   <CheckCircle size={20} className="text-green-500 flex-shrink-0 mt-0.5" />

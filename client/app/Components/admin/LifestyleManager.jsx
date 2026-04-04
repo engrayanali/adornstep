@@ -154,24 +154,24 @@ export default function LifestyleManager() {
       <div className="mb-6 flex gap-2">
         <button
           onClick={() => setSelectedSection('all')}
-          className={`px-4 py-2 rounded-lg transition-colors ${
-            selectedSection === 'all' ? 'bg-purple-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+          className={`px-4 py-2 rounded-lg transition-colors focus:outline-none ${
+            selectedSection === 'all' ? 'bg-purple-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 active:bg-gray-300'
           }`}
         >
           All ({images.length})
         </button>
         <button
           onClick={() => setSelectedSection('shop_by_style')}
-          className={`px-4 py-2 rounded-lg transition-colors ${
-            selectedSection === 'shop_by_style' ? 'bg-purple-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+          className={`px-4 py-2 rounded-lg transition-colors focus:outline-none ${
+            selectedSection === 'shop_by_style' ? 'bg-purple-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 active:bg-gray-300'
           }`}
         >
           Shop by Style ({shopByStyleImages.length})
         </button>
         <button
           onClick={() => setSelectedSection('live_beautifully')}
-          className={`px-4 py-2 rounded-lg transition-colors ${
-            selectedSection === 'live_beautifully' ? 'bg-purple-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+          className={`px-4 py-2 rounded-lg transition-colors focus:outline-none ${
+            selectedSection === 'live_beautifully' ? 'bg-purple-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 active:bg-gray-300'
           }`}
         >
           Live Beautifully ({liveBeautifullyImages.length})
@@ -226,14 +226,14 @@ export default function LifestyleManager() {
               <div className="flex gap-2 mt-3">
                 <button
                   onClick={() => handleEdit(image)}
-                  className="flex-1 flex items-center justify-center gap-1 px-3 py-1.5 text-sm bg-indigo-50 text-indigo-600 hover:bg-indigo-100 rounded-lg transition-colors"
+                  className="flex-1 flex items-center justify-center gap-1 px-3 py-1.5 text-sm bg-indigo-50 text-indigo-600 hover:bg-indigo-100 active:bg-indigo-200 rounded-lg transition-colors focus:outline-none"
                 >
                   <Edit size={16} />
                   Edit
                 </button>
                 <button
                   onClick={() => handleDelete(image.id)}
-                  className="flex-1 px-3 py-1.5 text-sm bg-red-50 text-red-600 hover:bg-red-100 rounded-lg transition-colors"
+                  className="flex-1 px-3 py-1.5 text-sm bg-red-50 text-red-600 hover:bg-red-100 active:bg-red-200 rounded-lg transition-colors focus:outline-none"
                 >
                   Delete
                 </button>

@@ -79,7 +79,7 @@ export default function OrdersManager() {
                     <div className="text-sm font-medium text-charcoal-800">{order.customer_name}</div>
                     <div className="text-xs text-taupe-500">{order.customer_email}</div>
                   </td>
-                  <td className="px-6 py-4 text-sm font-semibold text-charcoal-800">${order.total_amount.toFixed(2)}</td>
+                  <td className="px-6 py-4 text-sm font-semibold text-charcoal-800">Rs {order.total_amount.toFixed(2)}</td>
                   <td className="px-6 py-4">
                     <select
                       value={order.status}
@@ -105,7 +105,7 @@ export default function OrdersManager() {
                   <td className="px-6 py-4 text-right">
                     <button
                       onClick={() => viewOrderDetails(order)}
-                      className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
+                      className="p-2 text-blue-600 hover:bg-blue-50 active:bg-blue-100 rounded-lg transition-all focus:outline-none"
                       title="View Details"
                     >
                       <Eye size={18} />
@@ -168,7 +168,7 @@ export default function OrdersManager() {
                           <p className="font-semibold text-charcoal-800 text-base">{item.product_name}</p>
                         </div>
                         <div className="text-right ml-4">
-                          <p className="font-bold text-charcoal-800 text-lg">${item.product_price.toFixed(2)}</p>
+                          <p className="font-bold text-charcoal-800 text-lg">Rs {item.product_price.toFixed(2)}</p>
                           <p className="text-xs text-taupe-500">per item</p>
                         </div>
                       </div>
@@ -200,7 +200,7 @@ export default function OrdersManager() {
                       <div className="flex justify-between items-center pt-2 border-t border-taupe-200">
                         <p className="text-sm font-medium text-charcoal-700">Item Total:</p>
                         <p className="text-lg font-bold text-emerald-600">
-                          ${(item.product_price * item.quantity).toFixed(2)}
+                          Rs {(item.product_price * item.quantity).toFixed(2)}
                         </p>
                       </div>
                     </div>
@@ -212,7 +212,7 @@ export default function OrdersManager() {
                 <div className="flex justify-between items-center">
                   <div>
                     <p className="text-sm text-charcoal-600 mb-1">Order Total</p>
-                    <p className="text-2xl font-bold text-charcoal-800">${selectedOrder.total_amount.toFixed(2)}</p>
+                    <p className="text-2xl font-bold text-charcoal-800">Rs {selectedOrder.total_amount.toFixed(2)}</p>
                   </div>
                   <div className="text-right">
                     <p className="text-xs text-charcoal-600 mb-1">Status</p>

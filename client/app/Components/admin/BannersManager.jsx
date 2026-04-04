@@ -206,20 +206,20 @@ export default function BannersManager() {
               <div className="flex gap-2">
                 <button
                   onClick={() => handleEdit(banner)}
-                  className="flex items-center gap-1 px-3 py-1.5 text-sm bg-indigo-50 text-indigo-600 hover:bg-indigo-100 rounded-lg transition-colors"
+                  className="flex items-center gap-1 px-3 py-1.5 text-sm bg-indigo-50 text-indigo-600 hover:bg-indigo-100 active:bg-indigo-200 rounded-lg transition-colors focus:outline-none"
                 >
                   <Edit size={16} />
                   Edit
                 </button>
                 <button
                   onClick={() => toggleActive(banner)}
-                  className="px-3 py-1.5 text-sm bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors"
+                  className="px-3 py-1.5 text-sm bg-blue-50 text-blue-600 hover:bg-blue-100 active:bg-blue-200 rounded-lg transition-colors focus:outline-none"
                 >
                   {banner.is_active ? 'Deactivate' : 'Activate'}
                 </button>
                 <button
                   onClick={() => handleDelete(banner.id)}
-                  className="px-3 py-1.5 text-sm bg-red-50 text-red-600 hover:bg-red-100 rounded-lg transition-colors"
+                  className="px-3 py-1.5 text-sm bg-red-50 text-red-600 hover:bg-red-100 active:bg-red-200 rounded-lg transition-colors focus:outline-none"
                 >
                   Delete
                 </button>

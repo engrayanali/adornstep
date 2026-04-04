@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Package, ShoppingBag, DollarSign, TrendingUp } from 'lucide-react';
+import { Package, ShoppingBag, TrendingUp, BadgeDollarSign } from 'lucide-react';
 import api from '../../lib/api';
 
 export default function DashboardStats() {
@@ -59,8 +59,8 @@ export default function DashboardStats() {
     },
     {
       title: 'Revenue',
-      value: `$${stats.totalRevenue.toFixed(2)}`,
-      icon: DollarSign,
+      value: `Rs ${stats.totalRevenue.toFixed(2)}`,
+      icon: BadgeDollarSign,
       iconColor: 'text-amber-600',
       bgColor: 'bg-gradient-to-br from-amber-50 to-amber-100',
       borderColor: 'border-amber-200',

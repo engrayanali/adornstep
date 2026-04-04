@@ -166,10 +166,10 @@ export default function CartPage() {
                           {/* Price */}
                           <div className="text-right">
                             <div className="text-2xl font-bold text-charcoal-800">
-                              ${(item.price * item.quantity).toFixed(2)}
+                              Rs {(item.price * item.quantity).toFixed(2)}
                             </div>
                             <div className="text-sm text-taupe-500">
-                              ${item.price.toFixed(2)} each
+                              Rs {item.price.toFixed(2)} each
                             </div>
                           </div>
                         </div>
@@ -192,7 +192,7 @@ export default function CartPage() {
                       </div>
                       <div className="flex-1">
                         <p className="font-semibold text-charcoal-800 text-sm">Free Shipping</p>
-                        <p className="text-xs text-taupe-600">On orders over $50</p>
+                        <p className="text-xs text-taupe-600">On orders over Rs 5,000</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
@@ -218,23 +218,23 @@ export default function CartPage() {
                   <div className="space-y-4 mb-6">
                     <div className="flex justify-between text-taupe-700">
                       <span>Subtotal ({cart.reduce((sum, item) => sum + item.quantity, 0)} items)</span>
-                      <span className="font-semibold">${total.toFixed(2)}</span>
+                      <span className="font-semibold">Rs {total.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between text-taupe-700">
                       <span>Shipping</span>
-                      <span className={`font-semibold ${total >= 50 ? 'text-green-600' : 'text-charcoal-800'}`}>
-                        {total >= 50 ? 'FREE' : '$5.00'}
+                      <span className={`font-semibold ${total >= 5000 ? 'text-green-600' : 'text-charcoal-800'}`}>
+                        {total >= 5000 ? 'FREE' : 'Rs 500'}
                       </span>
                     </div>
-                    {total < 50 && (
+                    {total < 5000 && (
                       <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 p-3 rounded-lg">
                         <p className="text-xs text-amber-800 font-medium">
-                          Add <span className="font-bold">${(50 - total).toFixed(2)}</span> more for free shipping! 🎉
+                          Add <span className="font-bold">Rs {(5000 - total).toFixed(2)}</span> more for free shipping! 🎉
                         </p>
                         <div className="mt-2 h-2 bg-amber-100 rounded-full overflow-hidden">
                           <div 
                             className="h-full bg-gradient-to-r from-amber-400 to-orange-500 transition-all duration-500"
-                            style={{ width: `${Math.min((total / 50) * 100, 100)}%` }}
+                            style={{ width: `${Math.min((total / 5000) * 100, 100)}%` }}
                           ></div>
                         </div>
                       </div>
@@ -245,7 +245,7 @@ export default function CartPage() {
                     <div className="flex justify-between items-center">
                       <span className="text-lg font-heading text-charcoal-800">Total</span>
                       <span className="text-3xl font-bold text-charcoal-800">
-                        ${(total + (total >= 50 ? 0 : 5)).toFixed(2)}
+                        Rs {(total + (total >= 5000 ? 0 : 500)).toFixed(2)}
                       </span>
                     </div>
                     <p className="text-xs text-taupe-500 mt-2">Tax calculated at checkout</p>
