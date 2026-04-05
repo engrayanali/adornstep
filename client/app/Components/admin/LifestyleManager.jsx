@@ -150,7 +150,7 @@ export default function LifestyleManager() {
             resetForm();
             setShowModal(true);
           }}
-          className="flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-blush-500 to-blush-600 hover:from-blush-600 hover:to-blush-700 text-white rounded-xl font-medium shadow-md hover:shadow-lg transition-all duration-200 active:scale-95"
+          className="flex items-center justify-center gap-2 px-4 py-2.5 bg-gray-700 hover:bg-gray-800 text-white rounded-xl font-medium shadow-md hover:shadow-lg transition-all duration-200 active:scale-95"
         >
           <Plus size={20} />
           <span>Add Image</span>
@@ -162,7 +162,7 @@ export default function LifestyleManager() {
         <button
           onClick={() => setSelectedSection('all')}
           className={`px-3 sm:px-4 py-2 rounded-xl transition-all focus:outline-none text-sm font-medium ${
-            selectedSection === 'all' ? 'bg-gradient-to-r from-blush-500 to-blush-600 text-white shadow-md' : 'bg-cream-100 text-charcoal-700 hover:bg-taupe-200 active:bg-taupe-300'
+            selectedSection === 'all' ? 'bg-gray-700 text-white shadow-md' : 'bg-cream-100 text-charcoal-700 hover:bg-taupe-200 active:bg-taupe-300'
           }`}
         >
           All ({images.length})
@@ -170,7 +170,7 @@ export default function LifestyleManager() {
         <button
           onClick={() => setSelectedSection('shop_by_style')}
           className={`px-3 sm:px-4 py-2 rounded-xl transition-all focus:outline-none text-sm font-medium ${
-            selectedSection === 'shop_by_style' ? 'bg-gradient-to-r from-blush-500 to-blush-600 text-white shadow-md' : 'bg-cream-100 text-charcoal-700 hover:bg-taupe-200 active:bg-taupe-300'
+            selectedSection === 'shop_by_style' ? 'bg-gray-700 text-white shadow-md' : 'bg-cream-100 text-charcoal-700 hover:bg-taupe-200 active:bg-taupe-300'
           }`}
         >
           Shop by Style ({shopByStyleImages.length})
@@ -178,7 +178,7 @@ export default function LifestyleManager() {
         <button
           onClick={() => setSelectedSection('live_beautifully')}
           className={`px-3 sm:px-4 py-2 rounded-xl transition-all focus:outline-none text-sm font-medium ${
-            selectedSection === 'live_beautifully' ? 'bg-gradient-to-r from-blush-500 to-blush-600 text-white shadow-md' : 'bg-cream-100 text-charcoal-700 hover:bg-taupe-200 active:bg-taupe-300'
+            selectedSection === 'live_beautifully' ? 'bg-gray-700 text-white shadow-md' : 'bg-cream-100 text-charcoal-700 hover:bg-taupe-200 active:bg-taupe-300'
           }`}
         >
           Live Beautifully ({liveBeautifullyImages.length})
