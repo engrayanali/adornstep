@@ -416,7 +416,7 @@ export default function ProductsManager() {
 
             <div className="sticky top-0 bg-gradient-to-r from-blush-50 to-cream-50 border-b border-taupe-200 px-4 sm:px-6 py-4 flex items-center justify-between flex-shrink-0 rounded-t-xl sm:rounded-t-2xl z-10">
               <div className="flex-1 min-w-0 pr-4">
-                <h3 className="text-lg sm:text-xl font-heading font-bold text-charcoal-800 truncate">
+                <h3 className="text-lg sm:text-xl font-heading font-bold  text-charcoal-800 truncate">
                   {editingProduct ? 'Edit Product' : 'Add New Product'}
                 </h3>
                 <p className="text-xs sm:text-sm text-taupe-600 mt-1">
@@ -716,7 +716,7 @@ export default function ProductsManager() {
                   <div className="flex flex-col sm:flex-row gap-3">
                     <button
                       type="submit"
-                      className="flex-1 px-4 py-3 bg-gradient-to-r from-blush-500 to-blush-600 hover:from-blush-600 hover:to-blush-700 text-white rounded-xl font-semibold shadow-md hover:shadow-lg transition-all duration-200 active:scale-95 text-sm sm:text-base"
+                      className="flex-1 px-4 py-3 bg-gray-700 hover:from-blush-600 hover:to-blush-700 text-white rounded-xl font-semibold shadow-md hover:shadow-lg transition-all duration-200 active:scale-95 text-sm sm:text-base"
                     >
                       {editingProduct ? 'Update Product' : 'Create Product'}
                     </button>

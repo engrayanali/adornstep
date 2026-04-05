@@ -253,7 +253,7 @@ export default function CartPage() {
 
                   <Link
                     href="/checkout"
-                    className="block w-full px-6 py-4 bg-charcoal-800 text-white font-semibold rounded-full text-center hover:bg-charcoal-700 transition-all shadow-lg hover:shadow-xl mb-4 hover:scale-105 transform duration-300"
+                    className="block w-full px-6 py-4 bg-charcoal-800 text-white bg-gray-700 font-semibold rounded-full text-center hover:bg-charcoal-700 transition-all shadow-lg hover:shadow-xl mb-4 hover:scale-105 transform duration-300"
                   >
                     Proceed to Checkout
                   </Link>

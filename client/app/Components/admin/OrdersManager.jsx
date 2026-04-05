@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Eye, X } from 'lucide-react';
+import { Eye, X, Trash2 } from 'lucide-react';
 import api from '../../lib/api';
 
 export default function OrdersManager() {
@@ -34,10 +34,23 @@ export default function OrdersManager() {
     }
   };
 
+  const handleDelete = async (orderId, orderNumber) => {
+    if (!confirm(`Delete order ${orderNumber}? This cannot be undone.`)) return;
+    try {
+      await api.deleteOrder(orderId);
+      setShowModal(false);
+      setSelectedOrder(null);
+      loadOrders();
+      alert('Order deleted!');
+    } catch (error) {
+      alert('Error deleting order');
+    }
+  };
+
   const statusColors = {
-    pending: { bg: '#fef3c7', color: '#92400e' },
+    pending:   { bg: '#fef3c7', color: '#92400e' },
     confirmed: { bg: '#dbeafe', color: '#1e40af' },
-    shipped: { bg: '#ede9fe', color: '#5b21b6' },
+    shipped:   { bg: '#ede9fe', color: '#5b21b6' },
     delivered: { bg: '#d1fae5', color: '#065f46' },
     cancelled: { bg: '#fee2e2', color: '#991b1b' },
   };
@@ -60,10 +73,10 @@ export default function OrdersManager() {
         <p className="text-sm text-taupe-600 mt-1">{orders.length} total orders</p>
       </div>
 
-      {/* Table Wrapper */}
+      {/* Table */}
       <div className="bg-white rounded-xl sm:rounded-2xl border border-taupe-200 shadow-card overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full border-collapse" style={{ minWidth: '680px' }}>
+          <table className="w-full border-collapse" style={{ minWidth: '720px' }}>
             <thead>
               <tr className="bg-gradient-to-r from-cream-50 to-blush-50 border-b border-taupe-200">
                 {['Order #', 'Customer', 'Total', 'Status', 'Date', 'Actions'].map((h, i) => (
@@ -100,13 +113,22 @@ export default function OrdersManager() {
                     </td>
                     <td className="px-4 sm:px-6 py-4 text-sm text-taupe-700 whitespace-nowrap">{new Date(order.created_at).toLocaleDateString()}</td>
                     <td className="px-4 sm:px-6 py-4 text-right">
-                      <button
-                        onClick={() => { setSelectedOrder(order); setShowModal(true); }}
-                        className="p-2 rounded-lg hover:bg-blue-50 text-blue-600 transition-colors inline-flex items-center justify-center"
-                        aria-label="View order details"
-                      >
-                        <Eye size={18} />
-                      </button>
+                      <div className="flex items-center justify-end gap-1">
+                        <button
+                          onClick={() => { setSelectedOrder(order); setShowModal(true); }}
+                          className="p-2 rounded-lg hover:bg-blue-50 text-blue-600 transition-colors"
+                          title="View details"
+                        >
+                          <Eye size={17} />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(order.id, order.order_number)}
+                          className="p-2 rounded-lg hover:bg-red-50 text-red-500 transition-colors"
+                          title="Delete order"
+                        >
+                          <Trash2 size={17} />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 );
@@ -133,13 +155,18 @@ export default function OrdersManager() {
                 <h3 className="text-lg sm:text-xl font-heading font-bold text-charcoal-800">Order Details</h3>
                 <p className="text-sm text-taupe-600 mt-1 font-mono">{selectedOrder.order_number}</p>
               </div>
-              <button 
-                onClick={() => setShowModal(false)} 
-                className="p-2 rounded-lg hover:bg-cream-200 transition-colors"
-                aria-label="Close modal"
-              >
-                <X size={20} />
-              </button>
+              <div className="flex items-center gap-2">
+                {/* Delete button inside modal */}
+                <button
+                  onClick={() => handleDelete(selectedOrder.id, selectedOrder.order_number)}
+                  style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 12px', backgroundColor: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', borderRadius: 8, fontWeight: 500, cursor: 'pointer', fontSize: 13 }}
+                >
+                  <Trash2 size={15} /> Delete Order
+                </button>
+                <button onClick={() => setShowModal(false)} className="p-2 rounded-lg hover:bg-cream-200 transition-colors">
+                  <X size={20} />
+                </button>
+              </div>
             </div>
 
             {/* Modal Body */}
@@ -205,7 +232,8 @@ export default function OrdersManager() {
                 </div>
                 <div className="text-left sm:text-right">
                   <p className="text-xs text-charcoal-700 m-0 mb-2">Status</p>
-                  <span className="inline-flex px-4 py-2 rounded-full text-sm font-bold shadow-sm" style={{ backgroundColor: statusColors[selectedOrder.status]?.bg || '#fee2e2', color: statusColors[selectedOrder.status]?.color || '#991b1b' }}>
+                  <span className="inline-flex px-4 py-2 rounded-full text-sm font-bold shadow-sm"
+                    style={{ backgroundColor: statusColors[selectedOrder.status]?.bg || '#fee2e2', color: statusColors[selectedOrder.status]?.color || '#991b1b' }}>
                     {selectedOrder.status.charAt(0).toUpperCase() + selectedOrder.status.slice(1)}
                   </span>
                 </div>
