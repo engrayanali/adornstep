@@ -41,7 +41,6 @@ export default function AdminSidebar({ activeTab, setActiveTab, admin, onLogout,
               <h2 className="text-xl sm:text-2xl font-heading text-charcoal-800 truncate">Adorn Steps</h2>
               <p className="text-xs text-taupe-600 mt-1 font-body">Admin Panel</p>
             </div>
-            {/* Close button - mobile only */}
             <button
               onClick={onClose}
               className="lg:hidden p-2 rounded-lg hover:bg-cream-100 active:bg-cream-200 text-charcoal-700 focus:outline-none transition-all flex-shrink-0 ml-2"
@@ -58,26 +57,37 @@ export default function AdminSidebar({ activeTab, setActiveTab, admin, onLogout,
             {menuItems.map((item) => {
               const Icon = item.icon;
               const isActive = activeTab === item.id;
-              
+
               return (
                 <li key={item.id}>
                   <button
                     onClick={() => { setActiveTab(item.id); onClose(); }}
-                    className={`w-full flex items-center gap-3 px-3 sm:px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blush-400 focus:ring-offset-2 ${
-                      isActive
-                        ? 'bg-gradient-to-r from-charcoal-800 to-charcoal-700 !text-white shadow-lg transform scale-[1.02]'
-                        : 'text-charcoal-600 hover:bg-gradient-to-r hover:from-cream-100 hover:to-blush-50 hover:text-charcoal-800 active:bg-cream-200'
+                    // FIX: use inline style to force colors — Tailwind classes get overridden
+                    style={isActive ? {
+                      backgroundColor: '#1f2937',
+                      color: '#ffffff',
+                      boxShadow: '0 4px 6px rgba(0,0,0,0.15)',
+                      transform: 'scale(1.02)',
+                    } : {}}
+                    className={`w-full flex items-center gap-3 px-3 sm:px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none ${
+                      !isActive
+                        ? 'text-charcoal-600 hover:bg-cream-100 hover:text-charcoal-800 active:bg-cream-200'
+                        : ''
                     }`}
                   >
-                    <Icon 
-                      size={20} 
-                      className={isActive ? '!text-white' : 'text-charcoal-600'}
+                    <Icon
+                      size={20}
+                      style={{ color: isActive ? '#ffffff' : undefined }}
+                      className={!isActive ? 'text-charcoal-600' : ''}
                     />
-                    <span className={`font-medium text-sm ${isActive ? '!text-white' : 'text-charcoal-700'}`}>
+                    <span
+                      style={{ color: isActive ? '#ffffff' : undefined }}
+                      className={`font-medium text-sm ${!isActive ? 'text-charcoal-700' : ''}`}
+                    >
                       {item.label}
                     </span>
                     {isActive && (
-                      <div className="ml-auto w-1.5 h-1.5 bg-blush-300 rounded-full animate-pulse"></div>
+                      <div style={{ marginLeft: 'auto', width: 6, height: 6, background: '#f9a8d4', borderRadius: '50%' }} />
                     )}
                   </button>
                 </li>
@@ -87,7 +97,7 @@ export default function AdminSidebar({ activeTab, setActiveTab, admin, onLogout,
         </nav>
 
         {/* User Profile Section */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-taupe-200 bg-gradient-to-b from-white to-cream-50 backdrop-blur-sm">
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-taupe-200 bg-gradient-to-b from-white to-cream-50">
           <div className="flex items-center gap-3 px-2">
             <div className="w-10 h-10 bg-gradient-to-br from-blush-400 via-taupe-400 to-terracotta-500 rounded-full flex items-center justify-center text-white font-bold shadow-md flex-shrink-0">
               {admin?.username?.charAt(0).toUpperCase()}
