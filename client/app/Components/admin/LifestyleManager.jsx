@@ -396,7 +396,7 @@ export default function LifestyleManager() {
                 <button
                   type="submit"
                   disabled={uploading}
-                  className="flex-1 px-4 py-2 bg-gray-800 hover:bg-gray-900 transition-all disabled:opacity-50"
+                  className="flex-1 px-4 py-2 bg-gray-800 hover:bg-gray-900 text-white transition-all disabled:opacity-50"
                 >
                   {uploading ? (editingImage ? 'Updating...' : 'Creating...') : (editingImage ? 'Update Image' : 'Create Image')}
                 </button>

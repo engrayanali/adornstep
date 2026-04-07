@@ -124,7 +124,7 @@ export default function ProductPage() {
       
       <div className="pt-24 pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+          <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
             {/* Image Gallery */}
             <div>
               {/* Main Image - URLs are already normalized by api.js */}
@@ -286,7 +286,7 @@ export default function ProductPage() {
                 <button
                   onClick={handleAddToCart}
                   disabled={product.stock <= 0}
-                  className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold rounded-xl hover:from-pink-600 hover:to-purple-700 transform hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-lg"
+                  className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gray-800 hover:bg-gray-900 text-white font-semibold rounded-xl transform hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-lg"
                 >
                   <ShoppingCart size={20} />
                   {product.stock <= 0 ? 'Out of Stock' : 'Add to Cart'}

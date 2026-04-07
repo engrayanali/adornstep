@@ -29,7 +29,7 @@ export default function ShippingPage() {
             Shipping Options
           </h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
             {/* In City Shipping */}
             <div className="bg-white rounded-2xl p-8 shadow-card hover:shadow-product transition-all duration-300">
               <div className="w-14 h-14 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mb-6">
