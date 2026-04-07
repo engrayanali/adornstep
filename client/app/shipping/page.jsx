@@ -30,12 +30,12 @@ export default function ShippingPage() {
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            {/* Standard Shipping */}
+            {/* In City Shipping */}
             <div className="bg-white rounded-2xl p-8 shadow-card hover:shadow-product transition-all duration-300">
               <div className="w-14 h-14 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mb-6">
                 <Package className="text-white" size={28} />
               </div>
-              <h3 className="text-2xl font-semibold text-charcoal-800 mb-3">Standard Shipping</h3>
+              <h3 className="text-2xl font-semibold text-charcoal-800 mb-3">In City Shipping</h3>
               <p className="text-3xl font-bold text-terracotta-500 mb-4">Rs 599</p>
               <ul className="space-y-3 text-charcoal-600">
                 <li className="flex items-start gap-2">
@@ -44,59 +44,26 @@ export default function ShippingPage() {
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle size={20} className="text-green-500 flex-shrink-0 mt-0.5" />
-                  <span>Tracking included</span>
+                  <span>In Karachi</span>
                 </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle size={20} className="text-green-500 flex-shrink-0 mt-0.5" />
-                  <span>Free on orders over Rs 7,500</span>
-                </li>
+                </ul>
             </div>
 
-            {/* Express Shipping */}
-            <div className="bg-white rounded-2xl p-8 shadow-card hover:shadow-product transition-all duration-300 border-2 border-terracotta-500 relative">
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-terracotta-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
-                Popular
-              </div>
-              <div className="w-14 h-14 bg-gradient-to-br from-terracotta-400 to-terracotta-600 rounded-full flex items-center justify-center mb-6">
-                <Truck className="text-white" size={28} />
-              </div>
-              <h3 className="text-2xl font-semibold text-charcoal-800 mb-3">Express Shipping</h3>
-              <p className="text-3xl font-bold text-terracotta-500 mb-4">Rs 1,299</p>
-              <ul className="space-y-3 text-charcoal-600">
-                <li className="flex items-start gap-2">
-                  <CheckCircle size={20} className="text-green-500 flex-shrink-0 mt-0.5" />
-                  <span>2-3 business days</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle size={20} className="text-green-500 flex-shrink-0 mt-0.5" />
-                  <span>Priority handling</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle size={20} className="text-green-500 flex-shrink-0 mt-0.5" />
-                  <span>Real-time tracking</span>
-                </li>
-              </ul>
-            </div>
-
-            {/* Overnight Shipping */}
+            {/* Outside City Shipping */}
             <div className="bg-white rounded-2xl p-8 shadow-card hover:shadow-product transition-all duration-300">
               <div className="w-14 h-14 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center mb-6">
                 <Clock className="text-white" size={28} />
               </div>
-              <h3 className="text-2xl font-semibold text-charcoal-800 mb-3">Overnight</h3>
+              <h3 className="text-2xl font-semibold text-charcoal-800 mb-3">Outside City Shipping</h3>
               <p className="text-3xl font-bold text-terracotta-500 mb-4">Rs 2,499</p>
               <ul className="space-y-3 text-charcoal-600">
                 <li className="flex items-start gap-2">
                   <CheckCircle size={20} className="text-green-500 flex-shrink-0 mt-0.5" />
-                  <span>Next business day</span>
+                  <span>5-7 business days</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle size={20} className="text-green-500 flex-shrink-0 mt-0.5" />
-                  <span>Order by 2 PM EST</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle size={20} className="text-green-500 flex-shrink-0 mt-0.5" />
-                  <span>Signature required</span>
+                  <span>Outside Karachi</span>
                 </li>
               </ul>
             </div>

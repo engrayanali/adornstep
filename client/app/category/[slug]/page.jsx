@@ -21,18 +21,9 @@ export default function CategoryPage() {
   const [sortBy, setSortBy] = useState('featured');
   const [priceRange, setPriceRange] = useState({ min: '', max: '' });
   const [selectedSizes, setSelectedSizes] = useState([]);
-  const [selectedColors, setSelectedColors] = useState([]);
+
 
   const sizes = ['5', '6', '7', '8', '9', '10', '11'];
-  const colors = [
-    { name: 'Black', value: '#000000' },
-    { name: 'White', value: '#FFFFFF' },
-    { name: 'Brown', value: '#8B4513' },
-    { name: 'Beige', value: '#F5F5DC' },
-    { name: 'Red', value: '#DC143C' },
-    { name: 'Pink', value: '#FFC0CB' },
-    { name: 'Blue', value: '#4169E1' },
-  ];
 
   useEffect(() => {
     if (params.slug) {
@@ -42,7 +33,7 @@ export default function CategoryPage() {
 
   useEffect(() => {
     applyFiltersAndSort();
-  }, [products, sortBy, priceRange, selectedSizes, selectedColors]);
+  }, [products, sortBy, priceRange, selectedSizes]);
 
   const loadCategoryData = async () => {
     try {
@@ -117,23 +108,16 @@ export default function CategoryPage() {
     );
   };
 
-  const toggleColor = (color) => {
-    setSelectedColors(prev =>
-      prev.includes(color) ? prev.filter(c => c !== color) : [...prev, color]
-    );
-  };
 
   const clearAllFilters = () => {
     setSortBy('featured');
     setPriceRange({ min: '', max: '' });
     setSelectedSizes([]);
-    setSelectedColors([]);
   };
 
   const activeFiltersCount = 
     (priceRange.min !== '' || priceRange.max !== '' ? 1 : 0) +
-    selectedSizes.length +
-    selectedColors.length;
+    selectedSizes.length;
 
   if (loading) {
     return <LoadingScreen message="Loading products..." />;
@@ -265,26 +249,6 @@ export default function CategoryPage() {
                         >
                           {size}
                         </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Colors */}
-                  <div className="bg-white rounded-xl border border-taupe-200 p-6">
-                    <h3 className="font-heading text-lg text-charcoal-900 mb-4">Color</h3>
-                    <div className="flex flex-wrap gap-3">
-                      {colors.map(color => (
-                        <button
-                          key={color.name}
-                          onClick={() => toggleColor(color.name)}
-                          className={`w-10 h-10 rounded-full border-2 transition-all ${
-                            selectedColors.includes(color.name)
-                              ? 'border-charcoal-800 scale-110'
-                              : 'border-taupe-300 hover:scale-105'
-                          }`}
-                          style={{ backgroundColor: color.value }}
-                          title={color.name}
-                        />
                       ))}
                     </div>
                   </div>

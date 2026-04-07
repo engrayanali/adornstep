@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Facebook, Instagram, Twitter, Mail, Phone, MapPin, Heart } from 'lucide-react';
+import { Facebook, Instagram, Mail, Phone, MapPin, Heart } from 'lucide-react';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -34,13 +34,6 @@ export default function Footer() {
                 aria-label="Instagram"
               >
                 <Instagram size={18} />
-              </a>
-              <a 
-                href="#" 
-                className="p-3 bg-charcoal-800 hover:bg-terracotta-500 rounded-full transition-all duration-300 hover-lift"
-                aria-label="Twitter"
-              >
-                <Twitter size={18} />
               </a>
             </div>
           </div>
@@ -76,18 +69,18 @@ export default function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start gap-3 text-cream-300 font-light">
                 <MapPin size={20} className="flex-shrink-0 mt-1 text-terracotta-500" />
-                <span className="text-sm leading-relaxed">123 Fashion Street<br />Style City, SC 12345</span>
+                <span className="text-sm leading-relaxed">Karachi, Pakistan</span>
               </li>
               <li className="flex items-center gap-3 text-cream-300 font-light">
                 <Phone size={20} className="flex-shrink-0 text-terracotta-500" />
                 <a href="tel:+1234567890" className="hover:text-terracotta-500 transition-colors text-sm">
-                  +1 (234) 567-890
+                  +923213880301
                 </a>
               </li>
               <li className="flex items-center gap-3 text-cream-300 font-light">
                 <Mail size={20} className="flex-shrink-0 text-terracotta-500" />
                 <a href="mailto:info@adornsteps.com" className="hover:text-terracotta-500 transition-colors text-sm">
-                  info@adornsteps.com
+                  info@adornstep.com
                 </a>
               </li>
             </ul>

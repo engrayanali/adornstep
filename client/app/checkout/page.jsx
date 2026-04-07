@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Navbar from '../Components/Navbar';
 import Footer from '../Components/Footer';
-import { CreditCard, MapPin, User } from 'lucide-react';
+import { CreditCard, MapPin, User, ShieldCheck } from 'lucide-react';
 import { getCart, getCartTotal, clearCart } from '../lib/cart';
 import api from '../lib/api';
 
@@ -24,6 +24,7 @@ export default function CheckoutPage() {
     shipping_country: 'United States',
     payment_method: 'card',
     notes: '',
+    agreeToTerms: false, // New state for policy agreement
   });
 
   useEffect(() => {
@@ -38,10 +39,16 @@ export default function CheckoutPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Secondary validation check
+    if (!formData.agreeToTerms) {
+      alert('Please agree to the Terms of Service and Return Policy to proceed.');
+      return;
+    }
+
     setLoading(true);
 
     try {
-      // Prepare order items
       const items = cart.map(item => ({
         product_id: item.id,
         product_name: item.name,
@@ -51,7 +58,6 @@ export default function CheckoutPage() {
         color: item.color,
       }));
 
-      // Create order
       const orderData = {
         ...formData,
         items,
@@ -59,10 +65,7 @@ export default function CheckoutPage() {
 
       const order = await api.createOrder(orderData);
       
-      // Clear cart
       clearCart();
-      
-      // Redirect to success page
       router.push(`/order-success/${order.order_number}`);
     } catch (error) {
       console.error('Error creating order:', error);
@@ -224,25 +227,25 @@ export default function CheckoutPage() {
                   </div>
 
                   <div className="space-y-3">
-                    <label className="flex items-center p-4 border-2 border-pink-500 bg-pink-50 rounded-lg cursor-pointer">
+                    <label className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-colors ${formData.payment_method === 'card' ? 'border-pink-500 bg-pink-50' : 'border-gray-200 hover:border-pink-200'}`}>
                       <input
                         type="radio"
                         name="payment"
                         value="card"
                         checked={formData.payment_method === 'card'}
                         onChange={(e) => setFormData({ ...formData, payment_method: e.target.value })}
-                        className="mr-3"
+                        className="mr-3 accent-pink-500"
                       />
                       <span className="font-medium">Credit / Debit Card</span>
                     </label>
-                    <label className="flex items-center p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-pink-300">
+                    <label className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-colors ${formData.payment_method === 'cod' ? 'border-pink-500 bg-pink-50' : 'border-gray-200 hover:border-pink-200'}`}>
                       <input
                         type="radio"
                         name="payment"
                         value="cod"
                         checked={formData.payment_method === 'cod'}
                         onChange={(e) => setFormData({ ...formData, payment_method: e.target.value })}
-                        className="mr-3"
+                        className="mr-3 accent-pink-500"
                       />
                       <span className="font-medium">Cash on Delivery</span>
                     </label>
@@ -300,13 +303,45 @@ export default function CheckoutPage() {
                       </span>
                     </div>
 
+                    {/* Policy Agreement Checkbox */}
+                    <div className="mb-6">
+                      <label className="flex items-start gap-3 cursor-pointer group">
+                        <div className="flex items-center h-5">
+                          <input
+                            type="checkbox"
+                            required
+                            checked={formData.agreeToTerms}
+                            onChange={(e) => setFormData({ ...formData, agreeToTerms: e.target.checked })}
+                            className="w-4 h-4 text-pink-500 border-gray-300 rounded focus:ring-pink-500 cursor-pointer"
+                          />
+                        </div>
+                        <span className="text-xs text-gray-600 leading-normal">
+                          I have read and agree to the website{' '}
+                          <button type="button" className="text-pink-500 hover:underline font-medium">Terms of Service</button>
+                          {' '}and{' '}
+                          <button type="button" className="text-pink-500 hover:underline font-medium">Return & Exchange Policy</button> *
+                        </span>
+                      </label>
+                    </div>
+
                     <button
                       type="submit"
-                      disabled={loading}
-                      className="w-full px-6 py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold rounded-xl hover:from-pink-600 hover:to-purple-700 transform hover:scale-105 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                      disabled={loading || !formData.agreeToTerms}
+                      className="w-full px-6 py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold rounded-xl hover:from-pink-600 hover:to-purple-700 transform hover:scale-105 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
                     >
-                      {loading ? 'Processing...' : 'Place Order'}
+                      {loading ? 'Processing...' : (
+                        <>
+                          <ShieldCheck size={20} />
+                          Place Order
+                        </>
+                      )}
                     </button>
+                    
+                    {!formData.agreeToTerms && !loading && (
+                      <p className="text-[10px] text-center text-gray-400 mt-2 italic">
+                        Please check the box above to enable checkout
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>

@@ -62,10 +62,6 @@ export default function TermsPage() {
                     </li>
                     <li className="flex gap-2">
                       <span className="text-terracotta-500">•</span>
-                      <span>Creating and managing your account</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-terracotta-500">•</span>
                       <span>Accessing customer support</span>
                     </li>
                     <li className="flex gap-2">
@@ -112,10 +108,6 @@ export default function TermsPage() {
               </p>
               <div className="bg-gradient-to-br from-taupe-50 to-cream-100 rounded-xl p-6">
                 <ul className="space-y-3 text-charcoal-600">
-                  <li className="flex gap-2">
-                    <span className="text-terracotta-500">✓</span>
-                    <span>Maintaining the confidentiality of your password</span>
-                  </li>
                   <li className="flex gap-2">
                     <span className="text-terracotta-500">✓</span>
                     <span>Providing accurate and up-to-date information</span>

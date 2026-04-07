@@ -20,6 +20,9 @@ const menuItems = [
 ];
 
 export default function AdminSidebar({ activeTab, setActiveTab, admin, onLogout, isOpen, onClose }) {
+  // Determine the initial to display
+  const displayInitial = admin?.username?.charAt(0).toUpperCase() || 'A';
+
   return (
     <>
       {/* Mobile Backdrop */}
@@ -60,21 +63,21 @@ export default function AdminSidebar({ activeTab, setActiveTab, admin, onLogout,
 
               return (
                 <li key={item.id}>
-                  <button
-                    onClick={() => { setActiveTab(item.id); onClose(); }}
-                    // FIX: use inline style to force colors — Tailwind classes get overridden
-                    style={isActive ? {
-                      backgroundColor: '#1f2937',
-                      color: '#ffffff',
-                      boxShadow: '0 4px 6px rgba(0,0,0,0.15)',
-                      transform: 'scale(1.02)',
-                    } : {}}
-                    className={`w-full flex items-center gap-3 px-3 sm:px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none ${
-                      !isActive
-                        ? 'text-charcoal-600 hover:bg-cream-100 hover:text-charcoal-800 active:bg-cream-200'
-                        : ''
-                    }`}
-                  >
+              // ... inside the menuItems.map function
+              <button
+                onClick={() => { setActiveTab(item.id); onClose(); }}
+                style={isActive ? {
+                  backgroundColor: '#1f2937', // This is the hex for Tailwind's gray-800
+                  color: '#ffffff',
+                  boxShadow: '0 4px 6px rgba(0,0,0,0.15)',
+                  transform: 'scale(1.02)',
+                } : {}}
+                className={`w-full flex items-center gap-3 px-3 sm:px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none ${
+                  !isActive
+                    ? 'text-charcoal-600 hover:bg-cream-100 hover:text-charcoal-800 active:bg-cream-200'
+                    : ''
+                }`}
+              >
                     <Icon
                       size={20}
                       style={{ color: isActive ? '#ffffff' : undefined }}
@@ -97,14 +100,19 @@ export default function AdminSidebar({ activeTab, setActiveTab, admin, onLogout,
         </nav>
 
         {/* User Profile Section */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-taupe-200 bg-gradient-to-b from-white to-cream-50">
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-taupe-200 bg-white">
           <div className="flex items-center gap-3 px-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-blush-400 via-taupe-400 to-terracotta-500 rounded-full flex items-center justify-center text-white font-bold shadow-md flex-shrink-0">
-              {admin?.username?.charAt(0).toUpperCase()}
+            {/* MATCHED SCREENSHOT STYLE: Blue rounded square icon */}
+            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold shadow-sm flex-shrink-0">
+              {displayInitial}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-charcoal-800 truncate">{admin?.username}</p>
-              <p className="text-xs text-taupe-600 truncate">{admin?.email || 'Administrator'}</p>
+              <p className="text-sm font-bold text-charcoal-900 truncate">
+                {admin?.username || 'Admin'}
+              </p>
+              <p className="text-xs text-taupe-500 truncate">
+                {admin?.email || 'admin@adornstep.com'}
+              </p>
             </div>
           </div>
         </div>

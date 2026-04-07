@@ -163,7 +163,7 @@ export default function BannersManager() {
             resetForm();
             setShowModal(true);
           }}
-          className="flex items-center justify-center gap-2 px-4 py-2.5 bg-gray-700 hover:bg-gray-800 text-white rounded-xl font-medium shadow-md hover:shadow-lg transition-all duration-200 active:scale-95"
+          className="flex items-center justify-center gap-2 px-4 py-2.5 bg-gray-800 hover:bg-gray-900 text-white rounded-xl font-medium shadow-md hover:shadow-lg transition-all duration-200 active:scale-95"
         >
           <Plus size={20} />
           <span>Add Banner</span>
@@ -410,7 +410,7 @@ export default function BannersManager() {
                 <button
                   type="submit"
                   disabled={uploading}
-                  className="flex-1 px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-lg hover:from-pink-600 hover:to-purple-600 transition-all disabled:opacity-50"
+                  className="flex-1 px-4 py-2 bg-gray-800 hover:bg-gray-900 text-white rounded-lg transition-all disabled:opacity-50"
                 >
                   {uploading ? (editingBanner ? 'Updating...' : 'Uploading...') : (editingBanner ? 'Update Banner' : 'Create Banner')}
                 </button>

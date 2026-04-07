@@ -53,7 +53,7 @@ export default function PrivacyPage() {
               <UserCheck className="w-12 h-12 mx-auto mb-4 text-terracotta-500" />
               <h3 className="text-xl font-semibold text-charcoal-800 mb-2">Your Control</h3>
               <p className="text-charcoal-600">
-                You have the right to access, modify, or delete your personal data.
+                You have the right to ask to modify, or delete your personal data.
               </p>
             </div>
           </div>
@@ -102,45 +102,12 @@ export default function PrivacyPage() {
                     </li>
                     <li className="flex gap-2">
                       <span className="text-terracotta-500">•</span>
-                      <span>Subscribe to our newsletter</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-terracotta-500">•</span>
                       <span>Contact our customer service</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-terracotta-500">•</span>
-                      <span>Participate in surveys or promotions</span>
                     </li>
                   </ul>
                   <p className="text-charcoal-600 mt-3">
                     This may include: name, email address, phone number, billing address, shipping address, and payment information.
                   </p>
-                </div>
-
-                <div className="bg-white rounded-xl p-6 shadow-card">
-                  <h3 className="text-xl font-semibold text-charcoal-800 mb-3">Automatically Collected Information</h3>
-                  <p className="text-charcoal-600 mb-3">
-                    When you visit our website, we automatically collect certain information about your device, including:
-                  </p>
-                  <ul className="space-y-2 text-charcoal-600">
-                    <li className="flex gap-2">
-                      <span className="text-terracotta-500">•</span>
-                      <span>IP address and browser type</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-terracotta-500">•</span>
-                      <span>Device information and operating system</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-terracotta-500">•</span>
-                      <span>Pages visited and time spent on pages</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-terracotta-500">•</span>
-                      <span>Referring website and search terms</span>
-                    </li>
-                  </ul>
                 </div>
               </div>
             </div>
@@ -303,9 +270,9 @@ export default function PrivacyPage() {
                 If you have any questions about this Privacy Policy or wish to exercise your rights, please contact us:
               </p>
               <div className="space-y-2 text-charcoal-700">
-                <p><strong>Email:</strong> privacy@adornsteps.com</p>
-                <p><strong>Phone:</strong> +1 (234) 567-890</p>
-                <p><strong>Address:</strong> 123 Fashion Street, Style City, SC 12345</p>
+                <p><strong>Email:</strong> privacy@adornstep.com</p>
+                <p><strong>Phone:</strong> +923213880301</p>
+                <p><strong>Address:</strong> Karachi, Pakista</p>
               </div>
             </div>
           </div>
