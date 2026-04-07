@@ -50,7 +50,6 @@ export default function ShippingPage() {
                   <CheckCircle size={20} className="text-green-500 flex-shrink-0 mt-0.5" />
                   <span>Free on orders over Rs 7,500</span>
                 </li>
-              </ul>
             </div>
 
             {/* Express Shipping */}
