@@ -20,7 +20,7 @@ const menuItems = [
 ];
 
 export default function AdminSidebar({ activeTab, setActiveTab, admin, onLogout, isOpen, onClose }) {
-  // Determine the initial to display
+  // Determine the initial to display (Fallback to 'A' if admin is loading)
   const displayInitial = admin?.username?.charAt(0).toUpperCase() || 'A';
 
   return (
@@ -33,7 +33,7 @@ export default function AdminSidebar({ activeTab, setActiveTab, admin, onLogout,
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar Container */}
       <div className={`w-64 bg-white h-screen fixed left-0 top-0 border-r border-taupe-200 shadow-xl z-40 transition-transform duration-300 ease-out overflow-y-auto
         ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
         
@@ -46,15 +46,14 @@ export default function AdminSidebar({ activeTab, setActiveTab, admin, onLogout,
             </div>
             <button
               onClick={onClose}
-              className="lg:hidden p-2 rounded-lg hover:bg-cream-100 active:bg-cream-200 text-charcoal-700 focus:outline-none transition-all flex-shrink-0 ml-2"
-              aria-label="Close sidebar"
+              className="lg:hidden p-2 rounded-lg hover:bg-cream-100 active:bg-cream-200 text-charcoal-700 transition-all flex-shrink-0 ml-2"
             >
               <X size={20} />
             </button>
           </div>
         </div>
 
-        {/* Navigation */}
+        {/* Navigation Menu */}
         <nav className="p-3 sm:p-4 pb-24">
           <ul className="space-y-1">
             {menuItems.map((item) => {
@@ -63,21 +62,20 @@ export default function AdminSidebar({ activeTab, setActiveTab, admin, onLogout,
 
               return (
                 <li key={item.id}>
-              // ... inside the menuItems.map function
-              <button
-                onClick={() => { setActiveTab(item.id); onClose(); }}
-                style={isActive ? {
-                  backgroundColor: '#1f2937', // This is the hex for Tailwind's gray-800
-                  color: '#ffffff',
-                  boxShadow: '0 4px 6px rgba(0,0,0,0.15)',
-                  transform: 'scale(1.02)',
-                } : {}}
-                className={`w-full flex items-center gap-3 px-3 sm:px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none ${
-                  !isActive
-                    ? 'text-charcoal-600 hover:bg-cream-100 hover:text-charcoal-800 active:bg-cream-200'
-                    : ''
-                }`}
-              >
+                  <button
+                    onClick={() => { setActiveTab(item.id); onClose(); }}
+                    style={isActive ? {
+                      backgroundColor: '#1f2937', // Tailwind Gray 800
+                      color: '#ffffff',
+                      boxShadow: '0 4px 6px rgba(0,0,0,0.15)',
+                      transform: 'scale(1.02)',
+                    } : {}}
+                    className={`w-full flex items-center gap-3 px-3 sm:px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none ${
+                      !isActive
+                        ? 'text-charcoal-600 hover:bg-cream-100 hover:text-charcoal-800'
+                        : ''
+                    }`}
+                  >
                     <Icon
                       size={20}
                       style={{ color: isActive ? '#ffffff' : undefined }}
@@ -89,8 +87,10 @@ export default function AdminSidebar({ activeTab, setActiveTab, admin, onLogout,
                     >
                       {item.label}
                     </span>
+                    
+                    {/* Active Indicator Dot */}
                     {isActive && (
-                      <div style={{ marginLeft: 'auto', width: 6, height: 6, background: '#f9a8d4', borderRadius: '50%' }} />
+                      <div className="ml-auto w-1.5 h-1.5 bg-pink-300 rounded-full" />
                     )}
                   </button>
                 </li>
@@ -99,16 +99,16 @@ export default function AdminSidebar({ activeTab, setActiveTab, admin, onLogout,
           </ul>
         </nav>
 
-        {/* User Profile Section */}
+        {/* Bottom Profile Section */}
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-taupe-200 bg-white">
           <div className="flex items-center gap-3 px-2">
-            {/* MATCHED SCREENSHOT STYLE: Blue rounded square icon */}
+            {/* Profile Icon: Blue Rounded Square */}
             <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold shadow-sm flex-shrink-0">
               {displayInitial}
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-bold text-charcoal-900 truncate">
-                {admin?.username || 'Admin'}
+                {admin?.username || 'admin'}
               </p>
               <p className="text-xs text-taupe-500 truncate">
                 {admin?.email || 'admin@adornstep.com'}

@@ -176,7 +176,7 @@ export default function ReturnsPage() {
           </p>
           <a
             href="mailto:support@adornstep.com"
-            className="inline-block px-8 py-4 bg-charcoal-800 text-white font-semibold rounded-full hover:bg-charcoal-700 transition-all duration-300 shadow-lg"
+            className="inline-block px-8 py-4 bg-gray-800 text-white font-semibold rounded-full hover:bg-gray-900 transition-all duration-300 shadow-lg"
           >
             support@adornstep.com
           </a>
