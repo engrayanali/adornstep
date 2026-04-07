@@ -63,7 +63,7 @@ export default function ProductCard({ product }) {
 
 
             {/* Subtle overlay on hover */}
-            <div className="absolute inset-0 bg-gradient-to-t from-charcoal-900/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="absolute inset-0 bg-gradient-to-t from-gray-900/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             
             {/* Border glow effect */}
             <div className="absolute inset-0 border border-gray-300/0 group-hover:border-terracotta-400/20 transition-all duration-500" />
@@ -88,19 +88,19 @@ export default function ProductCard({ product }) {
                   />
                 ))}
               </div>
-              <span className="text-xs text-charcoal-600 font-medium ml-1">({reviewCount})</span>
+              <span className="text-xs text-gray-600 font-medium ml-1">({reviewCount})</span>
             </div>
 
-            <h3 className="font-semibold text-charcoal-900 mb-3 line-clamp-2 group-hover:text-terracotta-600 transition-colors duration-300 text-base leading-snug min-h-[3rem]">
+            <h3 className="font-semibold text-gray-800 mb-3 line-clamp-2 group-hover:text-terracotta-600 transition-colors duration-300 text-base leading-snug min-h-[3rem]">
               {name}
             </h3>
             
             <div className="flex items-baseline gap-2.5 mb-1">
-              <span className="text-2xl font-bold text-charcoal-900 tracking-tight">
+              <span className="text-2xl font-bold text-gray-800 tracking-tight">
                 ₹{displayPrice.toLocaleString()}
               </span>
               {hasDiscount && (
-                <span className="text-sm text-charcoal-400 line-through font-medium">
+                <span className="text-sm text-gray-400 line-through font-medium">
                   ₹{price.toLocaleString()}
                 </span>
               )}
@@ -115,7 +115,7 @@ export default function ProductCard({ product }) {
 
           {/* Add to Cart Button - Shows on hover */}
           <button 
-            className="w-full mt-4 py-3 bg-gradient-to-r from-charcoal-800 to-charcoal-900 text-white text-sm font-bold tracking-wider uppercase opacity-0 group-hover:opacity-100 transition-all duration-300 hover:from-terracotta-500 hover:to-terracotta-600 transform translate-y-2 group-hover:translate-y-0 rounded-lg shadow-md hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full mt-4 py-3 bg-gradient-to-r from-gray-800 to-gray-900 text-white text-sm font-bold tracking-wider uppercase opacity-0 group-hover:opacity-100 transition-all duration-300 hover:from-terracotta-500 hover:to-terracotta-600 transform translate-y-2 group-hover:translate-y-0 rounded-lg shadow-md hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={(e) => {
               e.preventDefault();
               // Add to cart logic here
