@@ -132,9 +132,9 @@ export default function CategoryPage() {
         <div className="bg-gradient-to-b from-white to-cream-50 border-b border-taupe-200">
           <div className="max-w-[1920px] mx-auto px-6 lg:px-12 xl:px-20 py-8">
             <div className="flex items-center gap-2 text-sm text-taupe-600">
-              <a href="/" className="hover:text-charcoal-800 transition-colors">Home</a>
+              <a href="/" className="hover:text-gray-800 transition-colors">Home</a>
               <ChevronRight size={16} />
-              <span className="text-charcoal-800 font-medium">{category?.name || 'Category'}</span>
+              <span className="text-gray-800 font-medium">{category?.name || 'Category'}</span>
             </div>
           </div>
         </div>
@@ -244,7 +244,7 @@ export default function CategoryPage() {
                           className={`px-4 py-2 rounded-lg border-2 transition-all ${
                             selectedSizes.includes(size)
                               ? 'border-charcoal-800 bg-charcoal-800 text-white'
-                              : 'border-taupe-200 bg-white text-charcoal-700 hover:border-charcoal-400'
+                              : 'border-taupe-200 bg-white text-gray-700 hover:border-gray-400'
                           }`}
                         >
                           {size}
@@ -259,7 +259,7 @@ export default function CategoryPage() {
                   <div className="p-6 lg:p-0 lg:mt-6">
                     <button
                       onClick={clearAllFilters}
-                      className="w-full lg:w-auto px-6 py-2.5 bg-charcoal-800 text-white rounded-full hover:bg-charcoal-700 transition-colors"
+                      className="w-full lg:w-auto px-6 py-2.5 bg-gray-800 text-white rounded-full hover:bg-gray-900 transition-colors"
                     >
                       Clear All Filters
                     </button>
@@ -275,13 +275,13 @@ export default function CategoryPage() {
               <p className="text-xl text-taupe-600 mb-4">No products found matching your filters.</p>
               <button
                 onClick={clearAllFilters}
-                className="px-6 py-3 bg-charcoal-800 text-white rounded-full hover:bg-charcoal-700 transition-colors"
+                className="px-6 py-3 bg-gray-800 text-white rounded-full hover:bg-gray-900 transition-colors"
               >
                 Clear Filters
               </button>
             </div>
           ) : (
-            <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10">
               {filteredProducts.map(product => (
                 <ProductCard key={product.id} product={product} />
               ))}
