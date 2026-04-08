@@ -213,15 +213,21 @@ export default function ProductsManager() {
         </button>
       </div>
 
-      {/* ── Products Table ── */}
+            {/* ── Products Table ── */}
       <div className="bg-white rounded-xl border border-taupe-200 shadow-card overflow-hidden">
         <div className="overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
-          <div style={{ minWidth: '600px' }}>
+          <div style={{ minWidth: '700px' }}> {/* Slightly increased min-width to prevent crowding */}
             <table className="w-full">
               <thead className="bg-cream-50 border-b border-taupe-200">
                 <tr>
-                  {['Product', 'Category', 'Price', 'Stock', 'Status', ''].map((h, i) => (
-                    <th key={i} className={`px-4 py-3 text-xs font-semibold text-charcoal-600 uppercase tracking-wider ${i === 5 ? 'text-right' : 'text-left'}`}>{h}</th>
+                  {['Product', 'Category', 'Price', 'Stock', 'Status', 'Actions'].map((h, i) => (
+                    <th 
+                      key={i} 
+                      className={`px-4 py-3 text-xs font-semibold text-charcoal-600 uppercase tracking-wider 
+                        ${i === 5 ? 'text-right min-w-[140px]' : 'text-left'}`}
+                    >
+                      {h}
+                    </th>
                   ))}
                 </tr>
               </thead>
@@ -243,24 +249,61 @@ export default function ProductsManager() {
                           </div>
                         </div>
                       </td>
-                      <td className="px-4 py-3 text-sm text-charcoal-700">{category?.name || '—'}</td>
+                      
+                      <td className="px-4 py-3 text-sm text-charcoal-700">
+                        {category?.name || '—'}
+                      </td>
+                      
                       <td className="px-4 py-3">
                         <div className="text-sm font-semibold text-charcoal-800">Rs {product.price}</div>
-                        {product.discount_price && <div className="text-xs text-emerald-600">Rs {product.discount_price}</div>}
+                        {product.discount_price && (
+                          <div className="text-xs text-emerald-600">Rs {product.discount_price}</div>
+                        )}
                       </td>
+                      
                       <td className="px-4 py-3">
-                        <span className={`text-sm font-medium ${product.stock > 10 ? 'text-emerald-600' : product.stock > 0 ? 'text-amber-600' : 'text-red-600'}`}>{product.stock}</span>
+                        <span className={`text-sm font-medium ${
+                          product.stock > 10 ? 'text-emerald-600' : 
+                          product.stock > 0 ? 'text-amber-600' : 'text-red-600'
+                        }`}>
+                          {product.stock}
+                        </span>
                       </td>
+                      
                       <td className="px-4 py-3">
-                        <span className={`inline-flex px-2.5 py-1 text-xs font-medium rounded-full ${product.is_active ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}`}>
+                        <span className={`inline-flex px-2.5 py-1 text-xs font-medium rounded-full ${
+                          product.is_active ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'
+                        }`}>
                           {product.is_active ? 'Active' : 'Inactive'}
                         </span>
                       </td>
+
+                      {/* ── MOBILE FRIENDLY ACTION BUTTONS ── */}
                       <td className="px-4 py-3 text-right">
-                        <div className="flex items-center justify-end gap-1">
-                          <button onClick={() => handleManageImages(product)} className="p-2 text-taupe-500 hover:text-charcoal-800 hover:bg-cream-100 rounded-lg transition-all" title="Manage Images"><ImageIcon size={16} /></button>
-                          <button onClick={() => handleEdit(product)} className="p-2 text-taupe-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" title="Edit"><Edit size={16} /></button>
-                          <button onClick={() => handleDelete(product.id)} className="p-2 text-taupe-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all" title="Delete"><Trash2 size={16} /></button>
+                        <div className="flex items-center justify-end gap-2 sm:gap-1">
+                          <button 
+                            onClick={() => handleManageImages(product)} 
+                            className="p-3 sm:p-2 text-taupe-500 hover:text-charcoal-800 hover:bg-cream-100 rounded-lg transition-all" 
+                            title="Manage Images"
+                          >
+                            <ImageIcon size={20} className="sm:w-4 sm:h-4" />
+                          </button>
+                          
+                          <button 
+                            onClick={() => handleEdit(product)} 
+                            className="p-3 sm:p-2 text-taupe-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" 
+                            title="Edit"
+                          >
+                            <Edit size={20} className="sm:w-4 sm:h-4" />
+                          </button>
+                          
+                          <button 
+                            onClick={() => handleDelete(product.id)} 
+                            className="p-3 sm:p-2 text-taupe-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all" 
+                            title="Delete"
+                          >
+                            <Trash2 size={20} className="sm:w-4 sm:h-4" />
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -270,19 +313,6 @@ export default function ProductsManager() {
             </table>
           </div>
         </div>
-
-        {products.length === 0 && (
-          <div className="text-center py-16 px-4">
-            <div className="w-14 h-14 bg-cream-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <ImageIcon size={28} className="text-taupe-400" />
-            </div>
-            <p className="text-charcoal-700 font-semibold mb-1">No products yet</p>
-            <p className="text-sm text-taupe-500 mb-5">Get started by adding your first product</p>
-            <button onClick={() => { resetForm(); setShowModal(true); }} className="inline-flex items-center gap-2 px-4 py-2 bg-charcoal-800 text-white rounded-lg hover:bg-charcoal-700 transition-all text-sm font-medium">
-              <Plus size={16} /> Create product
-            </button>
-          </div>
-        )}
       </div>
 
       {/* ════════════════════════════════════

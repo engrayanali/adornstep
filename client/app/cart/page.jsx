@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Navbar from '../Components/Navbar';
 import Footer from '../Components/Footer';
-import { Trash2, Plus, Minus, ShoppingBag, ArrowLeft, Shield, ChevronRight, Package } from 'lucide-react';
+import { Trash2, Plus, Minus, ShoppingBag, ArrowLeft, Shield, ChevronRight, Package, RefreshCw } from 'lucide-react';
 import { getCart, updateCartItemQuantity, removeFromCart, getCartTotal } from '../lib/cart';
 import Link from 'next/link';
 
@@ -43,258 +43,155 @@ export default function CartPage() {
   const grandTotal = total + shippingCost;
 
   return (
-    <div className="min-h-screen" style={{ background: '#F7F4F0', fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
+    <div className="min-h-screen bg-cream-50">
       <Navbar />
 
-      <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap');
+      <div className="pt-20 pb-20">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-16 xl:px-24">
 
-        .cart-item-card {
-          background: #ffffff;
-          border: 1px solid rgba(180, 160, 140, 0.18);
-          border-radius: 4px;
-          transition: box-shadow 0.3s ease, transform 0.2s ease;
-        }
-        .cart-item-card:hover {
-          box-shadow: 0 8px 32px rgba(80, 60, 40, 0.08);
-          transform: translateY(-1px);
-        }
-        .qty-btn {
-          width: 32px;
-          height: 32px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: transparent;
-          border: none;
-          cursor: pointer;
-          color: #3d3530;
-          transition: background 0.2s;
-          border-radius: 2px;
-        }
-        .qty-btn:hover:not(:disabled) {
-          background: #f0ebe4;
-        }
-        .qty-btn:disabled {
-          opacity: 0.3;
-          cursor: not-allowed;
-        }
-        .checkout-btn {
-          background: #2c2420;
-          color: #f7f4f0;
-          font-family: 'Jost', sans-serif;
-          font-size: 13px;
-          font-weight: 500;
-          letter-spacing: 0.14em;
-          text-transform: uppercase;
-          padding: 16px 32px;
-          border-radius: 2px;
-          border: none;
-          width: 100%;
-          cursor: pointer;
-          transition: background 0.25s ease, letter-spacing 0.25s ease;
-          display: block;
-          text-align: center;
-          text-decoration: none;
-        }
-        .checkout-btn:hover {
-          background: #4a3f38;
-          letter-spacing: 0.18em;
-        }
-        .continue-btn {
-          background: transparent;
-          color: #6b5d54;
-          font-family: 'Jost', sans-serif;
-          font-size: 12px;
-          font-weight: 400;
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
-          padding: 13px 32px;
-          border-radius: 2px;
-          border: 1px solid rgba(107, 93, 84, 0.35);
-          width: 100%;
-          cursor: pointer;
-          transition: border-color 0.2s, color 0.2s;
-          display: block;
-          text-align: center;
-          text-decoration: none;
-        }
-        .continue-btn:hover {
-          border-color: #2c2420;
-          color: #2c2420;
-        }
-        .remove-btn {
-          width: 32px;
-          height: 32px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: transparent;
-          border: none;
-          cursor: pointer;
-          color: #b8a89a;
-          border-radius: 2px;
-          transition: color 0.2s, background 0.2s;
-        }
-        .remove-btn:hover {
-          color: #c0392b;
-          background: #fdf0ef;
-        }
-        .summary-card {
-          background: #ffffff;
-          border: 1px solid rgba(180, 160, 140, 0.18);
-          border-radius: 4px;
-        }
-        .divider {
-          border: none;
-          border-top: 1px solid rgba(180, 160, 140, 0.22);
-          margin: 0;
-        }
-        .tag-label {
-          font-family: 'Jost', sans-serif;
-          font-size: 10px;
-          letter-spacing: 0.16em;
-          text-transform: uppercase;
-          font-weight: 500;
-        }
-        .price-tag {
-          font-family: 'Cormorant Garamond', Georgia, serif;
-          font-weight: 500;
-        }
-        .item-image {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          transition: transform 0.5s ease;
-        }
-        .item-image:hover {
-          transform: scale(1.04);
-        }
-      `}</style>
-
-      <div className="pt-24 pb-20">
-        <div className="max-w-6xl mx-auto px-6 lg:px-10">
-
-          {/* Header */}
-          <div className="flex items-end justify-between mb-10 pb-6" style={{ borderBottom: '1px solid rgba(180,160,140,0.25)' }}>
+          {/* ── Page Header ── */}
+          <div className="flex items-end justify-between pt-8 pb-6 mb-2 border-b border-taupe-200">
             <div>
-              <p className="tag-label mb-2" style={{ color: '#9e8a7e' }}>My Bag</p>
-              <h1 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 'clamp(2rem, 5vw, 3.2rem)', fontWeight: 300, color: '#2c2420', lineHeight: 1.1, letterSpacing: '-0.01em' }}>
+              <p className="text-xs font-semibold tracking-widest uppercase text-taupe-500 mb-2">My Bag</p>
+              <h1 className="font-heading text-4xl md:text-5xl font-light text-charcoal-800 leading-tight">
                 Shopping Cart
               </h1>
             </div>
             <Link
               href="/"
-              className="flex items-center gap-2"
-              style={{ fontFamily: "'Jost', sans-serif", fontSize: '12px', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9e8a7e', textDecoration: 'none', transition: 'color 0.2s' }}
+              className="flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-taupe-500 hover:text-charcoal-800 transition-colors"
             >
-              <ArrowLeft size={15} />
+              <ArrowLeft size={14} />
               <span className="hidden sm:inline">Continue Shopping</span>
             </Link>
           </div>
 
-          {/* Breadcrumb */}
-          <div className="flex items-center gap-2 mb-8" style={{ fontFamily: "'Jost', sans-serif", fontSize: '11px', letterSpacing: '0.1em', color: '#b8a89a' }}>
-            <Link href="/" style={{ color: '#b8a89a', textDecoration: 'none' }}>Home</Link>
-            <ChevronRight size={13} />
-            <span style={{ color: '#6b5d54' }}>Cart</span>
+          {/* ── Breadcrumb ── */}
+          <div className="flex items-center gap-2 py-4 mb-6 text-xs tracking-wider text-taupe-400">
+            <Link href="/" className="hover:text-charcoal-700 transition-colors">Home</Link>
+            <ChevronRight size={12} />
+            <span className="text-charcoal-600 font-medium">Cart</span>
           </div>
 
           {cart.length === 0 ? (
-            /* Empty State */
-            <div className="text-center py-24">
-              <div className="mx-auto mb-8 flex items-center justify-center" style={{ width: 80, height: 80, background: 'rgba(180,160,140,0.1)', borderRadius: '50%' }}>
-                <ShoppingBag size={36} style={{ color: '#b8a89a' }} />
+            /* ── Empty State ── */
+            <div className="text-center py-28">
+              <div className="w-20 h-20 bg-cream-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <ShoppingBag size={34} className="text-taupe-400" />
               </div>
-              <h2 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: '2rem', fontWeight: 400, color: '#2c2420', marginBottom: 12 }}>
-                Your cart is empty
-              </h2>
-              <p style={{ fontFamily: "'Jost', sans-serif", fontSize: '14px', color: '#9e8a7e', marginBottom: 36 }}>
-                Discover our collection and find your perfect pair.
-              </p>
-              <Link href="/" className="checkout-btn" style={{ display: 'inline-block', width: 'auto', padding: '14px 40px' }}>
+              <h2 className="font-heading text-3xl font-light text-charcoal-800 mb-3">Your cart is empty</h2>
+              <p className="text-sm text-taupe-500 mb-10">Discover our collection and find your perfect pair.</p>
+              <Link
+                href="/"
+                className="inline-flex items-center gap-2 px-8 py-3.5 bg-charcoal-800 text-white text-xs font-semibold tracking-widest uppercase hover:bg-charcoal-700 transition-all rounded-sm"
+              >
+                <ArrowLeft size={14} />
                 Explore Collection
               </Link>
             </div>
           ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] xl:grid-cols-[1fr_400px] gap-10">
 
-              {/* ── Cart Items ── */}
-              <div className="lg:col-span-2">
-                <p className="mb-5 tag-label" style={{ color: '#9e8a7e' }}>
+              {/* ════════════════════════════
+                  CART ITEMS COLUMN
+              ════════════════════════════ */}
+              <div>
+                <p className="text-xs font-semibold tracking-widest uppercase text-taupe-500 mb-5">
                   {itemCount} {itemCount === 1 ? 'Item' : 'Items'}
                 </p>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <div className="space-y-4">
                   {cart.map((item, index) => (
-                    <div key={`${item.id}-${item.size}-${item.color}-${index}`} className="cart-item-card" style={{ padding: '20px 24px' }}>
-                      <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start' }}>
+                    <div
+                      key={`${item.id}-${item.size}-${item.color}-${index}`}
+                      className="bg-white border border-taupe-100 rounded-sm hover:shadow-product transition-all duration-300 group overflow-hidden"
+                    >
+                      <div className="flex">
 
                         {/* Image */}
-                        <div style={{ width: 110, height: 130, flexShrink: 0, background: '#f0ebe4', borderRadius: '3px', overflow: 'hidden', position: 'relative' }}>
+                        <div className="w-32 md:w-44 flex-shrink-0 bg-cream-100 overflow-hidden" style={{ minHeight: 168 }}>
                           {item.image ? (
-                            <img src={item.image} alt={item.name} className="item-image" />
+                            <img
+                              src={item.image}
+                              alt={item.name}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                              style={{ minHeight: 168 }}
+                            />
                           ) : (
-                            <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                              <Package size={28} style={{ color: '#c4b3a8' }} />
+                            <div className="w-full h-full flex items-center justify-center" style={{ minHeight: 168 }}>
+                              <Package size={28} className="text-taupe-300" />
                             </div>
                           )}
                         </div>
 
                         {/* Details */}
-                        <div style={{ flex: 1, minWidth: 0 }}>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8 }}>
-                            <Link
-                              href={`/product/${item.slug}`}
-                              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: '1.25rem', fontWeight: 500, color: '#2c2420', textDecoration: 'none', lineHeight: 1.3, display: 'block', marginBottom: 8 }}
+                        <div className="flex-1 min-w-0 p-5 md:p-6 flex flex-col justify-between">
+
+                          {/* Top: name + remove */}
+                          <div className="flex items-start justify-between gap-3">
+                            <div className="flex-1 min-w-0">
+                              <Link
+                                href={`/product/${item.slug}`}
+                                className="font-heading text-xl md:text-2xl font-medium text-charcoal-800 hover:text-terracotta-600 transition-colors leading-snug block mb-3"
+                              >
+                                {item.name}
+                              </Link>
+
+                              {/* Variant tags */}
+                              <div className="flex flex-wrap gap-2">
+                                {item.size && (
+                                  <span className="text-[10px] font-semibold tracking-widest uppercase px-3 py-1.5 bg-cream-100 text-taupe-600 rounded-sm border border-taupe-200">
+                                    Size {item.size}
+                                  </span>
+                                )}
+                                {item.color && (
+                                  <span className="text-[10px] font-semibold tracking-widest uppercase px-3 py-1.5 bg-cream-100 text-taupe-600 rounded-sm border border-taupe-200">
+                                    {item.color}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Remove */}
+                            <button
+                              onClick={() => handleRemove(item)}
+                              className="p-2 text-taupe-300 hover:text-red-500 hover:bg-red-50 rounded-sm transition-all flex-shrink-0"
+                              title="Remove item"
                             >
-                              {item.name}
-                            </Link>
-                            <button className="remove-btn" onClick={() => handleRemove(item)} title="Remove">
-                              <Trash2 size={15} />
+                              <Trash2 size={16} />
                             </button>
                           </div>
 
-                          {/* Variant Pills */}
-                          <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
-                            {item.size && (
-                              <span className="tag-label" style={{ padding: '4px 12px', background: '#f5f0ea', color: '#7a6b62', borderRadius: '2px', fontSize: '10px' }}>
-                                Size {item.size}
-                              </span>
-                            )}
-                            {item.color && (
-                              <span className="tag-label" style={{ padding: '4px 12px', background: '#f5f0ea', color: '#7a6b62', borderRadius: '2px', fontSize: '10px' }}>
-                                {item.color}
-                              </span>
-                            )}
-                          </div>
+                          {/* Bottom: qty + price */}
+                          <div className="flex items-center justify-between mt-4 pt-4 border-t border-taupe-100">
 
-                          {/* Bottom row: qty + price */}
-                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 4 }}>
-                            {/* Quantity */}
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 0, border: '1px solid rgba(180,160,140,0.35)', borderRadius: '3px', overflow: 'hidden' }}>
+                            {/* Quantity stepper */}
+                            <div className="flex items-center border border-taupe-200 rounded-sm overflow-hidden">
                               <button
-                                className="qty-btn"
                                 onClick={() => handleQuantityChange(item, item.quantity - 1)}
                                 disabled={item.quantity <= 1}
+                                className="w-9 h-9 flex items-center justify-center text-charcoal-600 hover:bg-cream-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                               >
                                 <Minus size={13} />
                               </button>
-                              <span style={{ fontFamily: "'Jost', sans-serif", fontSize: '14px', fontWeight: 500, minWidth: 36, textAlign: 'center', color: '#2c2420', borderLeft: '1px solid rgba(180,160,140,0.25)', borderRight: '1px solid rgba(180,160,140,0.25)', padding: '0 4px', lineHeight: '32px' }}>
+                              <span className="w-10 text-center text-sm font-semibold text-charcoal-800 border-x border-taupe-200 h-9 flex items-center justify-center">
                                 {item.quantity}
                               </span>
-                              <button className="qty-btn" onClick={() => handleQuantityChange(item, item.quantity + 1)}>
+                              <button
+                                onClick={() => handleQuantityChange(item, item.quantity + 1)}
+                                className="w-9 h-9 flex items-center justify-center text-charcoal-600 hover:bg-cream-100 transition-colors"
+                              >
                                 <Plus size={13} />
                               </button>
                             </div>
 
                             {/* Price */}
-                            <div style={{ textAlign: 'right' }}>
-                              <div className="price-tag" style={{ fontSize: '1.5rem', color: '#2c2420', lineHeight: 1 }}>
+                            <div className="text-right">
+                              <div className="font-heading text-2xl md:text-3xl font-medium text-charcoal-800 leading-none">
                                 Rs {(item.price * item.quantity).toLocaleString('en-PK', { minimumFractionDigits: 2 })}
                               </div>
                               {item.quantity > 1 && (
-                                <div style={{ fontFamily: "'Jost', sans-serif", fontSize: '11px', color: '#b8a89a', marginTop: 3, letterSpacing: '0.04em' }}>
+                                <div className="text-xs text-taupe-400 mt-1 tracking-wide">
                                   Rs {item.price.toLocaleString('en-PK', { minimumFractionDigits: 2 })} each
                                 </div>
                               )}
@@ -307,69 +204,75 @@ export default function CartPage() {
                 </div>
               </div>
 
-              {/* ── Order Summary ── */}
-              <div className="lg:col-span-1">
-                <div className="summary-card sticky top-24" style={{ padding: '32px 28px' }}>
+              {/* ════════════════════════════
+                  ORDER SUMMARY COLUMN
+              ════════════════════════════ */}
+              <div>
+                <div className="bg-white border border-taupe-100 rounded-sm p-7 sticky top-24">
 
-                  <p className="tag-label mb-6" style={{ color: '#9e8a7e', display: 'block' }}>Order Summary</p>
+                  <p className="text-xs font-semibold tracking-widest uppercase text-taupe-500 mb-6">Order Summary</p>
 
-                  {/* Benefits */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginBottom: 24 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                      <Shield size={15} style={{ color: '#9e8a7e', flexShrink: 0 }} />
+                  {/* Trust badges */}
+                  <div className="space-y-3.5 mb-6">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-cream-100 rounded-sm flex items-center justify-center flex-shrink-0">
+                        <Shield size={14} className="text-taupe-500" />
+                      </div>
                       <div>
-                        <p style={{ fontFamily: "'Jost', sans-serif", fontSize: '12px', fontWeight: 500, color: '#3d3530', marginBottom: 1 }}>Secure Checkout</p>
-                        <p style={{ fontFamily: "'Jost', sans-serif", fontSize: '11px', color: '#b8a89a' }}>Safe &amp; encrypted payment</p>
+                        <p className="text-xs font-semibold text-charcoal-700">Secure Checkout</p>
+                        <p className="text-xs text-taupe-400 mt-0.5">Safe &amp; encrypted payment</p>
                       </div>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                      <Package size={15} style={{ color: '#9e8a7e', flexShrink: 0 }} />
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-cream-100 rounded-sm flex items-center justify-center flex-shrink-0">
+                        <RefreshCw size={14} className="text-taupe-500" />
+                      </div>
                       <div>
-                        <p style={{ fontFamily: "'Jost', sans-serif", fontSize: '12px', fontWeight: 500, color: '#3d3530', marginBottom: 1 }}>30-Day Returns</p>
-                        <p style={{ fontFamily: "'Jost', sans-serif", fontSize: '11px', color: '#b8a89a' }}>Easy returns &amp; exchanges</p>
+                        <p className="text-xs font-semibold text-charcoal-700">30-Day Returns</p>
+                        <p className="text-xs text-taupe-400 mt-0.5">Easy returns &amp; exchanges</p>
                       </div>
                     </div>
                   </div>
 
-                  <hr className="divider" style={{ marginBottom: 24 }} />
-
-                  {/* Line items */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 20 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontFamily: "'Jost', sans-serif", fontSize: '13px', color: '#7a6b62' }}>
+                  <div className="border-t border-taupe-100 pt-5 mb-5 space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-taupe-600">
                         Subtotal ({itemCount} {itemCount === 1 ? 'item' : 'items'})
                       </span>
-                      <span className="price-tag" style={{ fontSize: '1.05rem', color: '#2c2420' }}>
+                      <span className="font-heading text-base text-charcoal-800">
                         Rs {total.toLocaleString('en-PK', { minimumFractionDigits: 2 })}
                       </span>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontFamily: "'Jost', sans-serif", fontSize: '13px', color: '#7a6b62' }}>Shipping</span>
-                      <span className="price-tag" style={{ fontSize: '1.05rem', color: '#2c2420' }}>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-taupe-600">Shipping</span>
+                      <span className="font-heading text-base text-charcoal-800">
                         Rs {shippingCost.toLocaleString('en-PK', { minimumFractionDigits: 2 })}
                       </span>
                     </div>
                   </div>
 
-                  <hr className="divider" style={{ marginBottom: 20 }} />
+                  <div className="border-t border-taupe-200 pt-5 mb-1">
+                    <div className="flex justify-between items-baseline">
+                      <span className="font-heading text-lg text-charcoal-800">Total</span>
+                      <span className="font-heading text-3xl font-semibold text-charcoal-800">
+                        Rs {grandTotal.toLocaleString('en-PK', { minimumFractionDigits: 2 })}
+                      </span>
+                    </div>
+                    <p className="text-[10px] text-taupe-400 tracking-wide mt-1.5 mb-7">Tax calculated at checkout</p>
 
-                  {/* Total */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 8 }}>
-                    <span style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: '1.15rem', color: '#2c2420', fontWeight: 500 }}>Total</span>
-                    <span className="price-tag" style={{ fontSize: '1.9rem', color: '#2c2420', fontWeight: 600 }}>
-                      Rs {grandTotal.toLocaleString('en-PK', { minimumFractionDigits: 2 })}
-                    </span>
+                    <Link
+                      href="/checkout"
+                      className="block w-full py-4 bg-charcoal-800 hover:bg-charcoal-700 text-white text-xs font-semibold tracking-widest uppercase text-center transition-all mb-3 rounded-sm"
+                    >
+                      Proceed to Checkout
+                    </Link>
+                    <Link
+                      href="/"
+                      className="block w-full py-3.5 border border-taupe-300 hover:border-charcoal-600 text-charcoal-600 hover:text-charcoal-800 text-xs font-semibold tracking-widest uppercase text-center transition-all rounded-sm"
+                    >
+                      Continue Shopping
+                    </Link>
                   </div>
-                  <p style={{ fontFamily: "'Jost', sans-serif", fontSize: '10px', color: '#b8a89a', letterSpacing: '0.08em', marginBottom: 28 }}>
-                    Tax calculated at checkout
-                  </p>
-
-                  <Link href="/checkout" className="checkout-btn" style={{ marginBottom: 10 }}>
-                    Proceed to Checkout
-                  </Link>
-                  <Link href="/" className="continue-btn">
-                    Continue Shopping
-                  </Link>
                 </div>
               </div>
 

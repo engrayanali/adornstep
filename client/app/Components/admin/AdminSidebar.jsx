@@ -103,7 +103,7 @@ export default function AdminSidebar({ activeTab, setActiveTab, admin, onLogout,
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-taupe-200 bg-white">
           <div className="flex items-center gap-3 px-2">
             {/* Profile Icon: Blue Rounded Square */}
-            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold shadow-sm flex-shrink-0">
+            <div className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center text-white font-bold shadow-sm flex-shrink-0">
               {displayInitial}
             </div>
             <div className="flex-1 min-w-0">
@@ -111,7 +111,7 @@ export default function AdminSidebar({ activeTab, setActiveTab, admin, onLogout,
                 {admin?.username || 'admin'}
               </p>
               <p className="text-xs text-taupe-500 truncate">
-                {admin?.email || 'admin@adornstep.com'}
+                {admin?.email || 'adornstep@gmail.com'}
               </p>
             </div>
           </div>
