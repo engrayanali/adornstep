@@ -11,11 +11,22 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [desktopSearchQuery, setDesktopSearchQuery] = useState(''); // Added desktop state
   const [mobileSearchQuery, setMobileSearchQuery] = useState('');
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [navigation, setNavigation] = useState([{ name: 'Home', href: '/' }]);
   const router = useRouter();
+
+  // Handle Desktop Search Submission
+  const handleDesktopSearch = (e) => {
+    e.preventDefault();
+    if (desktopSearchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(desktopSearchQuery.trim())}`);
+      setIsSearchOpen(false);
+      setDesktopSearchQuery('');
+    }
+  };
 
   const handleMobileSearch = (e) => {
     e.preventDefault();
@@ -102,21 +113,24 @@ export default function Navbar() {
             {/* Search - Desktop & Tablet with responsive input */}
             <div className="hidden md:flex items-center gap-2">
               {isSearchOpen ? (
-                <div className="flex items-center gap-2 animate-fade-in">
+                <form onSubmit={handleDesktopSearch} className="flex items-center gap-2 animate-fade-in">
                   <input
                     type="text"
+                    value={desktopSearchQuery}
+                    onChange={(e) => setDesktopSearchQuery(e.target.value)}
                     placeholder="Search products..."
                     className="w-48 lg:w-64 xl:w-80 px-4 py-2 rounded-full border border-taupe-300 focus:border-terracotta-500 focus:outline-none focus:ring-2 focus:ring-terracotta-200 transition-all duration-300 text-sm"
                     autoFocus
                   />
                   <button 
+                    type="button"
                     onClick={() => setIsSearchOpen(false)}
                     className="p-2.5 hover:bg-cream-200 rounded-full transition-all duration-300 group"
                     aria-label="Close search"
                   >
                     <X size={20} className="text-charcoal-700 group-hover:text-terracotta-500 transition-colors" />
                   </button>
-                </div>
+                </form>
               ) : (
                 <button 
                   onClick={() => setIsSearchOpen(true)}
