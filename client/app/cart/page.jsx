@@ -262,13 +262,13 @@ export default function CartPage() {
 
                     <Link
                       href="/checkout"
-                      className="block w-full py-4 bg-charcoal-800 hover:bg-charcoal-700 text-white text-xs font-semibold tracking-widest uppercase text-center transition-all mb-3 rounded-sm"
+                      className="block w-full py-4 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 transform hover:scale-105 text-white text-xs font-semibold tracking-widest uppercase text-center transition-all mb-3 rounded-sm"
                     >
                       Proceed to Checkout
                     </Link>
                     <Link
                       href="/"
-                      className="block w-full py-3.5 border border-taupe-300 hover:border-charcoal-600 text-charcoal-600 hover:text-charcoal-800 text-xs font-semibold tracking-widest uppercase text-center transition-all rounded-sm"
+                      className="block w-full py-3.5 border border-taupe-300 hover:border-gray-600 text-gray-600 hover:text-gray-800 text-xs font-semibold tracking-widest uppercase text-center transition-all rounded-sm"
                     >
                       Continue Shopping
                     </Link>
