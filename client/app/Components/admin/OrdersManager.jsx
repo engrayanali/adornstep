@@ -94,7 +94,13 @@ export default function OrdersManager() {
                     <td className="px-4 sm:px-6 py-4 text-sm font-bold text-charcoal-800 whitespace-nowrap font-mono">{order.order_number}</td>
                     <td className="px-4 sm:px-6 py-4">
                       <div className="font-semibold text-charcoal-800 text-sm">{order.customer_name}</div>
-                      <div className="text-xs text-taupe-600 mt-1 truncate max-w-[200px]">{order.customer_email}</div>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-xs text-taupe-600 truncate max-w-[150px]">{order.customer_email}</span>
+                        {/* Table Quick-View Payment Tag */}
+                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-taupe-100 text-taupe-700 font-bold uppercase tracking-tighter">
+                          {order.payment_method || 'COD'}
+                        </span>
+                      </div>
                     </td>
                     <td className="px-4 sm:px-6 py-4 text-sm font-bold text-emerald-700 whitespace-nowrap">Rs {order.total_amount.toFixed(2)}</td>
                     <td className="px-4 sm:px-6 py-4">
@@ -156,7 +162,6 @@ export default function OrdersManager() {
                 <p className="text-sm text-taupe-600 mt-1 font-mono">{selectedOrder.order_number}</p>
               </div>
               <div className="flex items-center gap-2">
-                {/* Delete button inside modal */}
                 <button
                   onClick={() => handleDelete(selectedOrder.id, selectedOrder.order_number)}
                   style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 12px', backgroundColor: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', borderRadius: 8, fontWeight: 500, cursor: 'pointer', fontSize: 13 }}
@@ -171,16 +176,36 @@ export default function OrdersManager() {
 
             {/* Modal Body */}
             <div className="p-5 sm:p-6 overflow-y-auto flex-1 space-y-5">
-              {/* Customer Info */}
-              <div>
-                <h4 className="font-semibold text-charcoal-800 mb-3 text-sm uppercase tracking-wide">Customer Information</h4>
-                <div className="bg-gradient-to-br from-cream-50 to-blush-50 border border-taupe-200 rounded-xl p-4 space-y-2">
-                  {[['Name', selectedOrder.customer_name], ['Email', selectedOrder.customer_email], ['Phone', selectedOrder.customer_phone]].map(([label, value]) => (
-                    <p key={label} className="text-sm m-0">
-                      <span className="font-semibold text-charcoal-700">{label}: </span>
-                      <span className="text-charcoal-600">{value}</span>
+              
+              {/* Customer Info & Payment Method Section */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <h4 className="font-semibold text-charcoal-800 mb-3 text-sm uppercase tracking-wide">Customer Information</h4>
+                  <div className="bg-gradient-to-br from-cream-50 to-blush-50 border border-taupe-200 rounded-xl p-4 space-y-2 h-full">
+                    {[['Name', selectedOrder.customer_name], ['Email', selectedOrder.customer_email], ['Phone', selectedOrder.customer_phone]].map(([label, value]) => (
+                      <p key={label} className="text-sm m-0">
+                        <span className="font-semibold text-charcoal-700">{label}: </span>
+                        <span className="text-charcoal-600">{value}</span>
+                      </p>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="font-semibold text-charcoal-800 mb-3 text-sm uppercase tracking-wide">Payment Status</h4>
+                  <div className="bg-gradient-to-br from-cream-50 to-blush-50 border border-taupe-200 rounded-xl p-4 flex flex-col justify-center h-full">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-sm font-semibold text-charcoal-700">Method:</span>
+                      <span className="px-3 py-1 bg-white border-2 border-emerald-200 text-emerald-700 rounded-lg font-bold text-xs uppercase tracking-widest shadow-sm">
+                        {selectedOrder.payment_method || 'Cash on Delivery'}
+                      </span>
+                    </div>
+                    <p className="text-xs text-taupe-500 italic m-0">
+                      {selectedOrder.payment_method?.toLowerCase().includes('bank') 
+                        ? 'Check bank records for transaction confirmation.' 
+                        : 'Payment to be collected by rider.'}
                     </p>
-                  ))}
+                  </div>
                 </div>
               </div>
 

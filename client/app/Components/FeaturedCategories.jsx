@@ -69,15 +69,21 @@ export default function FeaturedCategories() {
         </div>
 
         {/* Categories/Lifestyle Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8 auto-rows-fr">
           {lifestyleImages.length > 0 ? (
-            lifestyleImages.map((item, index) => (
+            lifestyleImages.map((item) => (
               <a
                 key={item.id}
                 href={item.link || '#'}
-                className="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-2xl transition-all duration-500 hover-lift"
+                /* CHANGE: Dynamic col-span based on item.layout */
+                className={`group relative overflow-hidden rounded-lg shadow-lg hover:shadow-2xl transition-all duration-500 hover-lift ${
+                  item.layout === 'large' ? 'lg:col-span-2' : 'lg:col-span-1'
+                }`}
               >
-                <div className="relative h-72 sm:h-80 md:h-96">
+               
+                <div className={`relative w-full ${
+                  item.layout === 'large' ? 'h-72 sm:h-80 md:h-full min-h-[300px]' : 'h-72 sm:h-80 md:h-96'
+                }`}>
                   <img
                     src={item.image_url}
                     alt={item.title}
@@ -85,9 +91,18 @@ export default function FeaturedCategories() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-charcoal-900/80 via-charcoal-900/30 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-300" />
                   <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 text-white">
-                    <h3 className="text-lg sm:text-xl md:text-2xl font-display font-semibold mb-1 sm:mb-2">{item.title}</h3>
+              
+                    <h3 className={`font-display font-semibold mb-1 sm:mb-2 ${
+                      item.layout === 'large' ? 'text-2xl sm:text-3xl md:text-4xl' : 'text-lg sm:text-xl md:text-2xl'
+                    }`}>
+                      {item.title}
+                    </h3>
                     {item.description && (
-                      <p className="text-xs sm:text-sm text-cream-100 line-clamp-2 leading-relaxed">{item.description}</p>
+                      <p className={`text-cream-100 line-clamp-2 leading-relaxed ${
+                        item.layout === 'large' ? 'text-sm sm:text-base max-w-xl' : 'text-xs sm:text-sm'
+                      }`}>
+                        {item.description}
+                      </p>
                     )}
                   </div>
                 </div>
