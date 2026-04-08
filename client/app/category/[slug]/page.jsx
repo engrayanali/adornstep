@@ -205,7 +205,7 @@ export default function CategoryPage() {
                 ${showFilters ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'}
               `}>
                 <div className="lg:hidden flex items-center justify-between p-6 border-b">
-                  <h3 className="text-lg font-heading text-charcoal-900">Filters</h3>
+                  <h3 className="text-lg font-heading text-gray-900">Filters</h3>
                   <button onClick={() => setShowFilters(false)}>
                     <X size={24} />
                   </button>
@@ -213,29 +213,29 @@ export default function CategoryPage() {
 
                 <div className="p-6 lg:p-0 lg:grid lg:grid-cols-3 lg:gap-6">
                   {/* Price Range */}
-                  <div className="bg-white rounded-xl border border-taupe-200 p-6 mb-6 lg:mb-0">
-                    <h3 className="font-heading text-lg text-charcoal-900 mb-4">Price Range</h3>
+                  <div className="bg-white rounded-xl border border-gray-500 p-6 mb-6 lg:mb-0">
+                    <h3 className="font-heading text-lg text-gray-900 mb-4">Price Range</h3>
                     <div className="flex gap-4">
                       <input
                         type="number"
                         placeholder="Min"
                         value={priceRange.min}
                         onChange={(e) => setPriceRange({ ...priceRange, min: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-taupe-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-terracotta-500"
+                        className="w-full px-4 py-2.5 border border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-terracotta-500"
                       />
                       <input
                         type="number"
                         placeholder="Max"
                         value={priceRange.max}
                         onChange={(e) => setPriceRange({ ...priceRange, max: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-taupe-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-terracotta-500"
+                        className="w-full px-4 py-2.5 border border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-terracotta-500"
                       />
                     </div>
                   </div>
 
                   {/* Sizes */}
-                  <div className="bg-white rounded-xl border border-taupe-200 p-6 mb-6 lg:mb-0">
-                    <h3 className="font-heading text-lg text-charcoal-900 mb-4">Size</h3>
+                  <div className="bg-white rounded-xl border border-gray-500 p-6 mb-6 lg:mb-0">
+                    <h3 className="font-heading text-lg text-gray-900 mb-4">Size</h3>
                     <div className="flex flex-wrap gap-2">
                       {sizes.map(size => (
                         <button
@@ -243,8 +243,8 @@ export default function CategoryPage() {
                           onClick={() => toggleSize(size)}
                           className={`px-4 py-2 rounded-lg border-2 transition-all ${
                             selectedSizes.includes(size)
-                              ? 'border-charcoal-800 bg-charcoal-800 text-white'
-                              : 'border-taupe-200 bg-white text-gray-700 hover:border-gray-400'
+                              ? 'border-gray-800 bg-white text-gray-700'
+                              : 'border-gray-500 bg-white text-gray-700 hover:border-gray-400'
                           }`}
                         >
                           {size}
