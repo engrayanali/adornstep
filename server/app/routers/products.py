@@ -67,34 +67,6 @@ async def get_products(
     
     return result
 
-@router.get("/{product_id}", response_model=ProductResponse)
-async def get_product(product_id: int, db: Session = Depends(get_db)):
-    """Get a single product by ID"""
-    product = db.query(Product).filter(Product.id == product_id).first()
-    if not product:
-        raise HTTPException(status_code=404, detail="Product not found")
-    
-    # Fetch images
-    images = db.execute(
-        product_images.select().where(product_images.c.product_id == product.id).order_by(product_images.c.order)
-    ).fetchall()
-    
-    product_dict = {
-        **{c.name: getattr(product, c.name) for c in Product.__table__.columns},
-        "images": [
-            {
-                "id": img.id,
-                "product_id": img.product_id,
-                "image_url": img.image_url,
-                "is_primary": img.is_primary,
-                "order": img.order
-            }
-            for img in images
-        ]
-    }
-    
-    return product_dict
-
 @router.get("/slug/{slug}", response_model=ProductResponse)
 async def get_product_by_slug(slug: str, db: Session = Depends(get_db)):
     """Get a single product by slug"""
@@ -136,7 +108,7 @@ async def search_products(
         .filter(
             and_(
                 Product.is_active == True,
-                (Product.name.contains(q)) | (Product.description.contains(q))
+                (Product.name.icontains(q)) | (Product.description.icontains(q))
             )
         )\
         .offset(skip)\
@@ -166,6 +138,34 @@ async def search_products(
         result.append(product_dict)
     
     return result
+
+@router.get("/{product_id}", response_model=ProductResponse)
+async def get_product(product_id: int, db: Session = Depends(get_db)):
+    """Get a single product by ID"""
+    product = db.query(Product).filter(Product.id == product_id).first()
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    
+    # Fetch images
+    images = db.execute(
+        product_images.select().where(product_images.c.product_id == product.id).order_by(product_images.c.order)
+    ).fetchall()
+    
+    product_dict = {
+        **{c.name: getattr(product, c.name) for c in Product.__table__.columns},
+        "images": [
+            {
+                "id": img.id,
+                "product_id": img.product_id,
+                "image_url": img.image_url,
+                "is_primary": img.is_primary,
+                "order": img.order
+            }
+            for img in images
+        ]
+    }
+    
+    return product_dict
 
 @router.post("/", response_model=ProductResponse, status_code=status.HTTP_201_CREATED)
 async def create_product(
