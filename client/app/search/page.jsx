@@ -21,17 +21,31 @@ function SearchResults() {
       try {
         const data = await api.searchProducts(query);
         
-        // FIX: Add the API URL prefix to image paths
+        // Fully formatted data to handle missing folder paths
         const formattedProducts = data.map(product => ({
           ...product,
-          images: product.images.map(img => ({
-            ...img,
-            image_url: img.image_url.startsWith('http') 
-              ? img.image_url 
-              : `https://api.adornstep.com/${img.image_url}`
-          }))
+          images: product.images.map(img => {
+            let path = img.image_url || "";
+            
+            // Check if the path is just a filename (no slashes)
+            // If it is, we force the correct directory prefix
+            if (path && !path.includes('/')) {
+              path = `uploads/products/${path}`;
+            }
+
+            // Clean the path (remove leading slash if exists to avoid double slash)
+            const cleanPath = path.replace(/^\//, '');
+
+            return {
+              ...img,
+              image_url: path.startsWith('http') 
+                ? path 
+                : `https://api.adornstep.com/${cleanPath}`
+            };
+          })
         }));
 
+        console.log("Debug Search Data:", formattedProducts); // Check your console to see the new URLs
         setProducts(formattedProducts);
       } catch (error) {
         console.error('Search failed:', error);
