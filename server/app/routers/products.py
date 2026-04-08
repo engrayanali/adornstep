@@ -130,7 +130,8 @@ async def search_products(
     limit: int = 50,
     db: Session = Depends(get_db)
 ):
-    """Search products by name or description"""
+    """Search products by name or description with images included"""
+    # 1. Fetch products matching the search query
     products = db.query(Product)\
         .filter(
             and_(
@@ -142,7 +143,29 @@ async def search_products(
         .limit(limit)\
         .all()
     
-    return products
+    # 2. Attach images to each product (The missing piece!)
+    result = []
+    for product in products:
+        images = db.execute(
+            product_images.select().where(product_images.c.product_id == product.id).order_by(product_images.c.order)
+        ).fetchall()
+        
+        product_dict = {
+            **{c.name: getattr(product, c.name) for c in Product.__table__.columns},
+            "images": [
+                {
+                    "id": img.id,
+                    "product_id": img.product_id,
+                    "image_url": img.image_url,
+                    "is_primary": img.is_primary,
+                    "order": img.order
+                }
+                for img in images
+            ]
+        }
+        result.append(product_dict)
+    
+    return result
 
 @router.post("/", response_model=ProductResponse, status_code=status.HTTP_201_CREATED)
 async def create_product(
