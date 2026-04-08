@@ -13,7 +13,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <h3 className="text-3xl font-display font-semibold text-white mb-4 tracking-wide">
+            <h3 className="text-3xl font-display font-semibold text-gray-800 mb-4 tracking-wide">
               Adorn Steps
             </h3>
             <p className="text-cream-300 mb-6 font-light leading-relaxed max-w-sm">

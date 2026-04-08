@@ -287,7 +287,7 @@ export default function ProductPage() {
                 <button
                   onClick={handleAddToCart}
                   disabled={product.stock <= 0}
-                  className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gray-800 hover:bg-gray-900 text-white font-semibold rounded-xl transform hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-lg"
+                  className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700  text-white font-semibold rounded-xl transform hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-lg"
                 >
                   <ShoppingCart size={20} />
                   {product.stock <= 0 ? 'Out of Stock' : 'Add to Cart'}
@@ -298,10 +298,6 @@ export default function ProductPage() {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-10 border-t border-gray-100">
                 <div className="flex items-center gap-3">
                   <Truck className="text-pink-500" size={24} />
-                  <div>
-                    <p className="font-semibold text-sm">Free Shipping</p>
-                    <p className="text-xs text-gray-500">On orders over Rs 5,000</p>
-                  </div>
                 </div>
                 <div className="flex items-center gap-3">
                   <Shield className="text-pink-500" size={24} />

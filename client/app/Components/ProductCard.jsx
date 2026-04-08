@@ -2,7 +2,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Star } from 'lucide-react';
 import { useState } from 'react';
 
 export default function ProductCard({ product }) {
@@ -10,17 +9,13 @@ export default function ProductCard({ product }) {
   const displayPrice = discount_price || price;
   const hasDiscount = discount_price && discount_price < price;
   
-  // Image URLs are already normalized by api.js to include full API URL
+  // Image URLs normalized by api.js
   const primaryImageUrl = images?.[0]?.image_url;
   const secondaryImageUrl = images?.[1]?.image_url;
   const primaryImage = primaryImageUrl || '/placeholder-product.jpg';
   const secondaryImage = secondaryImageUrl || primaryImage;
   
   const [currentImage, setCurrentImage] = useState(primaryImage);
-
-  // Mock rating (in real app, this would come from product data)
-  const rating = 4.5;
-  const reviewCount = 128;
 
   return (
     <motion.div
@@ -29,7 +24,7 @@ export default function ProductCard({ product }) {
       className="group relative"
     >
       <div className="bg-white rounded-lg border border-gray-300 shadow-[0_2px_8px_rgba(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.18)] transition-all duration-500 overflow-hidden hover:border-terracotta-300">
-        {/* Product Image */}
+        {/* Product Image Section */}
         <Link href={`/product/${slug}`}>
           <div 
             className="relative w-full aspect-square overflow-hidden bg-gradient-to-br from-cream-50 to-cream-100"
@@ -42,7 +37,7 @@ export default function ProductCard({ product }) {
               className="absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
             />
             
-            {/* Badges */}
+            {/* Badges Logic */}
             <div className="absolute top-3 left-3 flex flex-col gap-2 z-10">
               {hasDiscount && (
                 <span className="bg-gradient-to-r from-terracotta-500 to-terracotta-600 text-white text-xs font-bold px-3 py-1.5 rounded-md shadow-lg tracking-wide uppercase">
@@ -61,36 +56,16 @@ export default function ProductCard({ product }) {
               )}
             </div>
 
-
-            {/* Subtle overlay on hover */}
+            {/* Visual Overlays */}
             <div className="absolute inset-0 bg-gradient-to-t from-gray-900/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            
-            {/* Border glow effect */}
             <div className="absolute inset-0 border border-gray-300/0 group-hover:border-terracotta-400/20 transition-all duration-500" />
           </div>
         </Link>
 
-        {/* Product Info */}
+        {/* Product Info Section */}
         <div className="p-6 bg-gradient-to-b from-white to-cream-50/30">
           <Link href={`/product/${slug}`}>
-            {/* Rating */}
-            <div className="flex items-center gap-1 mb-3">
-              <div className="flex items-center gap-0.5">
-                {[...Array(5)].map((_, i) => (
-                  <Star
-                    key={i}
-                    size={16}
-                    className={`${
-                      i < Math.floor(rating)
-                        ? 'fill-terracotta-500 text-terracotta-500 drop-shadow-sm'
-                        : 'text-cream-300'
-                    } transition-all duration-300`}
-                  />
-                ))}
-              </div>
-              <span className="text-xs text-gray-600 font-medium ml-1">({reviewCount})</span>
-            </div>
-
+            {/* The title now starts directly at the top of the info box */}
             <h3 className="font-semibold text-gray-800 mb-3 line-clamp-2 group-hover:text-terracotta-600 transition-colors duration-300 text-base leading-snug min-h-[3rem]">
               {name}
             </h3>
@@ -113,12 +88,12 @@ export default function ProductCard({ product }) {
             )}
           </Link>
 
-          {/* Add to Cart Button - Shows on hover */}
+          {/* Add to Cart Button */}
           <button 
-            className="w-full mt-4 py-3 bg-gradient-to-r from-gray-800 to-gray-900 text-white text-sm font-bold tracking-wider uppercase opacity-0 group-hover:opacity-100 transition-all duration-300 hover:from-terracotta-500 hover:to-terracotta-600 transform translate-y-2 group-hover:translate-y-0 rounded-lg shadow-md hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full mt-4 py-3 bg-gradient-to-r from-gray-800 to-gray-900 text-white text-sm font-bold tracking-wider uppercase rounded-lg shadow-md opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 hover:scale-[1.02] hover:from-terracotta-500 hover:to-terracotta-600 transition-all duration-300 shadow-md hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={(e) => {
               e.preventDefault();
-              // Add to cart logic here
+              // Your existing cart logic goes here
             }}
             disabled={stock === 0}
           >
@@ -126,7 +101,6 @@ export default function ProductCard({ product }) {
           </button>
         </div>
       </div>
-
     </motion.div>
   );
 }
