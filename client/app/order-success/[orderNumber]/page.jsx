@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation';
 import Navbar from '../../Components/Navbar';
 import Footer from '../../Components/Footer';
-import { CheckCircle, Package, Mail } from 'lucide-react';
+import { CheckCircle, Mail } from 'lucide-react';
 import Link from 'next/link';
 
 export default function OrderSuccessPage() {
@@ -31,40 +31,25 @@ export default function OrderSuccessPage() {
               <p className="text-2xl font-bold text-gray-900">{params.orderNumber}</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 text-left">
-              <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
+            {/* Confirmation Box - Centered since the tracking box is removed */}
+            <div className="max-w-md mx-auto mb-10 text-left">
+              <div className="flex items-start gap-4 p-5 bg-gray-50 rounded-lg border border-gray-100">
                 <Mail className="text-pink-500 flex-shrink-0 mt-1" size={24} />
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-1">Email Confirmation</h3>
                   <p className="text-sm text-gray-600">
-                    We've sent an order confirmation to your email address.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
-                <Package className="text-pink-500 flex-shrink-0 mt-1" size={24} />
-                <div>
-                  <h3 className="font-semibold text-gray-900 mb-1">Order Tracking</h3>
-                  <p className="text-sm text-gray-600">
-                    You can track your order status using your order number.
+                    We've sent an order confirmation and receipt to your email address. Please check your inbox (and spam folder) for details.
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex justify-center">
               <Link
                 href="/"
-                className="px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold rounded-lg hover:from-pink-600 hover:to-purple-700 transition-all"
+                className="px-10 py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold rounded-lg hover:from-pink-600 hover:to-purple-700 transition-all shadow-lg hover:shadow-pink-200/50 transform hover:scale-[1.02]"
               >
                 Continue Shopping
-              </Link>
-              <Link
-                href={`/order-track/${params.orderNumber}`}
-                className="px-6 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:border-pink-500 hover:bg-pink-50 transition-all"
-              >
-                Track Order
               </Link>
             </div>
           </div>

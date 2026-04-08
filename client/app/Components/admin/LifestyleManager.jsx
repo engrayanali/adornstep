@@ -10,7 +10,7 @@ export default function LifestyleManager() {
   const [showModal, setShowModal] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [editingImage, setEditingImage] = useState(null);
-  const [selectedSection, setSelectedSection] = useState('all');
+  // REMOVED: selectedSection state
   const [formData, setFormData] = useState({
     section: 'shop_by_style',
     title: '',
@@ -24,12 +24,12 @@ export default function LifestyleManager() {
 
   useEffect(() => {
     loadImages();
-  }, [selectedSection]);
+  }, []); // REMOVED: dependency on selectedSection
 
   const loadImages = async () => {
     try {
-      const section = selectedSection === 'all' ? null : selectedSection;
-      const data = await api.getLifestyleImages(section, null);
+      // Changed to always fetch all images
+      const data = await api.getLifestyleImages(null, null);
       setImages(data);
     } catch (error) {
       console.error('Error loading lifestyle images:', error);
@@ -135,8 +135,7 @@ export default function LifestyleManager() {
     );
   }
 
-  const shopByStyleImages = images.filter(img => img.section === 'shop_by_style');
-  const liveBeautifullyImages = images.filter(img => img.section === 'live_beautifully');
+  // REMOVED: shopByStyleImages and liveBeautifullyImages filters
 
   return (
     <div>
@@ -157,33 +156,7 @@ export default function LifestyleManager() {
         </button>
       </div>
 
-      {/* Filter Tabs */}
-      <div className="mb-6 flex flex-wrap gap-2">
-        <button
-          onClick={() => setSelectedSection('all')}
-          className={`px-3 sm:px-4 py-2 rounded-xl transition-all focus:outline-none text-sm font-medium ${
-            selectedSection === 'all' ? 'bg-gray-700 text-white shadow-md' : 'bg-cream-100 text-charcoal-700 hover:bg-taupe-200 active:bg-taupe-300'
-          }`}
-        >
-          All ({images.length})
-        </button>
-        <button
-          onClick={() => setSelectedSection('shop_by_style')}
-          className={`px-3 sm:px-4 py-2 rounded-xl transition-all focus:outline-none text-sm font-medium ${
-            selectedSection === 'shop_by_style' ? 'bg-gray-700 text-white shadow-md' : 'bg-cream-100 text-charcoal-700 hover:bg-taupe-200 active:bg-taupe-300'
-          }`}
-        >
-          Shop by Style ({shopByStyleImages.length})
-        </button>
-        <button
-          onClick={() => setSelectedSection('live_beautifully')}
-          className={`px-3 sm:px-4 py-2 rounded-xl transition-all focus:outline-none text-sm font-medium ${
-            selectedSection === 'live_beautifully' ? 'bg-gray-700 text-white shadow-md' : 'bg-cream-100 text-charcoal-700 hover:bg-taupe-200 active:bg-taupe-300'
-          }`}
-        >
-          Live Beautifully ({liveBeautifullyImages.length})
-        </button>
-      </div>
+      {/* REMOVED: Filter Tabs Section */}
 
       {/* Images Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
@@ -234,7 +207,6 @@ export default function LifestyleManager() {
                 <button
                   onClick={() => handleEdit(image)}
                   className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-blue-50 text-blue-600 hover:bg-blue-100 active:bg-blue-200 rounded-lg transition-all text-sm font-medium"
-                  aria-label="Edit image"
                 >
                   <Edit size={16} />
                   <span>Edit</span>
@@ -242,7 +214,6 @@ export default function LifestyleManager() {
                 <button
                   onClick={() => handleDelete(image.id)}
                   className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-red-50 text-red-600 hover:bg-red-100 active:bg-red-200 rounded-lg transition-all text-sm font-medium"
-                  aria-label="Delete image"
                 >
                   <Trash2 size={16} />
                   <span>Delete</span>
@@ -259,7 +230,7 @@ export default function LifestyleManager() {
         )}
       </div>
 
-      {/* Modal */}
+      {/* Modal remains unchanged to allow categorization during creation/edit */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">

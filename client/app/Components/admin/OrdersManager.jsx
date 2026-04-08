@@ -96,7 +96,6 @@ export default function OrdersManager() {
                       <div className="font-semibold text-charcoal-800 text-sm">{order.customer_name}</div>
                       <div className="flex items-center gap-2 mt-1">
                         <span className="text-xs text-taupe-600 truncate max-w-[150px]">{order.customer_email}</span>
-                        {/* Table Quick-View Payment Tag */}
                         <span className="text-[9px] px-1.5 py-0.5 rounded bg-taupe-100 text-taupe-700 font-bold uppercase tracking-tighter">
                           {order.payment_method || 'COD'}
                         </span>
@@ -177,7 +176,6 @@ export default function OrdersManager() {
             {/* Modal Body */}
             <div className="p-5 sm:p-6 overflow-y-auto flex-1 space-y-5">
               
-              {/* Customer Info & Payment Method Section */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <h4 className="font-semibold text-charcoal-800 mb-3 text-sm uppercase tracking-wide">Customer Information</h4>
@@ -209,7 +207,6 @@ export default function OrdersManager() {
                 </div>
               </div>
 
-              {/* Shipping */}
               <div>
                 <h4 className="font-semibold text-charcoal-800 mb-3 text-sm uppercase tracking-wide">Shipping Address</h4>
                 <div className="bg-gradient-to-br from-cream-50 to-blush-50 border border-taupe-200 rounded-xl p-4 text-sm text-charcoal-600 space-y-1">
@@ -219,7 +216,6 @@ export default function OrdersManager() {
                 </div>
               </div>
 
-              {/* Order Items */}
               <div>
                 <h4 className="font-semibold text-charcoal-800 mb-3 text-sm uppercase tracking-wide">Order Items</h4>
                 <div className="space-y-3">
@@ -240,7 +236,7 @@ export default function OrdersManager() {
                           {item.color && <div><p className="text-xs text-taupe-600 m-0 mb-1">Color</p><p className="font-bold text-charcoal-800 text-lg m-0">{item.color}</p></div>}
                         </div>
                       </div>
-                      <div className="flex justify-between items-center pt-3 border-t border-taupe-200">
+                      <div className="flex justify-between items-center pt-3 border-t border-taupe-100">
                         <p className="text-sm font-medium text-charcoal-700 m-0">Item Total:</p>
                         <p className="text-lg font-bold text-emerald-600 m-0">Rs {(item.product_price * item.quantity).toFixed(2)}</p>
                       </div>
@@ -249,10 +245,22 @@ export default function OrdersManager() {
                 </div>
               </div>
 
+              {/* Order Summary Calculations */}
+              <div className="bg-white border border-taupe-200 rounded-xl p-4 space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-taupe-600">Subtotal</span>
+                  <span className="font-semibold text-charcoal-800">Rs {(selectedOrder.total_amount - (selectedOrder.shipping_charges || 0)).toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-taupe-600">Shipping Charges</span>
+                  <span className="font-semibold text-charcoal-800">Rs {(selectedOrder.shipping_charges || 0).toFixed(2)}</span>
+                </div>
+              </div>
+
               {/* Total */}
               <div className="bg-gradient-to-r from-emerald-50 via-blue-50 to-blush-50 rounded-xl p-4 sm:p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-2 border-emerald-200">
                 <div>
-                  <p className="text-sm text-charcoal-700 m-0 mb-1">Order Total</p>
+                  <p className="text-sm text-charcoal-700 m-0 mb-1">Total Amount Payable</p>
                   <p className="text-2xl sm:text-3xl font-bold text-charcoal-800 m-0">Rs {selectedOrder.total_amount.toFixed(2)}</p>
                 </div>
                 <div className="text-left sm:text-right">

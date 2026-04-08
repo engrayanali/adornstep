@@ -39,7 +39,6 @@ export default function ProductCard({ product }) {
             {/* Badges Logic */}
             <div className="absolute top-3 left-3 flex flex-col gap-2 z-10">
               {hasDiscount && (
-                /* INCREASED: Changed text-xs to text-sm and px-3 to px-4 for the discount badge */
                 <span className="bg-gradient-to-r from-terracotta-500 to-terracotta-600 text-white text-sm font-black px-4 py-2 rounded-md shadow-lg tracking-wider uppercase">
                   {Math.round(((price - discount_price) / price) * 100)}% OFF
                 </span>
@@ -62,36 +61,33 @@ export default function ProductCard({ product }) {
         </Link>
 
         {/* Product Info Section */}
-        <div className="p-6 bg-gradient-to-b from-white to-cream-50/30">
+        <div className="p-6 lg:p-7 bg-gradient-to-b from-white to-cream-50/30">
           <Link href={`/product/${slug}`}>
-            {/* INCREASED: Changed text-base to text-xl and adjusted font-semibold to font-bold */}
-            <h3 className="font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-terracotta-600 transition-colors duration-300 text-xl leading-tight min-h-[3.5rem]">
+            {/* ENHANCED TITLE: Increased to text-3xl, font-black, and tighter tracking */}
+            <h3 className="font-black text-gray-900 mb-4 line-clamp-2 group-hover:text-terracotta-600 transition-colors duration-300 text-2xl md:text-3xl leading-[1.1] tracking-tight min-h-[4.5rem]">
               {name}
             </h3>
             
             <div className="flex items-baseline gap-2.5 mb-1">
-              {/* INCREASED: Changed text-2xl to text-3xl */}
               <span className="text-3xl font-extrabold text-gray-900 tracking-tighter">
-                ₹{displayPrice.toLocaleString()}
+                Rs{displayPrice.toLocaleString()}
               </span>
               {hasDiscount && (
-                /* INCREASED: Changed text-sm to text-base */
                 <span className="text-base text-gray-400 line-through font-medium">
-                  ₹{price.toLocaleString()}
+                  Rs{price.toLocaleString()}
                 </span>
               )}
             </div>
             
             {hasDiscount && (
-              /* INCREASED: Changed text-xs to text-sm */
               <p className="text-sm text-green-600 font-bold">
-                You save ₹{(price - discount_price).toLocaleString()}
+                You save Rs{(price - discount_price).toLocaleString()}
               </p>
             )}
           </Link>
 
           <button 
-            className="w-full mt-4 py-3 bg-gradient-to-r from-gray-800 to-gray-900 text-white text-sm font-bold tracking-wider uppercase rounded-lg shadow-md opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 hover:scale-[1.02] hover:from-terracotta-500 hover:to-terracotta-600 transition-all duration-300 shadow-md hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full mt-5 py-3.5 bg-gradient-to-r from-pink-500 to-purple-600 text-white text-sm font-bold tracking-wider uppercase rounded-lg shadow-md opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hover:scale-[1.02] hover:from-terracotta-500 hover:to-terracotta-600 hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={(e) => {
               e.preventDefault();
             }}
