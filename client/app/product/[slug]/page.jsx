@@ -144,7 +144,7 @@ export default function ProductPage() {
 
               {/* Thumbnail Gallery - URLs are already normalized by api.js */}
               {images.length > 1 && (
-                <div className="grid grid-cols-4 gap-4">
+                <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   {images.map((image, index) => (
                     <button
                       key={image.id}
@@ -294,7 +294,7 @@ export default function ProductPage() {
               </div>
 
               {/* Features */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6 border-t">
+              <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pt-6 border-t">
                 <div className="flex items-center gap-3">
                   <Truck className="text-pink-500" size={24} />
                   <div>
