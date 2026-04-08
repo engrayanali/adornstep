@@ -124,7 +124,8 @@ export default function ProductPage() {
       
       <div className="pt-24 pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 xl:gap-24 items-start">
             {/* Image Gallery */}
             <div>
               {/* Main Image - URLs are already normalized by api.js */}
@@ -144,7 +145,7 @@ export default function ProductPage() {
 
               {/* Thumbnail Gallery - URLs are already normalized by api.js */}
               {images.length > 1 && (
-                <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="flex flex-wrap gap-4 mt-6">
                   {images.map((image, index) => (
                     <button
                       key={image.id}
@@ -294,7 +295,7 @@ export default function ProductPage() {
               </div>
 
               {/* Features */}
-              <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pt-6 border-t">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-10 border-t border-gray-100">
                 <div className="flex items-center gap-3">
                   <Truck className="text-pink-500" size={24} />
                   <div>
