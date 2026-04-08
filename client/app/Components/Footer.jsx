@@ -13,7 +13,8 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <h3 className="text-3xl font-display font-semibold text-gray-800 mb-4 tracking-wide">
+            {/* Fixed color to white/cream for visibility on dark background */}
+            <h3 className="text-3xl font-display font-semibold text-white mb-4 tracking-wide">
               Adorn Steps
             </h3>
             <p className="text-cream-300 mb-6 font-light leading-relaxed max-w-sm">
@@ -22,15 +23,19 @@ export default function Footer() {
             </p>
             <div className="flex gap-3">
               <a 
-                href="#" 
-                className="p-3 bg-charcoal-800 hover:bg-terracotta-500 rounded-full transition-all duration-300 hover-lift"
+                href="https://www.facebook.com/profile.php?id=61576604137718#" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3 bg-charcoal-800 hover:bg-terracotta-500 rounded-full transition-all duration-300 hover-lift text-white"
                 aria-label="Facebook"
               >
                 <Facebook size={18} />
               </a>
               <a 
-                href="#" 
-                className="p-3 bg-charcoal-800 hover:bg-terracotta-500 rounded-full transition-all duration-300 hover-lift"
+                href="https://www.instagram.com/adorn_step?utm_source=qr" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3 bg-charcoal-800 hover:bg-terracotta-500 rounded-full transition-all duration-300 hover-lift text-white"
                 aria-label="Instagram"
               >
                 <Instagram size={18} />
@@ -73,8 +78,8 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-3 text-cream-300 font-light">
                 <Phone size={20} className="flex-shrink-0 text-terracotta-500" />
-                <a href="tel:+1234567890" className="hover:text-terracotta-500 transition-colors text-sm">
-                  +923213880301
+                <a href="tel:+923213880301" className="hover:text-terracotta-500 transition-colors text-sm">
+                  +92 321 3880301
                 </a>
               </li>
               <li className="flex items-center gap-3 text-cream-300 font-light">

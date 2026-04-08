@@ -114,14 +114,14 @@ export default function HeroBanner() {
                     </h2>
                   )}
                   {banner.subtitle && (
-                    <p className="text-lg md:text-2xl text-cream-100 mb-10 drop-shadow-lg animate-fade-in-delay font-light leading-relaxed">
+                    <p className="text-lg md:text-2xl text-white mb-10 drop-shadow-lg animate-fade-in-delay font-light leading-relaxed">
                       {banner.subtitle}
                     </p>
                   )}
                   {banner.button_text && banner.button_link && (
                     <Link
                       href={banner.button_link}
-                      className="inline-block px-10 py-4 bg-white text-gray-800 font-medium tracking-wider uppercase text-sm hover:bg-terracotta-500 hover:text-white transition-all duration-300 hover-lift shadow-xl animate-fade-in-delay-2"
+                      className="inline-block px-10 py-4 bg-white text-gray-800 font-medium tracking-wider uppercase text-sm hover:bg-gray-900 hover:text-white transition-all duration-300 hover-lift shadow-xl animate-fade-in-delay-2"
                     >
                       {banner.button_text}
                     </Link>
