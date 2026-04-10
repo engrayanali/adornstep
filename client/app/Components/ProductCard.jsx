@@ -87,7 +87,9 @@ export default function ProductCard({ product }) {
           </Link>
 
           <button 
-            className="w-full mt-5 py-3.5 bg-gradient-to-r from-pink-500 to-purple-600 text-white text-sm font-bold tracking-wider uppercase rounded-lg shadow-md opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hover:scale-[1.02] hover:from-terracotta-500 hover:to-terracotta-600 hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full mt-5 py-3.5 border border-gray-300 text-gray-600 text-sm font-bold tracking-wider uppercase rounded-lg shadow-md opacity-0 translate-y-2 
+            group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hover:scale-[1.02] hover:bg-gray-50 hover:text-gray-800 hover:border-gray-400 
+            hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={(e) => {
               e.preventDefault();
             }}

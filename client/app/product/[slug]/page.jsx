@@ -122,10 +122,10 @@ export default function ProductPage() {
     <div className="min-h-screen">
       <Navbar />
       
-      <div className="pt-24 pb-16">
+      <div className="pt-8 md:pt-12 pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 xl:gap-24 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
             {/* Image Gallery */}
             <div>
               {/* Main Image - URLs are already normalized by api.js */}
@@ -295,10 +295,7 @@ export default function ProductPage() {
               </div>
 
               {/* Features */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-10 border-t border-gray-100">
-                <div className="flex items-center gap-3">
-                  <Truck className="text-pink-500" size={24} />
-                </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-10 border-t border-gray-100">
                 <div className="flex items-center gap-3">
                   <Shield className="text-pink-500" size={24} />
                   <div>
@@ -315,7 +312,7 @@ export default function ProductPage() {
                 </div>
               </div>
             </div>
-          </div>
+          </div>  
         </div>
       </div>
 

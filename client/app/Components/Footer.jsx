@@ -14,10 +14,10 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2">
             {/* Fixed color to white/cream for visibility on dark background */}
-            <h3 className="text-3xl font-display font-semibold text-white mb-4 tracking-wide">
+            <h3 className="text-3xl font-display font-semibold text-gray-900 mb-4 tracking-wide">
               Adorn Steps
             </h3>
-            <p className="text-cream-300 mb-6 font-light leading-relaxed max-w-sm">
+            <p className="text-gray-900 mb-6 font-light leading-relaxed max-w-sm">
               Elegantly effortless footwear designed for the modern woman. 
               Step into comfort without compromising on style.
             </p>
@@ -45,7 +45,7 @@ export default function Footer() {
 
           {/* Shop */}
           <div>
-            <h4 className="text-lg font-semibold mb-5 text-white tracking-wide">Shop</h4>
+            <h4 className="text-lg font-semibold mb-5 text-gray-900 tracking-wide">Shop</h4>
             <ul className="space-y-3">
               <li><Link href="/category/heels" className="text-cream-300 hover:text-terracotta-500 transition-colors font-light">Heels</Link></li>
               <li><Link href="/category/flats" className="text-cream-300 hover:text-terracotta-500 transition-colors font-light">Flats</Link></li>
@@ -58,7 +58,7 @@ export default function Footer() {
 
           {/* Customer Care */}
           <div>
-            <h4 className="text-lg font-semibold mb-5 text-white tracking-wide">Customer Care</h4>
+            <h4 className="text-lg font-semibold mb-5 text-gray-900 tracking-wide">Customer Care</h4>
             <ul className="space-y-3">
               <li><Link href="/about" className="text-cream-300 hover:text-terracotta-500 transition-colors font-light">About Us</Link></li>
               <li><Link href="/contact" className="text-cream-300 hover:text-terracotta-500 transition-colors font-light">Contact</Link></li>
@@ -70,7 +70,7 @@ export default function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h4 className="text-lg font-semibold mb-5 text-white tracking-wide">Connect</h4>
+            <h4 className="text-lg font-semibold mb-5 text-gray-900 tracking-wide">Connect</h4>
             <ul className="space-y-4">
               <li className="flex items-start gap-3 text-cream-300 font-light">
                 <MapPin size={20} className="flex-shrink-0 mt-1 text-terracotta-500" />

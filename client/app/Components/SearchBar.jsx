@@ -1,38 +1,87 @@
 'use client';
-import { useState } from 'react';
-import { Search, X } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 
-export default function SearchBar({ className = '' }) {
-  const [query, setQuery] = useState('');
-  const router = useRouter();
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
+import Navbar from '@/Components/Navbar';
+import Footer from '@/Components/Footer';
+import ProductCard from '@/Components/ProductCard'; // Ensure this matches your file structure
+import api from '@/lib/api';
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (query.trim()) {
-      router.push(`/search?q=${encodeURIComponent(query.trim())}`);
-    }
-  };
+export default function SearchResults() {
+  const searchParams = useSearchParams();
+  const query = searchParams.get('q');
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchResults = async () => {
+      setLoading(true);
+      try {
+        if (query) {
+          const data = await api.searchProducts(query);
+          setProducts(data);
+        }
+      } catch (error) {
+        console.error('Search error:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchResults();
+  }, [query]);
 
   return (
-    <form onSubmit={handleSubmit} className={`relative ${className}`}>
-      <input
-        type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search for slippers..."
-        className="w-full px-4 py-2 pl-10 pr-10 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent"
-      />
-      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-      {query && (
-        <button
-          type="button"
-          onClick={() => setQuery('')}
-          className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-gray-100 rounded-full"
-        >
-          <X className="w-4 h-4 text-gray-400" />
-        </button>
-      )}
-    </form>
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+
+      <main className="flex-grow pt-24 pb-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          {/* Search Header */}
+          <div className="mb-8">
+            <h1 className="text-2xl md:text-3xl font-display font-semibold text-gray-900">
+              {query ? `Showing results for "${query}"` : 'All Products'}
+            </h1>
+            <p className="text-gray-500 mt-2">
+              {products.length} {products.length === 1 ? 'item' : 'items'} found
+            </p>
+          </div>
+
+          {/* Loading State */}
+          {loading ? (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="animate-pulse bg-gray-100 h-80 rounded-2xl"></div>
+              ))}
+            </div>
+          ) : (
+            <>
+              {products.length > 0 ? (
+                /* The Fix: Grid System */
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-10">
+                  {products.map((product) => (
+                    <ProductCard key={product.id} product={product} />
+                  ))}
+                </div>
+              ) : (
+                /* Empty State */
+                <div className="text-center py-20 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
+                  <h3 className="text-lg font-medium text-gray-900">No matches found</h3>
+                  <p className="mt-2 text-gray-500">Try checking your spelling or use more general terms.</p>
+                  <button 
+                    onClick={() => window.location.href = '/'}
+                    className="mt-6 text-pink-500 font-semibold hover:underline"
+                  >
+                    Continue Shopping
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </main>
+
+      <Footer />
+    </div>
   );
 }

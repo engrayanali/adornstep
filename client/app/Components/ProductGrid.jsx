@@ -8,7 +8,7 @@ export default function ProductGrid({ products, title, subtitle }) {
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {title && (
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-display font-semibold text-gray-800 mb-4 tracking-tight">
+            <h2 className="text-6xl md:text-7xl font-display font-semibold text-gray-800 mb-4 tracking-tight">
               {title}
             </h2>
             {subtitle && (
@@ -16,7 +16,7 @@ export default function ProductGrid({ products, title, subtitle }) {
                 {subtitle}
               </p>
             )}
-            <div className="w-20 h-0.5 bg-terracotta-500 mx-auto mt-6"></div>
+            <div className="w-20 h-0.5 bg-white mx-auto mt-6"></div>
           </div>
         )}
 
