@@ -19,16 +19,25 @@ export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
 
-  // Dynamic Transparency Logic
-  const isHomePage = pathname === '/';
+  // FIX: Robust homepage detection (handles trailing slashes)
+  const isHomePage = pathname === '/' || pathname === '';
   const isTransparent = isHomePage && !isScrolled;
 
+  const handleDesktopSearch = (e) => {
+    e.preventDefault();
+    if (desktopSearchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(desktopSearchQuery.trim())}`);
+      setIsSearchOpen(false);
+      setDesktopSearchQuery('');
+    }
+  };
+
   useEffect(() => {
+    // FIX: Check scroll position immediately on mount
     const handleScroll = () => {
-      // Small threshold (10px) makes the transition feel more responsive
-      setIsScrolled(window.scrollY > 10);
+      setIsScrolled(window.scrollY > 20);
     };
-    
+
     const updateCart = () => setCartCount(getCartCount());
 
     const loadCategories = async () => {
@@ -43,10 +52,13 @@ export default function Navbar() {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    window.addEventListener('cartUpdated', updateCart);
+    // Initialize state
+    handleScroll();
     updateCart();
     loadCategories();
+
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('cartUpdated', updateCart);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -54,142 +66,84 @@ export default function Navbar() {
     };
   }, []);
 
-  // Close menu when navigating
   useEffect(() => {
     setIsMenuOpen(false);
     setIsSearchOpen(false);
   }, [pathname]);
 
-  const handleDesktopSearch = (e) => {
-    e.preventDefault();
-    if (desktopSearchQuery.trim()) {
-      router.push(`/search?q=${encodeURIComponent(desktopSearchQuery.trim())}`);
-      setIsSearchOpen(false);
-      setDesktopSearchQuery('');
-    }
-  };
-
-  const handleMobileSearch = (e) => {
-    e.preventDefault();
-    if (mobileSearchQuery.trim()) {
-      router.push(`/search?q=${encodeURIComponent(mobileSearchQuery.trim())}`);
-      setIsMenuOpen(false);
-      setIsMobileSearchOpen(false);
-      setMobileSearchQuery('');
-    }
-  };
-
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         isTransparent
-          ? 'bg-transparent py-7' 
-          : 'bg-white/95 backdrop-blur-md shadow-md py-3'
+          ? 'bg-transparent py-5'
+          : 'bg-white/98 backdrop-blur-md shadow-md py-3'
       }`}
     >
-      <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-12 xl:px-20">
+      <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-12">
         <div className="flex items-center justify-between w-full gap-8">
-          
-          {/* Logo with Dynamic Filter */}
+
+          {/* Logo - Inverts to white when transparent */}
           <Link href="/" className="flex items-center group flex-shrink-0">
             <img
               src="/logo.png"
               alt="Adorn Steps"
-              className={`h-12 md:h-14 lg:h-16 w-auto object-contain transition-all duration-300 ${
-                isTransparent ? 'brightness-0 invert drop-shadow-lg' : ''
+              className={`h-12 md:h-14 w-auto object-contain transition-all duration-300 ${
+                isTransparent ? 'brightness-0 invert' : ''
               }`}
             />
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center flex-1 justify-center gap-8 xl:gap-10">
+          {/* Desktop Links */}
+          <div className="hidden lg:flex items-center flex-1 justify-center gap-8">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className={`text-sm font-bold tracking-widest uppercase transition-all duration-300 relative group whitespace-nowrap drop-shadow-sm ${
-                  isTransparent
-                    ? 'text-white hover:text-white/80'
-                    : 'text-gray-800 hover:text-rose-600'
+                className={`text-xs font-bold tracking-widest uppercase transition-colors duration-300 relative group ${
+                  isTransparent ? 'text-white' : 'text-gray-900'
                 }`}
               >
                 {item.name}
-                <span className={`absolute -bottom-1 left-0 w-0 h-0.5 group-hover:w-full transition-all duration-300 ${
-                  isTransparent ? 'bg-white' : 'bg-rose-600'
-                }`}></span>
+                <span className={`absolute -bottom-1 left-0 h-0.5 bg-rose-600 transition-all duration-300 ${pathname === item.href ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
               </Link>
             ))}
           </div>
 
-          {/* Action Icons */}
-          <div className="flex items-center gap-4 flex-shrink-0">
-            {/* Desktop Search Toggle */}
-            <div className="hidden md:flex items-center">
-              {isSearchOpen ? (
-                <form onSubmit={handleDesktopSearch} className="flex items-center gap-2 animate-in fade-in slide-in-from-right-4">
-                  <input
-                    type="text"
-                    value={desktopSearchQuery}
-                    onChange={(e) => setDesktopSearchQuery(e.target.value)}
-                    placeholder="Search..."
-                    className="w-48 lg:w-64 px-4 py-2 rounded-full border bg-white/10 backdrop-blur-md text-white border-white/20 placeholder:text-white/70 focus:outline-none"
-                    autoFocus
-                  />
-                  <button type="button" onClick={() => setIsSearchOpen(false)}>
-                    <X size={20} className={isTransparent ? 'text-white' : 'text-gray-800'} />
-                  </button>
-                </form>
-              ) : (
-                <button
-                  onClick={() => setIsSearchOpen(true)}
-                  className={`p-3 rounded-full transition-all ${isTransparent ? 'hover:bg-white/10 text-white' : 'hover:bg-gray-100 text-gray-800'}`}
-                >
-                  <Search size={22} className="drop-shadow-md" />
-                </button>
-              )}
+          {/* Right Action Icons */}
+          <div className="flex items-center gap-4">
+            <div className="hidden md:block">
+               {isSearchOpen ? (
+                 <form onSubmit={handleDesktopSearch} className="flex items-center gap-2">
+                   <input
+                     type="text"
+                     value={desktopSearchQuery}
+                     onChange={(e) => setDesktopSearchQuery(e.target.value)}
+                     placeholder="Search..."
+                     className="px-4 py-1.5 rounded-full border text-sm focus:outline-none w-48"
+                     autoFocus
+                   />
+                   <X size={18} className="cursor-pointer" onClick={() => setIsSearchOpen(false)} />
+                 </form>
+               ) : (
+                 <Search size={20} className={`cursor-pointer ${isTransparent ? 'text-white' : 'text-gray-900'}`} onClick={() => setIsSearchOpen(true)} />
+               )}
             </div>
 
-            {/* Shopping Cart */}
-            <Link
-              href="/cart"
-              className={`p-3 rounded-full transition-all relative ${isTransparent ? 'hover:bg-white/10 text-white' : 'hover:bg-gray-100 text-gray-800'}`}
-            >
-              <ShoppingCart size={22} className="drop-shadow-md" />
+            <Link href="/cart" className="relative">
+              <ShoppingCart size={22} className={isTransparent ? 'text-white' : 'text-gray-900'} />
               {cartCount > 0 && (
-                <span className="absolute top-1 right-1 bg-rose-600 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">
+                <span className="absolute -top-2 -right-2 bg-rose-600 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
                   {cartCount}
                 </span>
               )}
             </Link>
 
-            {/* Hamburger (Mobile) */}
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className={`lg:hidden p-3 rounded-full transition-all ${isTransparent ? 'hover:bg-white/10 text-white' : 'hover:bg-gray-100 text-gray-800'}`}
-            >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="lg:hidden">
+              {isMenuOpen ? <X size={26} /> : <Menu size={26} className={isTransparent ? 'text-white' : 'text-gray-900'} />}
             </button>
           </div>
         </div>
       </div>
-
-      {/* Mobile Drawer */}
-      {isMenuOpen && (
-        <div className="lg:hidden fixed inset-0 top-[80px] bg-white z-40 p-6 animate-in slide-in-from-top">
-          <div className="flex flex-col gap-6">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="text-lg font-bold text-gray-800 border-b border-gray-100 pb-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {item.name}
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
     </nav>
   );
 }
