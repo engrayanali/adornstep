@@ -19,31 +19,16 @@ export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
 
+  // Dynamic Transparency Logic
   const isHomePage = pathname === '/';
-  // Navbar is transparent only on home page when not scrolled
   const isTransparent = isHomePage && !isScrolled;
 
-  const handleDesktopSearch = (e) => {
-    e.preventDefault();
-    if (desktopSearchQuery.trim()) {
-      router.push(`/search?q=${encodeURIComponent(desktopSearchQuery.trim())}`);
-      setIsSearchOpen(false);
-      setDesktopSearchQuery('');
-    }
-  };
-
-  const handleMobileSearch = (e) => {
-    e.preventDefault();
-    if (mobileSearchQuery.trim()) {
-      router.push(`/search?q=${encodeURIComponent(mobileSearchQuery.trim())}`);
-      setIsMenuOpen(false);
-      setIsMobileSearchOpen(false);
-      setMobileSearchQuery('');
-    }
-  };
-
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    const handleScroll = () => {
+      // Small threshold (10px) makes the transition feel more responsive
+      setIsScrolled(window.scrollY > 10);
+    };
+    
     const updateCart = () => setCartCount(getCartCount());
 
     const loadCategories = async () => {
@@ -69,30 +54,49 @@ export default function Navbar() {
     };
   }, []);
 
-  // Close menu when route changes
+  // Close menu when navigating
   useEffect(() => {
     setIsMenuOpen(false);
     setIsSearchOpen(false);
   }, [pathname]);
 
+  const handleDesktopSearch = (e) => {
+    e.preventDefault();
+    if (desktopSearchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(desktopSearchQuery.trim())}`);
+      setIsSearchOpen(false);
+      setDesktopSearchQuery('');
+    }
+  };
+
+  const handleMobileSearch = (e) => {
+    e.preventDefault();
+    if (mobileSearchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(mobileSearchQuery.trim())}`);
+      setIsMenuOpen(false);
+      setIsMobileSearchOpen(false);
+      setMobileSearchQuery('');
+    }
+  };
+
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${
         isTransparent
-          ? 'bg-transparent py-5'
-          : 'bg-white/98 backdrop-blur-md shadow-soft py-3'
+          ? 'bg-transparent py-7' 
+          : 'bg-white/95 backdrop-blur-md shadow-md py-3'
       }`}
     >
       <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-12 xl:px-20">
         <div className="flex items-center justify-between w-full gap-8">
-
-          {/* Logo */}
+          
+          {/* Logo with Dynamic Filter */}
           <Link href="/" className="flex items-center group flex-shrink-0">
             <img
               src="/logo.png"
               alt="Adorn Steps"
               className={`h-12 md:h-14 lg:h-16 w-auto object-contain transition-all duration-300 ${
-                isTransparent ? 'brightness-0 invert' : ''
+                isTransparent ? 'brightness-0 invert drop-shadow-lg' : ''
               }`}
             />
           </Link>
@@ -103,142 +107,89 @@ export default function Navbar() {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`text-sm font-medium tracking-wider uppercase transition-colors duration-300 relative group whitespace-nowrap ${
+                className={`text-sm font-bold tracking-widest uppercase transition-all duration-300 relative group whitespace-nowrap drop-shadow-sm ${
                   isTransparent
-                    ? 'text-white hover:text-white/70'
-                    : 'text-charcoal-700 hover:text-terracotta-500'
+                    ? 'text-white hover:text-white/80'
+                    : 'text-gray-800 hover:text-rose-600'
                 }`}
               >
                 {item.name}
                 <span className={`absolute -bottom-1 left-0 w-0 h-0.5 group-hover:w-full transition-all duration-300 ${
-                  isTransparent ? 'bg-white' : 'bg-terracotta-500'
+                  isTransparent ? 'bg-white' : 'bg-rose-600'
                 }`}></span>
               </Link>
             ))}
           </div>
 
-          {/* Right Icons */}
-          <div className="flex items-center gap-5 flex-shrink-0">
-            {/* Search - Desktop */}
-            <div className="hidden md:flex items-center gap-2">
+          {/* Action Icons */}
+          <div className="flex items-center gap-4 flex-shrink-0">
+            {/* Desktop Search Toggle */}
+            <div className="hidden md:flex items-center">
               {isSearchOpen ? (
-                <form onSubmit={handleDesktopSearch} className="flex items-center gap-2 animate-fade-in">
+                <form onSubmit={handleDesktopSearch} className="flex items-center gap-2 animate-in fade-in slide-in-from-right-4">
                   <input
                     type="text"
                     value={desktopSearchQuery}
                     onChange={(e) => setDesktopSearchQuery(e.target.value)}
-                    placeholder="Search products..."
-                    className="w-48 lg:w-64 xl:w-80 px-4 py-2 rounded-full border border-taupe-300 focus:border-terracotta-500 focus:outline-none focus:ring-2 focus:ring-terracotta-200 transition-all duration-300 text-sm bg-white text-charcoal-800"
+                    placeholder="Search..."
+                    className="w-48 lg:w-64 px-4 py-2 rounded-full border bg-white/10 backdrop-blur-md text-white border-white/20 placeholder:text-white/70 focus:outline-none"
                     autoFocus
                   />
-                  <button
-                    type="button"
-                    onClick={() => setIsSearchOpen(false)}
-                    className={`p-2.5 rounded-full transition-all duration-300 ${
-                      isTransparent ? 'hover:bg-white/20' : 'hover:bg-cream-200'
-                    }`}
-                    aria-label="Close search"
-                  >
-                    <X size={20} className={isTransparent ? 'text-white' : 'text-charcoal-700'} />
+                  <button type="button" onClick={() => setIsSearchOpen(false)}>
+                    <X size={20} className={isTransparent ? 'text-white' : 'text-gray-800'} />
                   </button>
                 </form>
               ) : (
                 <button
                   onClick={() => setIsSearchOpen(true)}
-                  className={`p-2.5 rounded-full transition-all duration-300 ${
-                    isTransparent ? 'hover:bg-white/20' : 'hover:bg-cream-200'
-                  }`}
-                  aria-label="Search"
+                  className={`p-3 rounded-full transition-all ${isTransparent ? 'hover:bg-white/10 text-white' : 'hover:bg-gray-100 text-gray-800'}`}
                 >
-                  <Search size={20} className={isTransparent ? 'text-white' : 'text-charcoal-700'} />
+                  <Search size={22} className="drop-shadow-md" />
                 </button>
               )}
             </div>
 
-            {/* Cart */}
+            {/* Shopping Cart */}
             <Link
               href="/cart"
-              className={`p-2.5 rounded-full transition-all duration-300 relative ${
-                isTransparent ? 'hover:bg-white/20' : 'hover:bg-cream-200'
-              }`}
-              aria-label="Shopping Cart"
+              className={`p-3 rounded-full transition-all relative ${isTransparent ? 'hover:bg-white/10 text-white' : 'hover:bg-gray-100 text-gray-800'}`}
             >
-              <ShoppingCart size={20} className={isTransparent ? 'text-white' : 'text-charcoal-700'} />
+              <ShoppingCart size={22} className="drop-shadow-md" />
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-terracotta-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-semibold">
+                <span className="absolute top-1 right-1 bg-rose-600 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">
                   {cartCount}
                 </span>
               )}
             </Link>
 
-            {/* Mobile Menu Button */}
+            {/* Hamburger (Mobile) */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className={`lg:hidden p-2.5 rounded-full transition-all duration-300 ${
-                isTransparent ? 'hover:bg-white/20' : 'hover:bg-cream-200'
-              }`}
-              aria-label="Toggle menu"
+              className={`lg:hidden p-3 rounded-full transition-all ${isTransparent ? 'hover:bg-white/10 text-white' : 'hover:bg-gray-100 text-gray-800'}`}
             >
-              {isMenuOpen
-                ? <X size={24} className={isTransparent ? 'text-white' : 'text-charcoal-800'} />
-                : <Menu size={24} className={isTransparent ? 'text-white' : 'text-charcoal-800'} />
-              }
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
-
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div className={`lg:hidden pt-6 pb-4 border-t mt-4 animate-fade-in ${
-            isTransparent ? 'border-white/30 bg-black/40 backdrop-blur-sm rounded-xl px-2' : 'border-cream-300'
-          }`}>
-            <div className="flex flex-col space-y-1">
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  onClick={() => setIsMenuOpen(false)}
-                  className={`px-4 py-3 rounded-lg font-medium transition-all duration-300 text-sm tracking-wide ${
-                    isTransparent
-                      ? 'text-white hover:bg-white/20'
-                      : 'text-charcoal-700 hover:text-terracotta-500 hover:bg-cream-200'
-                  }`}
-                >
-                  {item.name}
-                </Link>
-              ))}
-
-              {/* Mobile Search */}
-              <div className={`pt-4 mt-4 border-t space-y-2 ${isTransparent ? 'border-white/30' : 'border-cream-300'}`}>
-                {isMobileSearchOpen ? (
-                  <form onSubmit={handleMobileSearch} className="flex items-center gap-2 px-4 py-2">
-                    <input
-                      type="text"
-                      value={mobileSearchQuery}
-                      onChange={(e) => setMobileSearchQuery(e.target.value)}
-                      placeholder="Search products..."
-                      autoFocus
-                      className="flex-1 px-4 py-2 border border-taupe-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-terracotta-200 bg-white text-charcoal-800"
-                    />
-                    <button type="submit" className="p-2 bg-terracotta-500 text-white rounded-full hover:bg-terracotta-600 transition-all">
-                      <Search size={16} />
-                    </button>
-                  </form>
-                ) : (
-                  <button
-                    onClick={() => setIsMobileSearchOpen(true)}
-                    className={`w-full text-left px-4 py-3 rounded-lg font-medium transition-all duration-300 text-sm tracking-wide flex items-center gap-2 ${
-                      isTransparent ? 'text-white hover:bg-white/20' : 'text-charcoal-700 hover:bg-cream-200'
-                    }`}
-                  >
-                    <Search size={18} /> Search
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
       </div>
+
+      {/* Mobile Drawer */}
+      {isMenuOpen && (
+        <div className="lg:hidden fixed inset-0 top-[80px] bg-white z-40 p-6 animate-in slide-in-from-top">
+          <div className="flex flex-col gap-6">
+            {navigation.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                className="text-lg font-bold text-gray-800 border-b border-gray-100 pb-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {item.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
     </nav>
   );
 }

@@ -131,14 +131,14 @@ export default function HeroBanner() {
             className="absolute left-6 md:left-10 top-1/2 -translate-y-1/2 z-30 bg-white/20 hover:bg-white/90 border border-white/50 p-3 rounded-full shadow-card transition-all opacity-0 group-hover:opacity-100 hover:scale-110 group/btn"
             aria-label="Previous slide"
           >
-            <ChevronLeft size={24} className="text-white group-hover/btn:text-charcoal-800 transition-colors" />
+            <ChevronLeft size={24} className="text-white group-hover/btn:text-gray-800 transition-colors" />
           </button>
           <button
             onClick={nextSlide}
             className="absolute right-6 md:right-10 top-1/2 -translate-y-1/2 z-30 bg-white/20 hover:bg-white/90 border border-white/50 p-3 rounded-full shadow-card transition-all opacity-0 group-hover:opacity-100 hover:scale-110 group/btn"
             aria-label="Next slide"
           >
-            <ChevronRight size={24} className="text-white group-hover/btn:text-charcoal-800 transition-colors" />
+            <ChevronRight size={24} className="text-white group-hover/btn:text-gray-800 transition-colors" />
           </button>
         </>
       )}

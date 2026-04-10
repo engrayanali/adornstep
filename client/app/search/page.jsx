@@ -21,19 +21,15 @@ function SearchResults() {
       try {
         const data = await api.searchProducts(query);
         
-        // Fully formatted data to handle missing folder paths
         const formattedProducts = data.map(product => ({
           ...product,
           images: product.images.map(img => {
             let path = img.image_url || "";
             
-            // Check if the path is just a filename (no slashes)
-            // If it is, we force the correct directory prefix
             if (path && !path.includes('/')) {
               path = `uploads/products/${path}`;
             }
 
-            // Clean the path (remove leading slash if exists to avoid double slash)
             const cleanPath = path.replace(/^\//, '');
 
             return {
@@ -45,7 +41,6 @@ function SearchResults() {
           })
         }));
 
-        console.log("Debug Search Data:", formattedProducts); // Check your console to see the new URLs
         setProducts(formattedProducts);
       } catch (error) {
         console.error('Search failed:', error);
@@ -58,7 +53,10 @@ function SearchResults() {
   }, [query]);
 
   return (
-    <section className="py-12 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
+    /* Updated px-2 on mobile (down from px-4) to increase available 
+       horizontal space for the product cards. 
+    */
+    <section className="py-12 px-2 md:px-8 lg:px-16 max-w-7xl mx-auto">
       <h1 className="text-3xl md:text-4xl font-bold mb-2">Search Results</h1>
       <p className="text-gray-600 mb-8">
         {query ? `Showing results for "${query}"` : 'Enter a search query'}
@@ -67,7 +65,22 @@ function SearchResults() {
       {loading ? (
         <LoadingSpinner size="lg" />
       ) : products.length > 0 ? (
-        <ProductGrid products={products} />
+        /* Layout Logic:
+           - grid-cols-1: Single column on mobile (full width).
+           - sm:grid-cols-2: Two columns for tablets.
+           - lg:grid-cols-4: Four columns for desktop.
+           - gap-4: Space between cards.
+        */
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
+          {products.map((product) => (
+            <div key={product.id} className="w-full">
+              {/* We pass a single product inside an array if your 
+                  ProductGrid is designed to handle an array of items. 
+              */}
+              <ProductGrid products={[product]} />
+            </div>
+          ))}
+        </div>
       ) : (
         <div className="text-center py-16">
           <p className="text-xl text-gray-500 mb-4">No products found</p>
