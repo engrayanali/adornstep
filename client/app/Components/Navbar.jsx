@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react';
 import { Menu, X, ShoppingCart, Search } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { getCartCount } from '../../lib/cart';
-import api from '../../lib/api';
+import { getCartCount } from '@/lib/cart';
+import api from '@/lib/api';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
