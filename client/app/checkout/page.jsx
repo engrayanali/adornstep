@@ -65,6 +65,8 @@ export default function CheckoutPage() {
       const orderData = {
         ...formData,
         shipping_city: cityLabel,
+        shipping_price: shippingCost, // Add this line
+        order_note: formData.notes,   // Map 'notes' to 'order_note'
         items,
       };
 

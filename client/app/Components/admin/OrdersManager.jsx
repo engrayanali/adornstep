@@ -27,14 +27,14 @@ export default function OrdersManager() {
    * FIX: Prioritize saved data from checkout.
    * If the backend has a shipping_price, we use it directly.
    */
-  const getShippingCharge = (order) => {
-    if (order.shipping_price !== undefined && order.shipping_price !== null) {
-      return Number(order.shipping_price);
-    }
-    // Fallback logic if for some reason the field is missing
-    const city = (order.shipping_city || '').toLowerCase();
-    return (city.includes('karachi')) ? 200 : 300;
-  };
+const getShippingCharge = (order) => {
+  // If the database has the price we sent during checkout, use it.
+  if (order.shipping_price) return Number(order.shipping_price);
+  
+  // Fallback if looking at old orders that didn't have the price saved
+  const city = (order.shipping_city || '').toLowerCase();
+  return city === 'karachi' ? 200 : 300;
+};
 
   const handleUpdateStatus = async (orderId, newStatus) => {
     try {
