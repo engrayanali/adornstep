@@ -85,18 +85,6 @@ export default function ContactPage() {
 
               {/* Contact Details */}
               <div className="space-y-6">
-                <div className="flex items-start gap-4 p-6 bg-white rounded-xl shadow-card hover:shadow-product transition-all duration-300">
-                  <div className="p-3 bg-terracotta-100 rounded-lg">
-                    <MapPin className="text-terracotta-600" size={24} />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-charcoal-800 mb-2">Visit Us</h3>
-                    <p className="text-charcoal-600">
-                      123 Fashion Street<br />
-                      Style City, SC 12345
-                    </p>
-                  </div>
-                </div>
 
                 <div className="flex items-start gap-4 p-6 bg-white rounded-xl shadow-card hover:shadow-product transition-all duration-300">
                   <div className="p-3 bg-terracotta-100 rounded-lg">
@@ -105,7 +93,7 @@ export default function ContactPage() {
                   <div>
                     <h3 className="font-semibold text-charcoal-800 mb-2">Call Us</h3>
                     <a href="tel:+1234567890" className="text-charcoal-600 hover:text-terracotta-600 transition-colors">
-                      +1 (234) 567-890
+                      +92 123 4567890
                     </a>
                   </div>
                 </div>
@@ -117,7 +105,7 @@ export default function ContactPage() {
                   <div>
                     <h3 className="font-semibold text-charcoal-800 mb-2">Email Us</h3>
                     <a href="mailto:info@adornsteps.com" className="text-charcoal-600 hover:text-terracotta-600 transition-colors">
-                      info@adornsteps.com
+                      info@adornstep.com
                     </a>
                   </div>
                 </div>
@@ -204,7 +192,7 @@ export default function ContactPage() {
                       value={formData.phone}
                       onChange={handleChange}
                       className="w-full pl-12 pr-4 py-3 border border-taupe-300 rounded-lg focus:border-terracotta-500 focus:outline-none focus:ring-2 focus:ring-terracotta-200 transition-all"
-                      placeholder="+1 (234) 567-890"
+                      placeholder="+92 123 4567890"
                     />
                   </div>
                 </div>

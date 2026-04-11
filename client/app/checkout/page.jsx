@@ -109,7 +109,7 @@ export default function CheckoutPage() {
                         value={formData.customer_name}
                         onChange={(e) => setFormData({ ...formData, customer_name: e.target.value })}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-                        placeholder="e.g. Ayesha Khan"
+                        placeholder="e.g. Your Name"
                       />
                     </div>
                     <div>
@@ -119,7 +119,7 @@ export default function CheckoutPage() {
                         value={formData.customer_email}
                         onChange={(e) => setFormData({ ...formData, customer_email: e.target.value })}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-                        placeholder="ayesha@example.com"
+                        placeholder="your-gmail@example.com"
                       />
                     </div>
                     <div className="md:col-span-2">
@@ -129,7 +129,7 @@ export default function CheckoutPage() {
                         value={formData.customer_phone}
                         onChange={(e) => setFormData({ ...formData, customer_phone: e.target.value })}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-                        placeholder="+92 300 1234567"
+                        placeholder="+92 123 4567890"
                       />
                     </div>
                   </div>
