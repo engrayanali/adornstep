@@ -5,7 +5,9 @@ import { useRouter } from 'next/navigation';
 import Navbar from '../Components/Navbar';
 import Footer from '../Components/Footer';
 import { Trash2, Plus, Minus, ShoppingBag, ArrowLeft, Shield, ChevronRight, Package, RefreshCw } from 'lucide-react';
-import { getCart, updateCartItemQuantity, removeFromCart, getCartTotal } from '../lib/cart';
+// FIXED: Path updated to reach lib folder from app/cart/
+import { getCart, updateCartItemQuantity, removeFromCart, getCartTotal } from '../../lib/cart';
+import api from '../../lib/api'; 
 import Link from 'next/link';
 
 export default function CartPage() {
@@ -36,6 +38,15 @@ export default function CartPage() {
       removeFromCart(item.id, item.size, item.color);
       loadCart();
     }
+  };
+
+  // Helper function to fix the "image not loading" issue by normalizing FastAPI URLs
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return null;
+    if (imagePath.startsWith('http')) return imagePath;
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+    const cleanPath = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
+    return `${baseUrl}${cleanPath}`;
   };
 
   const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -101,105 +112,109 @@ export default function CartPage() {
                 </p>
 
                 <div className="space-y-4">
-                  {cart.map((item, index) => (
-                    <div
-                      key={`${item.id}-${item.size}-${item.color}-${index}`}
-                      className="bg-white border border-taupe-100 rounded-sm hover:shadow-product transition-all duration-300 group overflow-hidden"
-                    >
-                      <div className="flex flex-row">
+                  {cart.map((item, index) => {
+                    const displayImage = getImageUrl(item.image);
+                    return (
+                      <div
+                        key={`${item.id}-${item.size}-${item.color}-${index}`}
+                        className="bg-white border border-taupe-100 rounded-sm hover:shadow-product transition-all duration-300 group overflow-hidden"
+                      >
+                        <div className="flex flex-row">
 
-                        {/* Image */}
-                        <div className="w-28 sm:w-32 md:w-44 flex-shrink-0 bg-cream-100 overflow-hidden relative">
-                          {item.image ? (
-                            <img
-                              src={item.image}
-                              alt={item.name}
-                              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                            />
-                          ) : (
-                            <div className="absolute inset-0 w-full h-full flex items-center justify-center">
-                              <Package size={24} className="text-taupe-300" />
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Details */}
-                        <div className="flex-1 min-w-0 p-4 md:p-6 flex flex-col justify-between">
-
-                          {/* Top: name + remove */}
-                          <div className="flex items-start justify-between gap-2">
-                            <div className="flex-1 min-w-0">
-                              <Link
-                                href={`/product/${item.slug}`}
-                                className="font-heading text-lg md:text-2xl font-medium text-charcoal-800 hover:text-terracotta-600 transition-colors leading-tight block mb-2 line-clamp-2"
-                              >
-                                {item.name}
-                              </Link>
-
-                              {/* Variant tags */}
-                              <div className="flex flex-wrap gap-1.5 md:gap-2">
-                                {item.size && (
-                                  <span className="text-[9px] md:text-[10px] font-semibold tracking-widest uppercase px-2 md:px-3 py-1 bg-cream-100 text-taupe-600 rounded-sm border border-taupe-200">
-                                    Size {item.size}
-                                  </span>
-                                )}
-                                {item.color && (
-                                  <span className="text-[9px] md:text-[10px] font-semibold tracking-widest uppercase px-2 md:px-3 py-1 bg-cream-100 text-taupe-600 rounded-sm border border-taupe-200">
-                                    {item.color}
-                                  </span>
-                                )}
+                          {/* Image */}
+                          <div className="w-28 sm:w-32 md:w-44 flex-shrink-0 bg-cream-100 overflow-hidden relative">
+                            {displayImage ? (
+                              <img
+                                src={displayImage}
+                                alt={item.name}
+                                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                onError={(e) => { e.target.src = '/placeholder.png'; }}
+                              />
+                            ) : (
+                              <div className="absolute inset-0 w-full h-full flex items-center justify-center">
+                                <Package size={24} className="text-taupe-300" />
                               </div>
-                            </div>
-
-                            {/* Remove button */}
-                            <button
-                              onClick={() => handleRemove(item)}
-                              className="p-1.5 text-taupe-300 hover:text-red-500 hover:bg-red-50 rounded-sm transition-all flex-shrink-0"
-                              title="Remove item"
-                            >
-                              <Trash2 size={16} />
-                            </button>
+                            )}
                           </div>
 
-                          {/* Bottom: qty + price */}
-                          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mt-4 pt-4 border-t border-taupe-100 gap-4">
+                          {/* Details */}
+                          <div className="flex-1 min-w-0 p-4 md:p-6 flex flex-col justify-between">
 
-                            {/* Quantity stepper */}
-                            <div className="flex items-center border border-taupe-200 rounded-sm overflow-hidden scale-90 sm:scale-100 origin-left">
+                            {/* Top: name + remove */}
+                            <div className="flex items-start justify-between gap-2">
+                              <div className="flex-1 min-w-0">
+                                <Link
+                                  href={`/product/${item.slug}`}
+                                  className="font-heading text-lg md:text-2xl font-medium text-charcoal-800 hover:text-terracotta-600 transition-colors leading-tight block mb-2 line-clamp-2"
+                                >
+                                  {item.name}
+                                </Link>
+
+                                {/* Variant tags */}
+                                <div className="flex flex-wrap gap-1.5 md:gap-2">
+                                  {item.size && (
+                                    <span className="text-[9px] md:text-[10px] font-semibold tracking-widest uppercase px-2 md:px-3 py-1 bg-cream-100 text-taupe-600 rounded-sm border border-taupe-200">
+                                      Size {item.size}
+                                    </span>
+                                  )}
+                                  {item.color && (
+                                    <span className="text-[9px] md:text-[10px] font-semibold tracking-widest uppercase px-2 md:px-3 py-1 bg-cream-100 text-taupe-600 rounded-sm border border-taupe-200">
+                                      {item.color}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+
+                              {/* Remove button */}
                               <button
-                                onClick={() => handleQuantityChange(item, item.quantity - 1)}
-                                disabled={item.quantity <= 1}
-                                className="w-8 h-8 md:w-9 md:h-9 flex items-center justify-center text-charcoal-600 hover:bg-cream-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                                onClick={() => handleRemove(item)}
+                                className="p-1.5 text-taupe-300 hover:text-red-500 hover:bg-red-50 rounded-sm transition-all flex-shrink-0"
+                                title="Remove item"
                               >
-                                <Minus size={12} />
-                              </button>
-                              <span className="w-8 md:w-10 text-center text-xs md:text-sm font-semibold text-charcoal-800 border-x border-taupe-200 h-8 md:h-9 flex items-center justify-center">
-                                {item.quantity}
-                              </span>
-                              <button
-                                onClick={() => handleQuantityChange(item, item.quantity + 1)}
-                                className="w-8 h-8 md:w-9 md:h-9 flex items-center justify-center text-charcoal-600 hover:bg-cream-100 transition-colors"
-                              >
-                                <Plus size={12} />
+                                <Trash2 size={16} />
                               </button>
                             </div>
 
-                            {/* Price */}
-                            <div className="text-left sm:text-right w-full sm:w-auto">
-                              <div className="font-heading text-xl md:text-3xl font-medium text-charcoal-800 leading-none">
-                                Rs {(item.price * item.quantity).toLocaleString('en-PK')}
+                            {/* Bottom: qty + price */}
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mt-4 pt-4 border-t border-taupe-100 gap-4">
+
+                              {/* Quantity stepper */}
+                              <div className="flex items-center border border-taupe-200 rounded-sm overflow-hidden scale-90 sm:scale-100 origin-left">
+                                <button
+                                  onClick={() => handleQuantityChange(item, item.quantity - 1)}
+                                  disabled={item.quantity <= 1}
+                                  className="w-8 h-8 md:w-9 md:h-9 flex items-center justify-center text-charcoal-600 hover:bg-cream-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                                >
+                                  <Minus size={12} />
+                                </button>
+                                <span className="w-8 md:w-10 text-center text-xs md:text-sm font-semibold text-charcoal-800 border-x border-taupe-200 h-8 md:h-9 flex items-center justify-center">
+                                  {item.quantity}
+                                </span>
+                                <button
+                                  onClick={() => handleQuantityChange(item, item.quantity + 1)}
+                                  className="w-8 h-8 md:w-9 md:h-9 flex items-center justify-center text-charcoal-600 hover:bg-cream-100 transition-colors"
+                                >
+                                  <Plus size={12} />
+                                </button>
                               </div>
-                              {item.quantity > 1 && (
-                                <div className="text-[10px] text-taupe-400 mt-1 tracking-wide">
-                                  Rs {item.price.toLocaleString('en-PK')} each
+
+                              {/* Price */}
+                              <div className="text-left sm:text-right w-full sm:w-auto">
+                                <div className="font-heading text-xl md:text-3xl font-medium text-charcoal-800 leading-none">
+                                  Rs {(item.price * item.quantity).toLocaleString('en-PK')}
                                 </div>
-                              )}
+                                {item.quantity > 1 && (
+                                  <div className="text-[10px] text-taupe-400 mt-1 tracking-wide">
+                                    Rs {item.price.toLocaleString('en-PK')} each
+                                  </div>
+                                )}
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
 

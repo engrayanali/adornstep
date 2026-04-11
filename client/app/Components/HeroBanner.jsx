@@ -35,14 +35,12 @@ export default function HeroBanner() {
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + banners.length) % banners.length);
 
   if (loading) {
-    // KEY FIX: no mt-20 — banner starts at top of page, behind transparent navbar
-    return <div className="relative w-full h-[600px] md:h-[920px] bg-gradient-to-br from-cream-200 to-taupe-200 animate-pulse"></div>;
+    return <div className="relative w-full h-screen bg-gradient-to-br from-cream-200 to-taupe-200 animate-pulse"></div>;
   }
 
   if (banners.length === 0) {
     return (
-      // KEY FIX: no mt-20
-      <div className="relative w-full h-[600px] md:h-[920px] bg-gradient-to-br from-cream-100 via-cream-200 to-taupe-100 flex items-center justify-center">
+      <div className="relative w-full h-screen bg-gradient-to-br from-cream-100 via-cream-200 to-taupe-100 flex items-center justify-center">
         <div className="text-center px-6 pt-20">
           <h2 className="text-5xl md:text-7xl font-display font-semibold text-gray-800 mb-6 tracking-tight">
             Step into Comfort
@@ -62,8 +60,7 @@ export default function HeroBanner() {
   }
 
   return (
-    // KEY FIX: no mt-20 — banner fills from very top so navbar floats over it transparently
-    <div className="relative w-full h-[600px] md:h-[920px] overflow-hidden group">
+    <div className="relative w-full h-screen overflow-hidden group">
       {banners.map((banner, index) => (
         <div
           key={banner.id}
@@ -95,7 +92,7 @@ export default function HeroBanner() {
             <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent"></div>
           </div>
 
-          {/* Content — pt-24 pushes text below the navbar */}
+          {/* Content */}
           {(banner.title || banner.subtitle || banner.button_text) && (
             <div className="absolute inset-0 flex items-center z-20 pt-24">
               <div className="max-w-7xl mx-auto px-6 lg:px-8 w-full">
