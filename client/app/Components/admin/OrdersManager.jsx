@@ -163,13 +163,15 @@ const getShippingCharge = (order) => {
                 </div>
 
                 {/* FIX: Order Note Section */}
-                {selectedOrder.order_note && (
-                  <div className="pt-4 border-t border-gray-100">
-                    <div className="flex items-center gap-2 mb-2 text-gray-400">
-                      <MessageSquare size={16}/><span className="text-[10px] font-bold uppercase tracking-widest">Order Note</span>
+                {(selectedOrder.order_note || selectedOrder.notes) && (
+                  <div className="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-xl">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-[10px] font-bold text-amber-600 uppercase tracking-wider">
+                        Customer Note
+                      </span>
                     </div>
-                    <p className="text-sm text-amber-800 bg-amber-50 p-3 rounded-xl italic border border-amber-100">
-                      "{selectedOrder.order_note}"
+                    <p className="text-sm text-gray-800 italic leading-relaxed">
+                      "{selectedOrder.order_note || selectedOrder.notes}"
                     </p>
                   </div>
                 )}
