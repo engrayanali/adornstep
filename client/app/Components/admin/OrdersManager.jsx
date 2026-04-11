@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Eye, X, Trash2, Truck, MapPin, CreditCard, User, MessageSquare } from 'lucide-react';
+import { Eye, X, Trash2, Truck, MapPin, CreditCard, User, MessageSquare, Palette } from 'lucide-react';
 import api from '../../lib/api';
 
 export default function OrdersManager() {
@@ -24,35 +24,32 @@ export default function OrdersManager() {
   };
 
   /**
-   * HELPER: Shipping Calculation
-   * Prioritizes the saved 'shipping_price' from backend.
-   * Fallback: Dynamic Karachi vs Standard check.
+   * FIX: Prioritize saved data from checkout.
+   * If the backend has a shipping_price, we use it directly.
    */
   const getShippingCharge = (order) => {
     if (order.shipping_price !== undefined && order.shipping_price !== null) {
       return Number(order.shipping_price);
     }
+    // Fallback logic if for some reason the field is missing
     const city = (order.shipping_city || '').toLowerCase();
-    const address = (order.shipping_address || '').toLowerCase();
-    return (city.includes('karachi') || address.includes('karachi')) ? 200 : 300;
+    return (city.includes('karachi')) ? 200 : 300;
   };
 
   const handleUpdateStatus = async (orderId, newStatus) => {
     try {
       await api.updateOrder(orderId, { status: newStatus });
       loadOrders();
-      alert('Order status updated!');
     } catch (error) {
       alert('Error updating order');
     }
   };
 
   const handleDelete = async (orderId, orderNumber) => {
-    if (!confirm(`Delete order ${orderNumber}? This cannot be undone.`)) return;
+    if (!confirm(`Delete order ${orderNumber}?`)) return;
     try {
       await api.deleteOrder(orderId);
       setShowModal(false);
-      setSelectedOrder(null);
       loadOrders();
     } catch (error) {
       alert('Error deleting order');
@@ -67,53 +64,13 @@ export default function OrdersManager() {
     cancelled: { bg: '#fee2e2', color: '#991b1b' },
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center py-24">
-        <div className="w-10 h-10 border-4 border-gray-100 border-t-rose-600 rounded-full animate-spin"></div>
-      </div>
-    );
-  }
+  if (loading) return <div className="py-24 text-center">Loading Orders...</div>;
 
   return (
     <div className="max-w-full px-4 sm:px-6">
       <div className="mb-8">
         <h2 className="text-2xl font-bold text-gray-900">Orders Management</h2>
         <p className="text-sm text-gray-500">{orders.length} orders total</p>
-      </div>
-
-      {/* MOBILE LIST */}
-      <div className="grid grid-cols-1 gap-4 md:hidden">
-        {orders.map((order) => {
-          const ship = getShippingCharge(order);
-          const total = (order.total_amount || 0) + ship;
-          return (
-            <div key={order.id} className="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
-              <div className="flex justify-between items-start mb-3">
-                <div>
-                  <p className="text-[10px] font-mono font-bold text-rose-600">{order.order_number}</p>
-                  <p className="font-bold text-gray-900">{order.customer_name}</p>
-                </div>
-                <div className="text-right">
-                  <p className="font-bold text-gray-900">Rs {total.toLocaleString()}</p>
-                  <p className="text-[10px] text-gray-400">{new Date(order.created_at).toLocaleDateString()}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <select
-                  value={order.status}
-                  onChange={(e) => handleUpdateStatus(order.id, e.target.value)}
-                  className="flex-1 text-[11px] font-bold h-9 rounded-lg border-none"
-                  style={{ backgroundColor: statusColors[order.status]?.bg, color: statusColors[order.status]?.color }}
-                >
-                  {Object.keys(statusColors).map(s => <option key={s} value={s}>{s.toUpperCase()}</option>)}
-                </select>
-                <button onClick={() => { setSelectedOrder(order); setShowModal(true); }} className="p-2 bg-blue-50 text-blue-600 rounded-lg"><Eye size={20}/></button>
-                <button onClick={() => handleDelete(order.id, order.order_number)} className="p-2 bg-red-50 text-red-500 rounded-lg"><Trash2 size={20}/></button>
-              </div>
-            </div>
-          );
-        })}
       </div>
 
       {/* DESKTOP TABLE */}
@@ -143,7 +100,7 @@ export default function OrdersManager() {
                     <select
                       value={order.status}
                       onChange={(e) => handleUpdateStatus(order.id, e.target.value)}
-                      className="text-[10px] font-bold px-3 py-1.5 rounded-full border-none"
+                      className="text-[10px] font-bold px-3 py-1.5 rounded-full border-none cursor-pointer"
                       style={{ backgroundColor: statusColors[order.status]?.bg, color: statusColors[order.status]?.color }}
                     >
                       {Object.keys(statusColors).map(s => <option key={s} value={s}>{s}</option>)}
@@ -160,6 +117,25 @@ export default function OrdersManager() {
         </table>
       </div>
 
+      {/* MOBILE LIST (logic identical to desktop) */}
+      <div className="grid grid-cols-1 gap-4 md:hidden">
+        {orders.map((order) => (
+          <div key={order.id} className="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
+            <div className="flex justify-between mb-3">
+              <div>
+                <p className="text-[10px] font-mono font-bold text-rose-600">{order.order_number}</p>
+                <p className="font-bold text-gray-900">{order.customer_name}</p>
+              </div>
+              <p className="font-bold text-gray-900">Rs {(order.total_amount + getShippingCharge(order)).toLocaleString()}</p>
+            </div>
+            <div className="flex gap-2">
+              <button onClick={() => { setSelectedOrder(order); setShowModal(true); }} className="flex-1 py-2 bg-blue-50 text-blue-600 rounded-lg text-xs font-bold">View Order</button>
+              <button onClick={() => handleDelete(order.id, order.order_number)} className="p-2 bg-red-50 text-red-500 rounded-lg"><Trash2 size={20}/></button>
+            </div>
+          </div>
+        ))}
+      </div>
+
       {/* ORDER DETAILS MODAL */}
       {showModal && selectedOrder && (
         <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex justify-center sm:justify-end">
@@ -170,47 +146,36 @@ export default function OrdersManager() {
                 <h3 className="text-xl font-bold text-gray-900">Order Summary</h3>
                 <p className="text-xs font-mono font-bold text-rose-600">{selectedOrder.order_number}</p>
               </div>
-              <button onClick={() => setShowModal(false)} className="p-2 hover:bg-gray-200 rounded-full transition-colors"><X size={24}/></button>
+              <button onClick={() => setShowModal(false)} className="p-2 hover:bg-gray-200 rounded-full"><X size={24}/></button>
             </div>
 
             <div className="flex-1 overflow-y-auto p-6 space-y-6">
-              
-              {/* Customer Info */}
-              <div className="p-4 rounded-2xl border border-gray-200 bg-white">
-                <div className="flex items-center gap-2 mb-3 text-gray-400">
-                  <User size={16}/><span className="text-[10px] font-bold uppercase tracking-widest">Customer Details</span>
-                </div>
-                <p className="font-bold text-gray-900">{selectedOrder.customer_name}</p>
-                <p className="text-sm text-gray-500">{selectedOrder.customer_email}</p>
-                <p className="text-sm text-gray-500">{selectedOrder.customer_phone}</p>
-              </div>
-
               {/* Shipping & Order Note */}
               <div className="p-4 rounded-2xl border border-gray-200 bg-white space-y-4">
                 <div>
-                  <div className="flex items-center gap-2 mb-3 text-gray-400">
+                  <div className="flex items-center gap-2 mb-2 text-gray-400">
                     <MapPin size={16}/><span className="text-[10px] font-bold uppercase tracking-widest">Shipping Address</span>
                   </div>
-                  <div className="text-sm text-gray-700 leading-relaxed break-words whitespace-pre-wrap">
+                  <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
                     {selectedOrder.shipping_address}<br/>
                     {selectedOrder.shipping_city}, {selectedOrder.shipping_state} {selectedOrder.shipping_zip}
                   </div>
                 </div>
 
-                {/* ADDED: Order Note Section */}
+                {/* FIX: Order Note Section */}
                 {selectedOrder.order_note && (
                   <div className="pt-4 border-t border-gray-100">
                     <div className="flex items-center gap-2 mb-2 text-gray-400">
                       <MessageSquare size={16}/><span className="text-[10px] font-bold uppercase tracking-widest">Order Note</span>
                     </div>
-                    <p className="text-sm text-amber-700 bg-amber-50 p-3 rounded-xl italic border border-amber-100">
+                    <p className="text-sm text-amber-800 bg-amber-50 p-3 rounded-xl italic border border-amber-100">
                       "{selectedOrder.order_note}"
                     </p>
                   </div>
                 )}
               </div>
 
-              {/* Items */}
+              {/* Items Section */}
               <div className="space-y-3">
                 <div className="flex items-center gap-2 mb-1 text-gray-400">
                   <Truck size={16}/><span className="text-[10px] font-bold uppercase tracking-widest">Items Ordered</span>
@@ -219,9 +184,16 @@ export default function OrdersManager() {
                   <div key={idx} className="p-4 border rounded-2xl flex justify-between items-start gap-4 bg-gray-50/50">
                     <div className="min-w-0 flex-1">
                       <p className="text-sm font-bold text-gray-900 truncate">{item.product_name}</p>
-                      <p className="text-[10px] text-gray-500 mt-1 uppercase">Qty: {item.quantity} | Size: {item.size || 'N/A'}</p>
+                      {/* FIX: Showing Color alongside Size */}
+                      <div className="flex flex-wrap gap-3 mt-1">
+                        <p className="text-[10px] text-gray-500 uppercase font-medium">Qty: {item.quantity}</p>
+                        <p className="text-[10px] text-gray-500 uppercase font-medium">Size: {item.size || 'N/A'}</p>
+                        <p className="text-[10px] text-rose-500 uppercase font-bold flex items-center gap-1">
+                          <Palette size={10}/> Color: {item.color || 'N/A'}
+                        </p>
+                      </div>
                     </div>
-                    <p className="font-bold text-sm whitespace-nowrap text-gray-900">Rs {item.product_price?.toLocaleString()}</p>
+                    <p className="font-bold text-sm text-gray-900">Rs {item.product_price?.toLocaleString()}</p>
                   </div>
                 ))}
               </div>
@@ -245,25 +217,13 @@ export default function OrdersManager() {
                   </span>
                 </div>
               </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div className="p-3 bg-emerald-50 rounded-xl border border-emerald-100 flex flex-col items-center">
-                   <CreditCard size={16} className="text-emerald-600 mb-1"/>
-                   <span className="text-[10px] font-bold text-emerald-700 uppercase">{selectedOrder.payment_method || 'COD'}</span>
-                </div>
-                <div className="p-3 bg-amber-50 rounded-xl border border-amber-100 flex flex-col items-center text-center">
-                   <span className="text-[10px] font-bold text-amber-700 uppercase">{selectedOrder.status}</span>
-                </div>
-              </div>
-
               <button 
                 onClick={() => handleDelete(selectedOrder.id, selectedOrder.order_number)}
-                className="w-full mt-4 py-3 text-red-600 text-[10px] font-black uppercase tracking-widest hover:bg-red-50 rounded-xl transition-all"
+                className="w-full py-3 text-red-600 text-[10px] font-black uppercase tracking-widest hover:bg-red-50 rounded-xl transition-all border border-red-100"
               >
                 Delete Order Record
               </button>
             </div>
-
           </div>
         </div>
       )}
