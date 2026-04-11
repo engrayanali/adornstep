@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Eye, X, Trash2, Truck, MapPin, CreditCard, User } from 'lucide-react';
+import { Eye, X, Trash2, Truck, MapPin, CreditCard, User, MessageSquare } from 'lucide-react';
 import api from '../../lib/api';
 
 export default function OrdersManager() {
@@ -23,8 +23,15 @@ export default function OrdersManager() {
     }
   };
 
-  // HELPER: Dynamic Shipping Calculation
-  const calculateShipping = (order) => {
+  /**
+   * HELPER: Shipping Calculation
+   * Prioritizes the saved 'shipping_price' from backend.
+   * Fallback: Dynamic Karachi vs Standard check.
+   */
+  const getShippingCharge = (order) => {
+    if (order.shipping_price !== undefined && order.shipping_price !== null) {
+      return Number(order.shipping_price);
+    }
     const city = (order.shipping_city || '').toLowerCase();
     const address = (order.shipping_address || '').toLowerCase();
     return (city.includes('karachi') || address.includes('karachi')) ? 200 : 300;
@@ -75,10 +82,10 @@ export default function OrdersManager() {
         <p className="text-sm text-gray-500">{orders.length} orders total</p>
       </div>
 
-      {/* MOBILE LIST (Visible on small screens only) */}
+      {/* MOBILE LIST */}
       <div className="grid grid-cols-1 gap-4 md:hidden">
         {orders.map((order) => {
-          const ship = calculateShipping(order);
+          const ship = getShippingCharge(order);
           const total = (order.total_amount || 0) + ship;
           return (
             <div key={order.id} className="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
@@ -109,7 +116,7 @@ export default function OrdersManager() {
         })}
       </div>
 
-      {/* DESKTOP TABLE (Hidden on mobile) */}
+      {/* DESKTOP TABLE */}
       <div className="hidden md:block bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
         <table className="w-full text-left">
           <thead className="bg-gray-50 border-b border-gray-200">
@@ -123,7 +130,7 @@ export default function OrdersManager() {
           </thead>
           <tbody className="divide-y divide-gray-100">
             {orders.map((order) => {
-              const ship = calculateShipping(order);
+              const ship = getShippingCharge(order);
               return (
                 <tr key={order.id} className="hover:bg-gray-50/50">
                   <td className="px-6 py-4">
@@ -158,7 +165,6 @@ export default function OrdersManager() {
         <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex justify-center sm:justify-end">
           <div className="bg-white w-full max-w-lg h-full shadow-2xl flex flex-col animate-in slide-in-from-right duration-300">
             
-            {/* Header */}
             <div className="p-6 border-b flex justify-between items-center bg-gray-50">
               <div>
                 <h3 className="text-xl font-bold text-gray-900">Order Summary</h3>
@@ -167,7 +173,6 @@ export default function OrdersManager() {
               <button onClick={() => setShowModal(false)} className="p-2 hover:bg-gray-200 rounded-full transition-colors"><X size={24}/></button>
             </div>
 
-            {/* Scrollable Content */}
             <div className="flex-1 overflow-y-auto p-6 space-y-6">
               
               {/* Customer Info */}
@@ -180,15 +185,29 @@ export default function OrdersManager() {
                 <p className="text-sm text-gray-500">{selectedOrder.customer_phone}</p>
               </div>
 
-              {/* Shipping - FIXED OVERFLOW */}
-              <div className="p-4 rounded-2xl border border-gray-200 bg-white">
-                <div className="flex items-center gap-2 mb-3 text-gray-400">
-                  <MapPin size={16}/><span className="text-[10px] font-bold uppercase tracking-widest">Shipping Address</span>
+              {/* Shipping & Order Note */}
+              <div className="p-4 rounded-2xl border border-gray-200 bg-white space-y-4">
+                <div>
+                  <div className="flex items-center gap-2 mb-3 text-gray-400">
+                    <MapPin size={16}/><span className="text-[10px] font-bold uppercase tracking-widest">Shipping Address</span>
+                  </div>
+                  <div className="text-sm text-gray-700 leading-relaxed break-words whitespace-pre-wrap">
+                    {selectedOrder.shipping_address}<br/>
+                    {selectedOrder.shipping_city}, {selectedOrder.shipping_state} {selectedOrder.shipping_zip}
+                  </div>
                 </div>
-                <div className="text-sm text-gray-700 leading-relaxed break-words whitespace-pre-wrap">
-                  {selectedOrder.shipping_address}<br/>
-                  {selectedOrder.shipping_city}, {selectedOrder.shipping_state} {selectedOrder.shipping_zip}
-                </div>
+
+                {/* ADDED: Order Note Section */}
+                {selectedOrder.order_note && (
+                  <div className="pt-4 border-t border-gray-100">
+                    <div className="flex items-center gap-2 mb-2 text-gray-400">
+                      <MessageSquare size={16}/><span className="text-[10px] font-bold uppercase tracking-widest">Order Note</span>
+                    </div>
+                    <p className="text-sm text-amber-700 bg-amber-50 p-3 rounded-xl italic border border-amber-100">
+                      "{selectedOrder.order_note}"
+                    </p>
+                  </div>
+                )}
               </div>
 
               {/* Items */}
@@ -208,7 +227,7 @@ export default function OrdersManager() {
               </div>
             </div>
 
-            {/* TOTALS SECTION - CALCULATION FIXED */}
+            {/* TOTALS SECTION */}
             <div className="p-6 bg-white border-t border-gray-100">
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between text-sm">
@@ -216,13 +235,13 @@ export default function OrdersManager() {
                   <span className="font-bold text-gray-900">Rs {selectedOrder.total_amount?.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Delivery Charges ({calculateShipping(selectedOrder) === 200 ? 'Karachi' : 'Standard'})</span>
-                  <span className="font-bold text-blue-600">Rs {calculateShipping(selectedOrder)}</span>
+                  <span className="text-gray-500">Delivery Charges</span>
+                  <span className="font-bold text-blue-600">Rs {getShippingCharge(selectedOrder).toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between items-center pt-4 border-t border-dashed">
                   <span className="text-lg font-bold text-gray-900">Total Amount</span>
                   <span className="text-2xl font-black text-rose-600 whitespace-nowrap">
-                    Rs {(selectedOrder.total_amount + calculateShipping(selectedOrder)).toLocaleString()}
+                    Rs {(selectedOrder.total_amount + getShippingCharge(selectedOrder)).toLocaleString()}
                   </span>
                 </div>
               </div>
