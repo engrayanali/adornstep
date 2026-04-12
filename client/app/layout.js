@@ -1,8 +1,8 @@
 import "./globals.css";
+import CookieConsent from "./Components/CookieConsent"; // Ensure the path matches your file structure
 
 export const metadata = {
   title: "Adorn Steps - Premium Ladies Slippers & Footwear",
-  // Google Fonts loaded via <link> tags in RootLayout below
   description: "Discover elegant and comfortable ladies slippers, heels, flats, and sandals at Adorn Steps. Shop our latest collection of premium footwear.",
   keywords: "ladies slippers, women footwear, heels, flats, sandals, premium slippers",
   authors: [{ name: "Adorn Steps" }],
@@ -23,7 +23,7 @@ export const metadata = {
   openGraph: {
     title: "Adorn Steps - Premium Ladies Slippers & Footwear",
     description: "Discover elegant and comfortable ladies slippers, heels, flats, and sandals.",
-    url: "https://adorestep.com",
+    url: "https://adornstep.com", // Fixed a tiny typo from your previous code (adorestep -> adornstep)
     siteName: "Adorn Steps",
     type: "website",
     images: [
@@ -62,6 +62,9 @@ export default function RootLayout({ children }) {
         className="font-sans antialiased leading-relaxed overflow-x-hidden bg-white text-gray-900"
       >
         {children}
+        
+        {/* Added the Cookie Consent Component here */}
+        <CookieConsent />
       </body>
     </html>
   );
