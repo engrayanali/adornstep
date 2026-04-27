@@ -92,8 +92,8 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-charcoal-800 mb-2">Call Us</h3>
-                    <a href="tel:+1234567890" className="text-charcoal-600 hover:text-terracotta-600 transition-colors">
-                      +92 123 4567890
+                    <a href="Phone:+923213880301" className="text-charcoal-600 hover:text-terracotta-600 transition-colors">
+                      +92 321 3880301
                     </a>
                   </div>
                 </div>
